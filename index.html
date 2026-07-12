@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduSched Pro - Smart Timetable & Journal System</title>
+    <!-- STREAMING_CHUNK: Memuat resource eksternal untuk gaya UI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,6 +21,7 @@
             font-family: 'Fira Code', 'Courier New', monospace;
             font-weight: 700;
         }
+        /* STREAMING_CHUNK: Mengatur CSS Media Print untuk layout cetak otomatis */
         @media print {
             body {
                 background-color: #ffffff;
@@ -55,6 +57,7 @@
 <body class="h-screen flex flex-col overflow-hidden">
 
     <!-- SCREEN LOGIN -->
+    <!-- STREAMING_CHUNK: Merender area halaman masuk aman -->
     <div id="login-screen" class="flex-1 flex items-center justify-center bg-slate-950 px-4">
         <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 space-y-6 border border-slate-200">
             <div class="text-center">
@@ -84,6 +87,7 @@
     </div>
 
     <!-- MAIN DASHBOARD INTERACTIVE SITEMAP -->
+    <!-- STREAMING_CHUNK: Merender layout navigasi samping dan kontainer konten -->
     <div id="main-layout" class="flex-1 flex overflow-hidden hidden">
         <!-- SIDEBAR NAVIGASI -->
         <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col no-print shrink-0 border-r border-slate-800">
@@ -134,7 +138,7 @@
                     <i class="fa-solid fa-pen-to-square w-5 text-slate-400"></i><span>Jurnal Kelas Otomatis</span>
                 </button>
 
-                <!-- MENU 4: MONITORING & ABSENSI (ROLE KEPSEK / ADMIN) -->
+                <!-- MENU 4: MONITORING & ABSENSI -->
                 <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider">4. MONITORING</div>
                 <button onclick="switchView('clash-tracker')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-clash-tracker">
                     <i class="fa-solid fa-triangle-exclamation w-5 text-slate-400"></i><span>Clash Tracker Engine</span>
@@ -178,13 +182,14 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full " id="ping-indicator"></span>
                         <span class="text-[10px] text-emerald-800 font-bold" id="status-role-badge">Admin Kurikulum</span>
                     </div>
                 </div>
             </header>
 
             <!-- CANVAS AREA DINAMIS -->
+            <!-- STREAMING_CHUNK: Menyusun lembar-lembar view operasional sistem -->
             <div class="flex-1 overflow-y-auto p-8">
                 
                 <!-- VIEW 1: DASHBOARD (MAIN HUB) -->
@@ -241,6 +246,7 @@
                 </div>
 
                 <!-- VIEW 2: MASTER IDENTITAS -->
+                <!-- STREAMING_CHUNK: Halaman Formulir Identitas Sekolah -->
                 <div id="view-master-identitas" class="content-view space-y-6 hidden">
                     <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-2xl">
                         <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-6 flex items-center">
@@ -278,6 +284,7 @@
                 </div>
 
                 <!-- VIEW 3: MASTER GURU -->
+                <!-- STREAMING_CHUNK: Halaman Manajemen Guru -->
                 <div id="view-master-guru" class="content-view space-y-6 hidden">
                     <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <div>
@@ -332,6 +339,7 @@
                 </div>
 
                 <!-- VIEW 5: MASTER ROMBEL -->
+                <!-- STREAMING_CHUNK: Halaman Rombongan Belajar dengan Fitur Sugesti Guru -->
                 <div id="view-master-kelas" class="content-view space-y-6 hidden">
                     <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <div>
@@ -348,7 +356,7 @@
                                 <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
                                     <th class="py-4 px-6">Kode Rombel</th>
                                     <th class="py-4 px-6">Nama Kelas</th>
-                                    <th class="py-4 px-6">Tingkat</th>
+                                    <th class="py-4 px-6 font-bold text-center">Tingkat</th>
                                     <th class="py-4 px-6">Kompetensi Keahlian (Jurusan)</th>
                                     <th class="py-4 px-6">Wali Kelas</th>
                                     <th class="py-4 px-6 text-center">Aksi</th>
@@ -359,7 +367,7 @@
                     </div>
                 </div>
 
-                <!-- VIEW: PENGATURAN JAM KELAS (UPGRADED FOR MULTIPLE TEACHERS per MAPEL) -->
+                <!-- VIEW: PENGATURAN JAM KELAS -->
                 <div id="view-jam-kelas" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -385,7 +393,8 @@
                     </div>
                 </div>
 
-                <!-- VIEW: BEBAN MENGAJAR (UPGRADED: SELECT GURU -> CHECKLIST MAPEL -> CHECKLIST ROMBEL) -->
+                <!-- VIEW: BEBAN MENGAJAR (MULTI CHECKLIST & DYNAMIC BALANCING) -->
+                <!-- STREAMING_CHUNK: Halaman Pembagian Tugas Mengajar Cepat -->
                 <div id="view-beban-mengajar" class="content-view space-y-6 hidden">
                     <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <div>
@@ -412,7 +421,7 @@
                     </div>
                 </div>
 
-                <!-- VIEW: JADWAL PIKET -->
+                <!-- VIEW: JADWAL PIKET GURU -->
                 <div id="view-jadwal-piket" class="content-view space-y-6 hidden">
                     <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <div>
@@ -438,6 +447,7 @@
                 </div>
 
                 <!-- VIEW 6: JADWAL MASTER & AUTO-SCHEDULER ENGINE -->
+                <!-- STREAMING_CHUNK: Halaman Penyusunan Jadwal Matriks & Auto-Generate AI -->
                 <div id="view-jadwal-master" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -510,6 +520,7 @@
                 </div>
 
                 <!-- VIEW 8: CLASH TRACKER ENGINE -->
+                <!-- STREAMING_CHUNK: Halaman Monitoring Bentrok & Validasi Anti-Clash -->
                 <div id="view-clash-tracker" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <h3 class="text-base font-bold text-slate-800">Clash Tracker Engine (Real-Time Monitor)</h3>
@@ -523,7 +534,7 @@
                                     <th class="py-4 px-6">Jam Ke</th>
                                     <th class="py-4 px-6">Kode Guru</th>
                                     <th class="py-4 px-6">Nama Guru</th>
-                                    <th class="py-4 px-6 text-red-600 font-bold">Rombel Konflik</th>
+                                    <th class="py-4 px-6 text-red-600 font-bold text-center">Rombel Konflik</th>
                                 </tr>
                             </thead>
                             <tbody id="table-clash-body">
@@ -537,7 +548,7 @@
                     </div>
                 </div>
 
-                <!-- VIEW: ABSENSI KEHADIRAN GURU (REALTIME MONITOR FOR KEPSEK / ADMIN) -->
+                <!-- VIEW: ABSENSI KEHADIRAN GURU -->
                 <div id="view-absensi-hari-ini" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -545,7 +556,7 @@
                             <p class="text-xs text-slate-400 mt-0.5">Ceklist status kehadiran guru harian yang mengajar pada hari ini secara langsung.</p>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200" id="current-absensi-date">Kamis, 12 Juli 2026</span>
+                            <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200" id="current-absensi-date">Senin, 13 Juli 2026</span>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
@@ -565,6 +576,7 @@
                 </div>
 
                 <!-- VIEW 9: CETAK JADWAL TERPADU -->
+                <!-- STREAMING_CHUNK: Halaman Pratinjau Dokumen Cetak Layout A3/A4 -->
                 <div id="view-cetak" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 no-print flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -610,7 +622,7 @@
                     </div>
                 </div>
 
-                <!-- VIEW 10: CETAK REKAP JURNAL & KEHADIRAN (Harian, Mingguan, Bulanan, Semester) -->
+                <!-- VIEW 10: CETAK REKAP JURNAL -->
                 <div id="view-rekap-jurnal" class="content-view space-y-6 hidden">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -639,6 +651,7 @@
                 </div>
 
                 <!-- VIEW 11: CONFIG GRID -->
+                <!-- STREAMING_CHUNK: Halaman Konfigurasi Kapasitas Jam Kerja -->
                 <div id="view-config-grid" class="content-view space-y-6 hidden">
                     <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-xl">
                         <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-6 flex items-center">
@@ -726,8 +739,29 @@
     </div>
 
     <!-- LOGIKA JAVASCRIPT FRONT-END SINKRONISASI -->
+    <!-- STREAMING_CHUNK: Mengaktifkan database virtual SafeStorage dan fungsi API -->
     <script>
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzWMzGjH7-NC8rV_78HNpYPQ1klDp1lGCz7V6tmHHbjpPD2Y6dViRcDSqpsAWQbbkYG/exec";
+        // CONFIG SINKRONISASI UTAMA
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyKTNYQ5mdJcezunqdoB1SOvhv-gW9FEp0lWNjBFJYCrq9Onj4SODR7VjLNn-Sn32A-/exec";
+
+        // LAPIS PENGAMAN MEMORI GITHUB PAGES (Mencegah Crash LocalStorage di lingkungan sandbox/iframe)
+        const SafeStorage = {
+            _memoryDb: {},
+            getItem(key) {
+                try {
+                    return localStorage.getItem(key);
+                } catch (e) {
+                    return this._memoryDb[key] || null;
+                }
+            },
+            setItem(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                } catch (e) {
+                    this._memoryDb[key] = value;
+                }
+            }
+        };
 
         // Global States
         let globalIdentitas = { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
@@ -738,8 +772,9 @@
         let globalPiketData = {};
         let globalJadwalData = {}; 
         let globalJurnalData = [];
-        let globalAbsensiLogs = {}; // YYYY-MM-DD -> { rombel_jam : 'hadir'|'izin'|'alpa' }
-        let currentUserRole = "admin"; // Default
+        let globalAbsensiLogs = {}; 
+        let currentUserRole = "admin";
+        let isOfflineFallbackMode = false;
 
         // Konfigurasi Grid Harian Dinamis
         let configGrid = {
@@ -760,7 +795,7 @@
             5: { start: "10:30", end: "11:15" },
             6: { start: "11:15", end: "12:00" },
             7: { start: "12:45", end: "13:30" }, 
-            8: { start: "13:30", max: true, end: "14:15" },
+            8: { start: "13:30", end: "14:15" },
             9: { start: "14:15", end: "15:00" },
             10: { start: "15:00", end: "15:45" },
             11: { start: "15:45", end: "16:30" },
@@ -768,6 +803,7 @@
         };
 
         // Autentikasi Login
+        /* STREAMING_CHUNK: Menangani aksi form masuk pengguna */
         document.getElementById('form-login').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('login-username').value;
@@ -778,7 +814,6 @@
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-layout').classList.remove('hidden');
                 
-                // Atur visibilitas UI sesuai hak akses
                 if (currentUserRole === 'kepsek') {
                     document.querySelectorAll('.role-admin').forEach(el => el.classList.add('hidden'));
                     document.getElementById('status-role-badge').innerText = "Kepala Sekolah (Monitor)";
@@ -813,6 +848,7 @@
         }
 
         // Routing switcher
+        /* STREAMING_CHUNK: Mengatur fungsi perutean halaman dashboard */
         function switchView(viewId) {
             document.querySelectorAll('.content-view').forEach(v => v.classList.add('hidden'));
             
@@ -863,8 +899,9 @@
         }
 
         // Firebase / Apps Script API Bridge
+        /* STREAMING_CHUNK: Menyambungkan request API ke Google Apps Script / Sandbox fallback */
         async function fetchAPI(action, data = null) {
-            if (GAS_URL === "URL_WEB_APP_GAS_ANDA_DISINI") {
+            if (GAS_URL === "URL_WEB_APP_GAS_ANDA_DISINI" || isOfflineFallbackMode) {
                 return simulateCloudAPI(action, data);
             }
             try {
@@ -883,39 +920,65 @@
             }
         }
 
+        // INISIALISASI UTAMA
+        /* STREAMING_CHUNK: Melakukan inisialisasi awal program saat berhasil login */
         async function initApp() {
-            document.getElementById('current-timestamp').innerText = `Dicetak: ${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}`;
-            
-            globalIdentitas = await fetchAPI('getIdentitas') || { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
-            globalGuruData = await fetchAPI('getGuru') || {};
-            globalKelasData = await fetchAPI('getKelas') || {};
-            globalMapelData = await fetchAPI('getMapel') || {};
-            globalBebanData = await fetchAPI('getBeban') || {};
-            globalPiketData = await fetchAPI('getPiket') || {};
-            globalJadwalData = await fetchAPI('getJadwalMaster') || {};
-            globalJurnalData = await fetchAPI('getJurnal') || [];
-            globalAbsensiLogs = await fetchAPI('getAbsensi') || {};
-            
-            const savedGrid = await fetchAPI('getGridConfig');
-            if (savedGrid && savedGrid.senin) {
-                configGrid = savedGrid;
-            }
+            try {
+                document.getElementById('current-timestamp').innerText = `Dicetak: ${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}`;
+                
+                // Indikator status jaringan
+                const pingInd = document.getElementById('ping-indicator');
+                if (GAS_URL === "URL_WEB_APP_GAS_ANDA_DISINI") {
+                    pingInd.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
+                    document.getElementById('status-role-badge').innerText += " (Simulasi Lokal)";
+                } else {
+                    pingInd.className = "w-2 h-2 bg-emerald-500 rounded-full animate-ping";
+                }
 
-            // Sync data form config grid
-            for (let day in configGrid) {
-                const el = document.getElementById(`cfg-${day}`);
-                if (el) el.value = configGrid[day];
-            }
+                // Ambil data-data master
+                globalIdentitas = await fetchAPI('getIdentitas') || { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
+                globalGuruData = await fetchAPI('getGuru') || {};
+                globalKelasData = await fetchAPI('getKelas') || {};
+                globalMapelData = await fetchAPI('getMapel') || {};
+                globalBebanData = await fetchAPI('getBeban') || {};
+                globalPiketData = await fetchAPI('getPiket') || {};
+                globalJadwalData = await fetchAPI('getJadwalMaster') || {};
+                globalJurnalData = await fetchAPI('getJurnal') || [];
+                globalAbsensiLogs = await fetchAPI('getAbsensi') || {};
+                
+                const savedGrid = await fetchAPI('getGridConfig');
+                if (savedGrid && savedGrid.senin) {
+                    configGrid = savedGrid;
+                }
 
-            // Sinkronisasi data di Identitas Form
-            document.getElementById('id-sekolah').value = globalIdentitas.sekolah;
-            document.getElementById('id-npsn').value = globalIdentitas.npsn;
-            document.getElementById('id-tahun').value = globalIdentitas.tahun;
-            document.getElementById('id-semester').value = globalIdentitas.semester;
-            
-            updateHeaderIdentitas();
-            updateDashboardMetrics();
-            renderClashTracker();
+                // Sync data form config grid
+                for (let day in configGrid) {
+                    const el = document.getElementById(`cfg-${day}`);
+                    if (el) el.value = configGrid[day];
+                }
+
+                // Sinkronisasi data di Identitas Form
+                document.getElementById('id-sekolah').value = globalIdentitas.sekolah;
+                document.getElementById('id-npsn').value = globalIdentitas.npsn;
+                document.getElementById('id-tahun').value = globalIdentitas.tahun;
+                document.getElementById('id-semester').value = globalIdentitas.semester;
+                
+                updateHeaderIdentitas();
+                updateDashboardMetrics();
+                renderClashTracker();
+
+            } catch (err) {
+                console.error("Gagal sinkronisasi awalan cloud:", err);
+                isOfflineFallbackMode = true;
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Layanan Cloud Tertunda',
+                    text: 'Koneksi cloud dibatasi browser / Github sandbox. EduSched Pro dialihkan otomatis ke mode simulator lokal.',
+                    confirmButtonColor: '#1E3A8A'
+                });
+                // Reload via simulator lokal
+                initApp();
+            }
         }
 
         function updateHeaderIdentitas() {
@@ -938,6 +1001,7 @@
         }
 
         // MASTER IDENTITAS SINKRONISASI
+        /* STREAMING_CHUNK: Menyimpan formulir identitas ke database */
         document.getElementById('form-identitas').addEventListener('submit', async function(e) {
             e.preventDefault();
             globalIdentitas = {
@@ -954,6 +1018,7 @@
         });
 
         // ================= MASTER GURU CRUD =================
+        /* STREAMING_CHUNK: Menampilkan tabel data master guru */
         async function fetchGuru() {
             const tbody = document.getElementById('table-guru-body');
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1023,6 +1088,7 @@
         }
 
         // ================= MASTER MAPEL CRUD =================
+        /* STREAMING_CHUNK: Menampilkan tabel mata pelajaran */
         async function fetchMapel() {
             const tbody = document.getElementById('table-mapel-body');
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1105,6 +1171,7 @@
         }
 
         // ================= MASTER ROMBEL CRUD =================
+        /* STREAMING_CHUNK: Merender tabel rombel dan form wali kelas sugestif */
         async function fetchKelas() {
             const tbody = document.getElementById('table-kelas-body');
             tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1134,12 +1201,20 @@
         }
 
         async function showFormKelas() {
+            // Membuat datalist dinamis untuk auto-suggest Nama Wali Kelas dari Master Guru
+            let datalistHtml = '<datalist id="guru-datalist">';
+            for (let key in globalGuruData) {
+                datalistHtml += `<option value="${globalGuruData[key].nama}">`;
+            }
+            datalistHtml += '</datalist>';
+
             const { value: formValues } = await Swal.fire({
                 title: 'Tambah Rombel Baru',
                 html: `
                     <input id="swal-kelas-kode" class="swal2-input !mt-2" placeholder="Kode Kelas (Contoh: X TEI)">
                     <input id="swal-kelas-nama" class="swal2-input" placeholder="Nama Rombel Lengkap">
-                    <input id="swal-kelas-wali" class="swal2-input" placeholder="Wali Kelas">
+                    <input id="swal-kelas-wali" list="guru-datalist" class="swal2-input" placeholder="Wali Kelas (Ketik / Pilih)">
+                    ${datalistHtml}
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tingkat Kelas</label>
                         <select id="swal-kelas-tingkat" class="w-full p-2.5 border rounded-lg">
@@ -1170,7 +1245,7 @@
                 }
             });
             if (formValues) {
-                if (!formValues.kode || !formValues.nama) return;
+                if (!formValues.grid && (!formValues.kode || !formValues.nama)) return;
                 await fetchAPI('addKelas', formValues);
                 fetchKelas();
             }
@@ -1190,6 +1265,7 @@
         }
 
         // ================= JAM KELAS CONFIG & BEBAN =================
+        /* STREAMING_CHUNK: Menyusun form alokasi jam mengajar rombel */
         async function fetchJamKelasConfig() {
             const selectKelas = document.getElementById('select-kelas-jam');
             selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
@@ -1224,7 +1300,6 @@
 
             if (!rombelDetail) return;
 
-            // Dapatkan list mapel yang sesuai untuk rombel ini
             let matchMapels = [];
             for (let key in globalMapelData) {
                 const m = globalMapelData[key];
@@ -1238,9 +1313,7 @@
                 return;
             }
 
-            // Buat form dinamis yang memetakan guru-guru pengajar per mapel
             matchMapels.forEach(m => {
-                // Temukan guru-guru pengajar & JP mereka untuk mapel & rombel ini
                 let teachersRow = '';
                 let indexTeacher = 0;
 
@@ -1313,7 +1386,6 @@
 
             Swal.fire({ title: 'Menyimpan alokasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
 
-            // Pindai semua container mapel, ambil guru & JP-nya
             let listPlottingBebanBaru = [];
             
             for (let key in globalMapelData) {
@@ -1338,26 +1410,37 @@
                 }
             }
 
-            // Bersihkan beban lama khusus untuk rombel ini di database
             for (let key in globalBebanData) {
                 if (globalBebanData[key].kode_kelas === kls) {
                     await fetchAPI('deleteBeban', key);
                 }
             }
 
-            // Kirim semua plotting baru ke database
             for (let item of listPlottingBebanBaru) {
                 await fetchAPI('addBeban', item);
             }
 
-            // Reload data beban
             globalBebanData = await fetchAPI('getBeban') || {};
             Swal.close();
             Swal.fire('Berhasil!', `Alokasi team teaching & JP kelas ${kls} berhasil diarsip.`, 'success');
             renderJamKelasConfig();
         }
 
-        // BEBAN MENGAJAR (VIEW ONLY ATAU MASS CHECKLIST PLOT)
+        // BEBAN MENGAJAR (MULTI CHECKLIST & DYNAMIC BALANCING)
+        /* STREAMING_CHUNK: Menyusun logika penugasan checklist massal */
+        window.bulkCheckRombel = function(tingkat) {
+            const checkboxes = document.querySelectorAll('input[name="chk-beban-rombel"]');
+            checkboxes.forEach(cb => {
+                if (tingkat === 'NONE') {
+                    cb.checked = false;
+                } else {
+                    if (cb.getAttribute('data-tingkat') === tingkat) {
+                        cb.checked = true;
+                    }
+                }
+            });
+        };
+
         async function fetchBeban() {
             const tbody = document.getElementById('table-beban-body');
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1386,13 +1469,11 @@
         }
 
         async function showFormBebanChecklist() {
-            // Dropdown Guru
             let guruOptions = '<option value="">-- Pilih Guru --</option>';
             for (let key in globalGuruData) {
                 guruOptions += `<option value="${globalGuruData[key].kode}">${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>`;
             }
 
-            // Checklist Mapel
             let mapelChecklist = '';
             for (let key in globalMapelData) {
                 const m = globalMapelData[key];
@@ -1404,13 +1485,12 @@
                 `;
             }
 
-            // Checklist Rombel
             let rombelChecklist = '';
             for (let key in globalKelasData) {
                 const k = globalKelasData[key];
                 rombelChecklist += `
                     <label class="flex items-center space-x-2 p-1.5 hover:bg-slate-50 rounded text-xs cursor-pointer font-medium text-slate-700">
-                        <input type="checkbox" name="chk-beban-rombel" value="${k.kode}" class="rounded text-blue-600 focus:ring-blue-500">
+                        <input type="checkbox" name="chk-beban-rombel" data-tingkat="${k.tingkat}" value="${k.kode}" class="rounded text-blue-600 focus:ring-blue-500">
                         <span>${k.nama} (${k.kode})</span>
                     </label>
                 `;
@@ -1432,8 +1512,14 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block font-bold text-slate-600 uppercase mb-1.5">3. Checklist Rombel</label>
-                                <div class="border rounded-lg p-2.5 h-44 overflow-y-auto bg-slate-50 space-y-1">
+                                <label class="block font-bold text-slate-600 uppercase mb-1">3. Checklist Rombel</label>
+                                <div class="flex flex-wrap gap-1 mb-1.5">
+                                    <button type="button" onclick="bulkCheckRombel('X')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
+                                    <button type="button" onclick="bulkCheckRombel('XI')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
+                                    <button type="button" onclick="bulkCheckRombel('XII')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
+                                    <button type="button" onclick="bulkCheckRombel('NONE')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[9px] font-bold py-1 px-1.5 rounded transition">Kosongkan</button>
+                                </div>
+                                <div class="border rounded-lg p-2.5 h-36 overflow-y-auto bg-slate-50 space-y-1">
                                     ${rombelChecklist}
                                 </div>
                             </div>
@@ -1459,7 +1545,6 @@
 
             if (!formStep1) return;
 
-            // Step 2: Input JP masing-masing pasangan
             let inputsJpRow = '';
             formStep1.rombels.forEach(r => {
                 formStep1.mapels.forEach(m => {
@@ -1531,6 +1616,7 @@
         }
 
         // ================= JADWAL PIKET =================
+        /* STREAMING_CHUNK: Memuat data penugasan piket guru harian */
         async function fetchPiket() {
             const tbody = document.getElementById('table-piket-body');
             tbody.innerHTML = '<tr><td colspan="3" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1611,6 +1697,7 @@
         }
 
         // ================= JADWAL MASTER & SINKRONISASI =================
+        /* STREAMING_CHUNK: Memuat lembar penyusunan jadwal master */
         async function loadJadwalView() {
             const selectJadwal = document.getElementById('select-kelas-jadwal');
             selectJadwal.innerHTML = '<option value="">-- Pilih Kelas --</option>';
@@ -1632,7 +1719,6 @@
                 return;
             }
 
-            // Cari beban yang terplot untuk kelas ini
             let listPlotKelas = [];
             for (let k in globalBebanData) {
                 if (globalBebanData[k].kode_kelas === kls) {
@@ -1640,7 +1726,6 @@
                 }
             }
 
-            // Temukan batas maksimal jam pelajaran harian di antara semua hari kerja aktif
             const absoluteMaxJam = Math.max(...Object.values(configGrid));
 
             let html = '';
@@ -1653,7 +1738,6 @@
                 days.forEach(hari => {
                     const maxJamHariIni = configGrid[hari] || 0;
 
-                    // Jika hari ini tidak aktif atau jam melebihi batas hari ini
                     if (maxJamHariIni === 0 || jam > maxJamHariIni) {
                         html += `<td class="border border-slate-200 bg-slate-100 text-slate-400 text-[10px] italic font-semibold align-middle">Selesai</td>`;
                         return;
@@ -1697,7 +1781,6 @@
                 return;
             }
 
-            // Validasi Piket Guru
             let isPiket = false;
             for (let key in globalPiketData) {
                 if (globalPiketData[key].hari === hari && globalPiketData[key].kode_guru === rawValue) {
@@ -1717,7 +1800,6 @@
                 return;
             }
 
-            // Validasi Tabrakan / Clash
             let bentrok = false;
             let kelasBentrok = "";
 
@@ -1754,6 +1836,7 @@
         }
 
         // ================= AI AUTO-SCHEDULER ENGINE =================
+        /* STREAMING_CHUNK: Mengaktifkan generator AI Heuristic Auto-Scheduler */
         async function runAutoSchedulerSistem() {
             const result = await Swal.fire({
                 title: 'Jalankan AI Auto-Scheduler?',
@@ -1791,7 +1874,6 @@
                 return;
             }
 
-            // Shuffle Heuristic
             workloads.sort(() => Math.random() - 0.5);
 
             let tempJadwal = {};
@@ -1931,6 +2013,7 @@
         }
 
         // ================= ABSENSI KEHADIRAN HARIAN GURU =================
+        /* STREAMING_CHUNK: Menyusun lembar presensi mengajar harian guru */
         function getHariIndo(dayIndex) {
             const d = ['minggu', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
             return d[dayIndex];
@@ -1941,7 +2024,7 @@
             const todayLabel = document.getElementById('current-absensi-date');
             
             const now = new Date();
-            const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+            const dateStr = now.toISOString().split('T')[0]; 
             todayLabel.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             const hariIni = getHariIndo(now.getDay()) === 'minggu' ? 'senin' : getHariIndo(now.getDay());
@@ -1959,7 +2042,6 @@
                             found = true;
                             const mapel = getMapelKodeByGuruAndKelas(guru, kelas);
                             
-                            // Check saved status
                             let status = 'hadir';
                             if (globalAbsensiLogs[dateStr] && globalAbsensiLogs[dateStr][`${kelas}_${jam}`]) {
                                 status = globalAbsensiLogs[dateStr][`${kelas}_${jam}`];
@@ -1975,7 +2057,7 @@
                                         <div class="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-50 space-x-1">
                                             <button onclick="saveAbsensiLogs('${dateStr}', '${kelas}', ${jam}, 'hadir')" class="px-3 py-1 rounded text-[10px] font-bold transition ${status === 'hadir' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-200 text-slate-600'}">Hadir</button>
                                             <button onclick="saveAbsensiLogs('${dateStr}', '${kelas}', ${jam}, 'izin')" class="px-3 py-1 rounded text-[10px] font-bold transition ${status === 'izin' ? 'bg-amber-500 text-white' : 'hover:bg-slate-200 text-slate-600'}">Izin</button>
-                                            <button onclick="saveAbsensiLogs('${dateStr}', '${kelas}', ${jam}, 'alpa')" class="px-3 py-1 rounded text-[10px] font-bold transition ${status === 'alpa' ? 'bg-red-600 text-white' : 'hover:bg-slate-200 text-slate-600'}">Izin / Alfa</button>
+                                            <button onclick="saveAbsensiLogs('${dateStr}', '${kelas}', ${jam}, 'alpa')" class="px-3 py-1 rounded text-[10px] font-bold transition ${status === 'alpa' ? 'bg-red-600 text-white' : 'hover:bg-slate-200 text-slate-600'}">Alpa</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -2001,12 +2083,12 @@
             if (!globalAbsensiLogs[dateStr]) globalAbsensiLogs[dateStr] = {};
             globalAbsensiLogs[dateStr][`${kelas}_${jam}`] = status;
 
-            // Simpan ke cloud
             await fetchAPI('saveAbsensi', { path: `${dateStr}/${kelas}_${jam}`, value: status });
             renderAbsensiHariIni();
         }
 
         // ================= JURNAL KELAS OTOMATIS =================
+        /* STREAMING_CHUNK: Menyusun logika pengisian jurnal kelas otomatis harian */
         async function loadJurnalView() {
             const selectJurnal = document.getElementById('jurnal-select-kelas');
             selectJurnal.innerHTML = '<option value="">-- Pilih Kelas --</option>';
@@ -2109,6 +2191,7 @@
         }
 
         // ================= REKAP KEHADIRAN GURU (REAL TIME ACCUMULATION) =================
+        /* STREAMING_CHUNK: Merender akumulasi rekapitulasi 1 semester */
         function renderRekapKehadiranGuru() {
             const tipe = document.getElementById('select-tipe-rekap').value;
             const tbody = document.getElementById('table-rekap-jurnal-body');
@@ -2116,7 +2199,6 @@
 
             tbody.innerHTML = '';
             
-            // Atur struktur kepala tabel
             if (tipe === 'harian') {
                 thead.innerHTML = `
                     <th class="py-4 px-6">Waktu Input</th>
@@ -2136,7 +2218,6 @@
                 `;
             }
 
-            // Render isi data akumulatif
             if (tipe === 'harian') {
                 let html = '';
                 const todayStr = new Date().toISOString().split('T')[0];
@@ -2171,21 +2252,19 @@
                 tbody.innerHTML = html;
 
             } else {
-                // Mingguan, Bulanan, Semester (Akumulasi Jam)
                 let guruStats = {};
                 for (let key in globalGuruData) {
                     guruStats[globalGuruData[key].kode] = { hadir: 0, izin: 0, alpa: 0 };
                 }
 
                 const now = new Date();
-                let limitDays = 180; // 1 Semester
+                let limitDays = 180; 
                 if (tipe === 'mingguan') limitDays = 7;
                 if (tipe === 'bulanan') limitDays = 30;
 
                 const cutOffDate = new Date();
                 cutOffDate.setDate(now.getDate() - limitDays);
 
-                // Hitung total jam dari log absensi
                 for (let dateStr in globalAbsensiLogs) {
                     const logDate = new Date(dateStr);
                     if (logDate >= cutOffDate) {
@@ -2231,6 +2310,7 @@
         }
 
         // ================= OUTPUT CETAK TERPADU =================
+        /* STREAMING_CHUNK: Menyusun menu visualisasi cetak raksasa */
         function loadCetakView() {
             toggleCetakOptions();
         }
@@ -2309,54 +2389,7 @@
                             text = `<div class="font-extrabold text-slate-900">${gd}</div><div class="text-[9px] text-slate-500 font-bold">${mapel}</div>`;
                         }
                         html += `<td class="border border-slate-300 py-2.5">${text}</td>`;
-                    });
-                    html += `</tr>`;
-                }
-                html += `</tbody></table>`;
-                wrapper.innerHTML = html;
-
-            } else if (tipe === 'guru') {
-                let namaGuru = getGuruNameByKode(filter);
-                subHeader.innerText = `JADWAL MENGAJAR GURU: ${namaGuru} (${filter})`;
-
-                let html = `<table id="tabel-preview-cetak" class="w-full text-center border-collapse border border-slate-300 text-xs">
-                    <thead>
-                        <tr class="bg-slate-100 text-slate-800 font-bold border border-slate-300">
-                            <th class="border border-slate-300 py-3 px-2 w-12">Jam</th>
-                            <th class="border border-slate-300 py-3 px-2 w-28">Durasi Waktu</th>
-                            <th class="border border-slate-300 py-3 px-2">Senin</th>
-                            <th class="border border-slate-300 py-3 px-2">Selasa</th>
-                            <th class="border border-slate-300 py-3 px-2">Rabu</th>
-                            <th class="border border-slate-300 py-3 px-2">Kamis</th>
-                            <th class="border border-slate-300 py-3 px-2 text-red-600">Jumat</th>
-                            <th class="border border-slate-300 py-3 px-2">Sabtu</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-
-                for (let jam = 1; jam <= absoluteMaxJam; jam++) {
-                    const clock = TIMESLOTS[jam];
-                    html += `<tr class="border-b">
-                        <td class="border border-slate-300 py-2.5 bg-slate-50 font-bold">${jam}</td>
-                        <td class="border border-slate-300 py-2.5 text-[10px] text-slate-500 bg-slate-50">${clock.start} - ${clock.end}</td>`;
                     
-                    days.forEach(hari => {
-                        const maxJam = configGrid[hari] || 0;
-                        if (maxJam === 0 || jam > maxJam) {
-                            html += `<td class="border border-slate-300 py-2.5 bg-slate-100 text-slate-400 italic text-[10px]">Selesai</td>`;
-                            return;
-                        }
-                        let text = "-";
-                        if (globalJadwalData[hari] && globalJadwalData[hari][jam]) {
-                            for (let kls in globalJadwalData[hari][jam]) {
-                                if (globalJadwalData[hari][jam][kls].kode_guru === filter) {
-                                    const mapel = getMapelKodeByGuruAndKelas(filter, kls);
-                                    text = `<div class="font-extrabold text-blue-800">${kls}</div><div class="text-[9px] text-slate-500 font-semibold">${mapel}</div>`;
-                                    break;
-                                }
-                            }
-                        }
-                        html += `<td class="border border-slate-300 py-2.5">${text}</td>`;
                     });
                     html += `</tr>`;
                 }
@@ -2500,145 +2533,145 @@
             return "";
         }
 
-        // LOCAL FALLBACK STORAGE DATABASE SIMULATOR
+        // LOCAL FALLBACK STORAGE DATABASE SIMULATOR (SafeStorage Wrapper)
         function simulateCloudAPI(action, data) {
-            if (!localStorage.getItem('db_mock_identitas')) {
+            if (!SafeStorage.getItem('db_mock_identitas')) {
                 const initId = { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
-                localStorage.setItem('db_mock_identitas', JSON.stringify(initId));
+                SafeStorage.setItem('db_mock_identitas', JSON.stringify(initId));
             }
-            if (!localStorage.getItem('db_mock_guru')) {
+            if (!SafeStorage.getItem('db_mock_guru')) {
                 const mockGuru = {
                     "-G1": { nama: "Budi Santoso, S.Pd", nip: "1987010203021", kode: "GR-01", kuota: 24 },
                     "-G2": { nama: "Dewi Lestari, M.Pd", nip: "1992031123412", kode: "GR-02", kuota: 24 }
                 };
-                localStorage.setItem('db_mock_guru', JSON.stringify(mockGuru));
+                SafeStorage.setItem('db_mock_guru', JSON.stringify(mockGuru));
             }
-            if (!localStorage.getItem('db_mock_mapel')) {
+            if (!SafeStorage.getItem('db_mock_mapel')) {
                 const mockMapel = {
                     "-M1": { kode: "MAT-10", nama: "Matematika", kelompok: "Muatan Nasional (Umum)", jurusan: "SEMUA" },
                     "-M2": { kode: "PROD-TEI", nama: "Mikrokontroler Dasar", kelompok: "Produktif Kejuruan", jurusan: "TEI" }
                 };
-                localStorage.setItem('db_mock_mapel', JSON.stringify(mockMapel));
+                SafeStorage.setItem('db_mock_mapel', JSON.stringify(mockMapel));
             }
-            if (!localStorage.getItem('db_mock_kelas')) {
+            if (!SafeStorage.getItem('db_mock_kelas')) {
                 const mockKelas = {
                     "-K1": { kode: "X TEI", nama: "Kelas Sepuluh TEI", wali: "Dewi Lestari, M.Pd", tingkat: "X", jurusan: "TEI" }
                 };
-                localStorage.setItem('db_mock_kelas', JSON.stringify(mockKelas));
+                SafeStorage.setItem('db_mock_kelas', JSON.stringify(mockKelas));
             }
-            if (!localStorage.getItem('db_mock_beban')) {
+            if (!SafeStorage.getItem('db_mock_beban')) {
                 const mockBeban = {
                     "-B1": { kode_guru: "GR-01", kode_mapel: "MAT-10", kode_kelas: "X TEI", jumlah_jam: 4 }
                 };
-                localStorage.setItem('db_mock_beban', JSON.stringify(mockBeban));
+                SafeStorage.setItem('db_mock_beban', JSON.stringify(mockBeban));
             }
-            if (!localStorage.getItem('db_mock_piket')) {
-                localStorage.setItem('db_mock_piket', JSON.stringify({}));
+            if (!SafeStorage.getItem('db_mock_piket')) {
+                SafeStorage.setItem('db_mock_piket', JSON.stringify({}));
             }
-            if (!localStorage.getItem('db_mock_jadwal')) {
-                localStorage.setItem('db_mock_jadwal', JSON.stringify({}));
+            if (!SafeStorage.getItem('db_mock_jadwal')) {
+                SafeStorage.setItem('db_mock_jadwal', JSON.stringify({}));
             }
-            if (!localStorage.getItem('db_mock_jurnal')) {
-                localStorage.setItem('db_mock_jurnal', JSON.stringify([]));
+            if (!SafeStorage.getItem('db_mock_jurnal')) {
+                SafeStorage.setItem('db_mock_jurnal', JSON.stringify([]));
             }
-            if (!localStorage.getItem('db_mock_absensi')) {
-                localStorage.setItem('db_mock_absensi', JSON.stringify({}));
+            if (!SafeStorage.getItem('db_mock_absensi')) {
+                SafeStorage.setItem('db_mock_absensi', JSON.stringify({}));
             }
-            if (!localStorage.getItem('db_mock_grid')) {
+            if (!SafeStorage.getItem('db_mock_grid')) {
                 const initGrid = { senin: 9, selasa: 9, rabu: 9, kamis: 9, jumat: 7, sabtu: 8 };
-                localStorage.setItem('db_mock_grid', JSON.stringify(initGrid));
+                SafeStorage.setItem('db_mock_grid', JSON.stringify(initGrid));
             }
 
-            if (action === 'getIdentitas') return JSON.parse(localStorage.getItem('db_mock_identitas'));
-            if (action === 'getGuru') return JSON.parse(localStorage.getItem('db_mock_guru'));
-            if (action === 'getMapel') return JSON.parse(localStorage.getItem('db_mock_mapel'));
-            if (action === 'getKelas') return JSON.parse(localStorage.getItem('db_mock_kelas'));
-            if (action === 'getBeban') return JSON.parse(localStorage.getItem('db_mock_beban'));
-            if (action === 'getPiket') return JSON.parse(localStorage.getItem('db_mock_piket'));
-            if (action === 'getJadwalMaster') return JSON.parse(localStorage.getItem('db_mock_jadwal'));
-            if (action === 'getJurnal') return JSON.parse(localStorage.getItem('db_mock_jurnal'));
-            if (action === 'getAbsensi') return JSON.parse(localStorage.getItem('db_mock_absensi'));
-            if (action === 'getGridConfig') return JSON.parse(localStorage.getItem('db_mock_grid'));
+            if (action === 'getIdentitas') return JSON.parse(SafeStorage.getItem('db_mock_identitas'));
+            if (action === 'getGuru') return JSON.parse(SafeStorage.getItem('db_mock_guru'));
+            if (action === 'getMapel') return JSON.parse(SafeStorage.getItem('db_mock_mapel'));
+            if (action === 'getKelas') return JSON.parse(SafeStorage.getItem('db_mock_kelas'));
+            if (action === 'getBeban') return JSON.parse(SafeStorage.getItem('db_mock_beban'));
+            if (action === 'getPiket') return JSON.parse(SafeStorage.getItem('db_mock_piket'));
+            if (action === 'getJadwalMaster') return JSON.parse(SafeStorage.getItem('db_mock_jadwal'));
+            if (action === 'getJurnal') return JSON.parse(SafeStorage.getItem('db_mock_jurnal'));
+            if (action === 'getAbsensi') return JSON.parse(SafeStorage.getItem('db_mock_absensi'));
+            if (action === 'getGridConfig') return JSON.parse(SafeStorage.getItem('db_mock_grid'));
 
             if (action === 'saveIdentitas') {
-                localStorage.setItem('db_mock_identitas', JSON.stringify(data));
+                SafeStorage.setItem('db_mock_identitas', JSON.stringify(data));
                 return data;
             }
             if (action === 'saveGridConfig') {
-                localStorage.setItem('db_mock_grid', JSON.stringify(data));
+                SafeStorage.setItem('db_mock_grid', JSON.stringify(data));
                 return data;
             }
 
             if (action === 'addGuru') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_guru'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_guru'));
                 curr["G" + Date.now()] = data;
-                localStorage.setItem('db_mock_guru', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_guru', JSON.stringify(curr));
                 return curr;
             }
             if (action === 'addMapel') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_mapel'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_mapel'));
                 curr["M" + Date.now()] = data;
-                localStorage.setItem('db_mock_mapel', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_mapel', JSON.stringify(curr));
                 return curr;
             }
             if (action === 'addKelas') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_kelas'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_kelas'));
                 curr["K" + Date.now()] = data;
-                localStorage.setItem('db_mock_kelas', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_kelas', JSON.stringify(curr));
                 return curr;
             }
             if (action === 'addBeban') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_beban'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_beban'));
                 curr["B" + Date.now()] = data;
-                localStorage.setItem('db_mock_beban', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_beban', JSON.stringify(curr));
                 return curr;
             }
             if (action === 'addPiket') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_piket'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_piket'));
                 curr["P" + Date.now()] = data;
-                localStorage.setItem('db_mock_piket', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_piket', JSON.stringify(curr));
                 return curr;
             }
             if (action === 'addJurnal') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_jurnal'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_jurnal'));
                 curr.push(data);
-                localStorage.setItem('db_mock_jurnal', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_jurnal', JSON.stringify(curr));
                 return curr;
             }
 
             if (action === 'deleteGuru') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_guru'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_guru'));
                 delete curr[data];
-                localStorage.setItem('db_mock_guru', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_guru', JSON.stringify(curr));
                 return { status: "success" };
             }
             if (action === 'deleteMapel') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_mapel'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_mapel'));
                 delete curr[data];
-                localStorage.setItem('db_mock_mapel', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_mapel', JSON.stringify(curr));
                 return { status: "success" };
             }
             if (action === 'deleteKelas') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_kelas'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_kelas'));
                 delete curr[data];
-                localStorage.setItem('db_mock_kelas', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_kelas', JSON.stringify(curr));
                 return { status: "success" };
             }
             if (action === 'deleteBeban') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_beban'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_beban'));
                 delete curr[data];
-                localStorage.setItem('db_mock_beban', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_beban', JSON.stringify(curr));
                 return { status: "success" };
             }
             if (action === 'deletePiket') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_piket'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_piket'));
                 delete curr[data];
-                localStorage.setItem('db_mock_piket', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_piket', JSON.stringify(curr));
                 return { status: "success" };
             }
 
             if (action === 'saveJadwalMaster') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_jadwal'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_jadwal'));
                 const parts = data.path.split('/');
                 const hari = parts[0], jam = parts[1], kelas = parts[2];
 
@@ -2650,22 +2683,22 @@
                 } else {
                     curr[hari][jam][kelas] = { kode_guru: data.value };
                 }
-                localStorage.setItem('db_mock_jadwal', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_jadwal', JSON.stringify(curr));
                 return { status: "success" };
             }
 
             if (action === 'saveAbsensi') {
-                const curr = JSON.parse(localStorage.getItem('db_mock_absensi'));
+                const curr = JSON.parse(SafeStorage.getItem('db_mock_absensi'));
                 const parts = data.path.split('/');
                 const tgl = parts[0], pathLog = parts[1];
                 if (!curr[tgl]) curr[tgl] = {};
                 curr[tgl][pathLog] = data.value;
-                localStorage.setItem('db_mock_absensi', JSON.stringify(curr));
+                SafeStorage.setItem('db_mock_absensi', JSON.stringify(curr));
                 return { status: "success" };
             }
 
             if (action === 'resetJadwalMaster') {
-                localStorage.setItem('db_mock_jadwal', JSON.stringify({}));
+                SafeStorage.setItem('db_mock_jadwal', JSON.stringify({}));
                 return { status: "success" };
             }
 
