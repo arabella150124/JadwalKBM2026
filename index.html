@@ -742,7 +742,7 @@
     <!-- STREAMING_CHUNK: Mengaktifkan database virtual SafeStorage dan fungsi API -->
     <script>
         // CONFIG SINKRONISASI UTAMA
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbyKTNYQ5mdJcezunqdoB1SOvhv-gW9FEp0lWNjBFJYCrq9Onj4SODR7VjLNn-Sn32A-/exec";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzpxAEkmcT9rAEgIr7PzNhJUojWdwrVO_UWVt8g5ciuyXu-DyiuGSgYkPXR_HKskmOR/exec";
 
         // LAPIS PENGAMAN MEMORI GITHUB PAGES (Mencegah Crash LocalStorage di lingkungan sandbox/iframe)
         const SafeStorage = {
@@ -926,17 +926,26 @@
             try {
                 document.getElementById('current-timestamp').innerText = `Dicetak: ${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}`;
                 
+                // Reset status offline fallback setiap kali inisiasi ulang (login)
+                isOfflineFallbackMode = false;
+                
                 // Indikator status jaringan
                 const pingInd = document.getElementById('ping-indicator');
                 if (GAS_URL === "URL_WEB_APP_GAS_ANDA_DISINI") {
                     pingInd.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
-                    document.getElementById('status-role-badge').innerText += " (Simulasi Lokal)";
+                    document.getElementById('status-role-badge').innerText = currentUserRole === 'kepsek' ? "Kepala Sekolah (Simulasi)" : "Admin Kurikulum (Simulasi)";
                 } else {
                     pingInd.className = "w-2 h-2 bg-emerald-500 rounded-full animate-ping";
                 }
 
-                // Ambil data-data master
-                globalIdentitas = await fetchAPI('getIdentitas') || { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
+                // Ambil data-data master dengan penanganan objek kosong (falsy check) yang aman
+                const resIdentitas = await fetchAPI('getIdentitas');
+                if (resIdentitas && resIdentitas.sekolah) {
+                    globalIdentitas = resIdentitas;
+                } else {
+                    globalIdentitas = { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
+                }
+
                 globalGuruData = await fetchAPI('getGuru') || {};
                 globalKelasData = await fetchAPI('getKelas') || {};
                 globalMapelData = await fetchAPI('getMapel') || {};
@@ -957,11 +966,11 @@
                     if (el) el.value = configGrid[day];
                 }
 
-                // Sinkronisasi data di Identitas Form
-                document.getElementById('id-sekolah').value = globalIdentitas.sekolah;
-                document.getElementById('id-npsn').value = globalIdentitas.npsn;
-                document.getElementById('id-tahun').value = globalIdentitas.tahun;
-                document.getElementById('id-semester').value = globalIdentitas.semester;
+                // Sinkronisasi data di Identitas Form secara aman
+                document.getElementById('id-sekolah').value = globalIdentitas.sekolah || "";
+                document.getElementById('id-npsn').value = globalIdentitas.npsn || "";
+                document.getElementById('id-tahun').value = globalIdentitas.tahun || "";
+                document.getElementById('id-semester').value = globalIdentitas.semester || "Ganjil";
                 
                 updateHeaderIdentitas();
                 updateDashboardMetrics();
@@ -982,25 +991,27 @@
         }
 
         function updateHeaderIdentitas() {
-            document.getElementById('nav-nama-sekolah').innerText = globalIdentitas.sekolah;
-            document.getElementById('nav-sub-identitas').innerText = `NPSN ${globalIdentitas.npsn} • Smt ${globalIdentitas.semester}`;
-            document.getElementById('cetak-sekolah-identitas').innerText = `Jadwal Pelajaran ${globalIdentitas.sekolah}`;
-            document.getElementById('cetak-tahun-semester').innerText = `Tahun Ajaran ${globalIdentitas.tahun} • Semester ${globalIdentitas.semester}`;
+            document.getElementById('nav-nama-sekolah').innerText = globalIdentitas.sekolah || "EduSched Pro";
+            document.getElementById('nav-sub-identitas').innerText = `NPSN ${globalIdentitas.npsn || '-'} • Smt ${globalIdentitas.semester || 'Ganjil'}`;
+            document.getElementById('cetak-sekolah-identitas').innerText = `Jadwal Pelajaran ${globalIdentitas.sekolah || ''}`;
+            document.getElementById('cetak-tahun-semester').innerText = `Tahun Ajaran ${globalIdentitas.tahun || ''} • Semester ${globalIdentitas.semester || 'Ganjil'}`;
         }
+                    return localValue;
+                } catch (e) {
+                    return this._memoryDb[key] || null;
+                }
+            },
+            setItem(key, value) {
+                this._memoryDb[key] = value; // Selalu amankan di RAM virtual
+                try {
+                    localStorage.setItem(key, value);
+                } catch (e) {
+                    console.warn("localStorage diblokir browser, menyimpan di RAM Virtual sementara.");
+                }
+            }
+        };
 
-        function updateDashboardMetrics() {
-            document.getElementById('widget-guru').innerText = Object.keys(globalGuruData || {}).length;
-            document.getElementById('widget-kelas').innerText = Object.keys(globalKelasData || {}).length;
-            
-            const totalHari = Object.values(configGrid).filter(v => v > 0).length;
-            document.getElementById('widget-hari').innerText = `${totalHari} Hari Kerja`;
-            
-            const totalJPWeekly = Object.values(configGrid).reduce((a, b) => a + b, 0);
-            document.getElementById('widget-jam').innerText = `${totalJPWeekly} JP / Minggu`;
-            document.getElementById('total-week-jp-badge').innerText = `${totalJPWeekly} JP`;
-        }
-
-        // MASTER IDENTITAS SINKRONISASI
+               // MASTER IDENTITAS SINKRONISASI
         /* STREAMING_CHUNK: Menyimpan formulir identitas ke database */
         document.getElementById('form-identitas').addEventListener('submit', async function(e) {
             e.preventDefault();
