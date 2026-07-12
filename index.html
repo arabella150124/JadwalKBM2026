@@ -727,7 +727,7 @@
 
     <!-- LOGIKA JAVASCRIPT FRONT-END SINKRONISASI -->
     <script>
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzaV8PQtrbwfAdL8MJcOyBDtn-8wE2WePVbb8Y-38AHjifBmL_6MDORYo4kCYzhoJ4-/exec";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzWMzGjH7-NC8rV_78HNpYPQ1klDp1lGCz7V6tmHHbjpPD2Y6dViRcDSqpsAWQbbkYG/exec";
 
         // Global States
         let globalIdentitas = { sekolah: "EduSched Pro SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
@@ -1134,21 +1134,12 @@
         }
 
         async function showFormKelas() {
-            /* STREAMING_CHUNK: Preparing teacher datalist for class form auto-suggest... */
-            // Membuat datalist dinamis untuk auto-suggest Nama Wali Kelas dari Master Guru
-            let datalistHtml = '<datalist id="guru-datalist">';
-            for (let key in globalGuruData) {
-                datalistHtml += `<option value="${globalGuruData[key].nama}">`;
-            }
-            datalistHtml += '</datalist>';
-
             const { value: formValues } = await Swal.fire({
                 title: 'Tambah Rombel Baru',
                 html: `
                     <input id="swal-kelas-kode" class="swal2-input !mt-2" placeholder="Kode Kelas (Contoh: X TEI)">
                     <input id="swal-kelas-nama" class="swal2-input" placeholder="Nama Rombel Lengkap">
-                    <input id="swal-kelas-wali" list="guru-datalist" class="swal2-input" placeholder="Wali Kelas (Ketik / Pilih)">
-                    ${datalistHtml}
+                    <input id="swal-kelas-wali" class="swal2-input" placeholder="Wali Kelas">
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tingkat Kelas</label>
                         <select id="swal-kelas-tingkat" class="w-full p-2.5 border rounded-lg">
@@ -1366,22 +1357,7 @@
             renderJamKelasConfig();
         }
 
-        
-        // ================= BEBAN MENGAJAR (VIEW ONLY ATAU MASS CHECKLIST PLOT) =================
-        /* STREAMING_CHUNK: Defining bulk select helper for checkboxes... */
-        // Helper global untuk melakukan checklist massal berdasarkan tingkat kelas di modal Swal
-        window.bulkCheckRombel = function(tingkat) {
-            const checkboxes = document.querySelectorAll('input[name="chk-beban-rombel"]');
-            checkboxes.forEach(cb => {
-                if (tingkat === 'NONE') {
-                    cb.checked = false;
-                } else {
-                    if (cb.getAttribute('data-tingkat') === tingkat) {
-                        cb.checked = true;
-                    }
-                }
-            });
-        };
+        // BEBAN MENGAJAR (VIEW ONLY ATAU MASS CHECKLIST PLOT)
         async function fetchBeban() {
             const tbody = document.getElementById('table-beban-body');
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>';
@@ -1409,7 +1385,7 @@
             tbody.innerHTML = html;
         }
 
-        /* STREAMING_CHUNK: Setting up interactive checkboxes and select options... */
+        async function showFormBebanChecklist() {
             // Dropdown Guru
             let guruOptions = '<option value="">-- Pilih Guru --</option>';
             for (let key in globalGuruData) {
@@ -1428,13 +1404,13 @@
                 `;
             }
 
-            // Checklist Rombel dengan data-tingkat pendukung
+            // Checklist Rombel
             let rombelChecklist = '';
             for (let key in globalKelasData) {
                 const k = globalKelasData[key];
                 rombelChecklist += `
                     <label class="flex items-center space-x-2 p-1.5 hover:bg-slate-50 rounded text-xs cursor-pointer font-medium text-slate-700">
-                        <input type="checkbox" name="chk-beban-rombel" data-tingkat="${k.tingkat}" value="${k.kode}" class="rounded text-blue-600 focus:ring-blue-500">
+                        <input type="checkbox" name="chk-beban-rombel" value="${k.kode}" class="rounded text-blue-600 focus:ring-blue-500">
                         <span>${k.nama} (${k.kode})</span>
                     </label>
                 `;
@@ -1456,15 +1432,8 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block font-bold text-slate-600 uppercase mb-1">3. Checklist Rombel</label>
-                                <!-- Tombol pilihan massal berdasarkan tingkat kelas -->
-                                <div class="flex flex-wrap gap-1 mb-1.5">
-                                    <button type="button" onclick="bulkCheckRombel('X')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
-                                    <button type="button" onclick="bulkCheckRombel('XI')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
-                                    <button type="button" onclick="bulkCheckRombel('XII')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
-                                    <button type="button" onclick="bulkCheckRombel('NONE')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[9px] font-bold py-1 px-1.5 rounded transition">Kosongkan</button>
-                                </div>
-                                <div class="border rounded-lg p-2.5 h-36 overflow-y-auto bg-slate-50 space-y-1">
+                                <label class="block font-bold text-slate-600 uppercase mb-1.5">3. Checklist Rombel</label>
+                                <div class="border rounded-lg p-2.5 h-44 overflow-y-auto bg-slate-50 space-y-1">
                                     ${rombelChecklist}
                                 </div>
                             </div>
