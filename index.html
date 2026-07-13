@@ -19,6 +19,11 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
+        canvas {
+            display: block;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
         .monospace-bold {
             font-family: 'Fira Code', 'Courier New', monospace;
             font-weight: 700;
@@ -824,7 +829,7 @@
 
     <!-- LOGIKA JAVASCRIPT FRONT-END SINKRONISASI -->
     <script>
-        const GAS_URL = "URL_WEB_APP_GAS_ANDA_DISINI";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwEhA6H7eImtVlHnHZetV2YhSCWYixqveBCwQWdxmaXGtfmvT5OjGTVSIn5lc_2-9gn/exec";
 
         // LAPIS SINKRONISASI CACHE BERBASIS RAM VIRTUAL
         const SafeStorage = {
@@ -1175,6 +1180,7 @@
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
+                        resizeDelay: 150, // Menghentikan layout loop pemicu Page Unresponsive
                         plugins: {
                             legend: { display: false }
                         },
@@ -1220,6 +1226,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        resizeDelay: 150, // Memutus lingkaran layout loop di flexbox
                         plugins: {
                             legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
                         }
