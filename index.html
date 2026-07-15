@@ -859,7 +859,7 @@
         // MITRA CONFIGURATION (GAS & CLOUD FIREBASE INTEGRATION BRIDGE)
         // =========================================================================
         // JIKA INGIN MENGGUNAKAN MIDDLEWARE GAS: Ganti teks di bawah dengan Web App URL dari GAS
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbyn5FHHLmbeYgkCaDBMwjNpqxRytzKiboAvSjDsid3V6kV8n27j1LIj_jInmMxlv-Fz/exec"; 
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxdqiDJYVPpcsTN2hVo1LWnv4pz3JR145gsrEla6wB4Eb0MN1JhJRC33mzCos9q4CCe/exec"; 
 
         // Dynamic App ID assignment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-smartjadwal';
@@ -3319,6 +3319,71 @@
         if (clBtn) {
             clBtn.addEventListener('click', window.clearFirestoreConfig);
         }
+
+        // EVENT LISTENER LOGIN SECURE PORTAL
+        document.getElementById('form-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            // Validasi Password Utama
+            if (password !== 'sarjanasoft') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: 'Password yang Anda masukkan salah!',
+                    confirmButtonColor: '#ef4444'
+                });
+                return;
+            }
+
+            // Validasi Username Peran (Admin atau Kepsek)
+            if (username === 'admin' || username === 'kepsek') {
+                currentUserRole = username;
+                
+                // Perbarui status lencana peran di header utama
+                const roleBadge = document.getElementById('status-role-badge');
+                if (roleBadge) {
+                    roleBadge.innerText = username === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah';
+                    roleBadge.className = username === 'admin' 
+                        ? 'text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100'
+                        : 'text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1.5 rounded-full border border-amber-100';
+                }
+
+                // Sembunyikan atau tampilkan menu khusus Admin Kurikulum
+                document.querySelectorAll('.role-admin').forEach(el => {
+                    if (username === 'admin') {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                });
+
+                // Transisi Layar: Sembunyikan Login, Tampilkan Dashboard
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-layout').classList.remove('hidden');
+
+                // Tampilkan pesan selamat datang yang premium
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil!',
+                    text: `Selamat datang kembali, ${username === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah'}.`,
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                // Render ulang visualisasi dashboard agar sinkron dengan role aktif
+                renderDashboardVisuals();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: 'Username tidak dikenal! Gunakan "admin" atau "kepsek".',
+                    confirmButtonColor: '#4f46e5'
+                });
+            }
+        });
 
         // Trigger on load
         window.onload = function() {
