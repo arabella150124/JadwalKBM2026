@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartJadwal Pelajaran - Smart Timetable & Journal System</title>
+    <title>SmartJadwal KBM - Smart Timetable & Journal System</title>
     
     <!-- TAILWIND CSS & FONTS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -74,7 +74,7 @@
                 <div class="inline-flex p-3 bg-indigo-100/80 text-indigo-800 rounded-full mb-3">
                     <i class="fa-solid fa-graduation-cap text-3xl"></i>
                 </div>
-                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartJadwal Pelajaran</h2>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartJadwal KBM</h2>
                 <p class="text-slate-500 mt-1">Smart Timetable & Journal System</p>
             </div>
             <form id="form-login" class="space-y-4">
@@ -1260,14 +1260,13 @@
             }
 
             let totalHadir = 0, totalIzin = 0, totalAlpa = 0;
-            const dateStr = now.toISOString().split('T')[0];
+            // timezone-safe replacement of now.toISOString().split('T')[0]
+            const dateStr = now.toLocaleDateString('sv-SE');
             const logsToday = globalAbsensiLogs[dateStr] || {};
 
             for (let path in logsToday) {
                 const status = logsToday[path];
-                if (status === 'hadir') totalHadir++;
-                if (status === 'izin') totalIzin++;
-                if (status === 'alpa') totalAlpa++;
+                if (status === 'hadir' ? totalHadir++ : status === 'izin' ? totalIzin++ : totalAlpa++);
             }
 
             if (totalHadir === 0 && totalIzin === 0 && totalAlpa === 0) {
@@ -2387,7 +2386,8 @@
             if (!tbody) return;
 
             const now = new Date();
-            const dateStr = now.toISOString().split('T')[0]; 
+            // timezone-safe replacement of now.toISOString().split('T')[0]
+            const dateStr = now.toLocaleDateString('sv-SE'); 
             if (todayLabel) todayLabel.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             const hariIni = getHariIndo(now.getDay()) === 'minggu' ? 'senin' : getHariIndo(now.getDay());
@@ -2610,7 +2610,8 @@
 
             if (tipe === 'harian') {
                 let html = '';
-                const todayStr = new Date().toISOString().split('T')[0];
+                // timezone-safe replacement of now.toISOString().split('T')[0]
+                const todayStr = new Date().toLocaleDateString('sv-SE');
                 const todayLogs = globalAbsensiLogs[todayStr] || {};
 
                 if (Object.keys(todayLogs).length === 0) {
