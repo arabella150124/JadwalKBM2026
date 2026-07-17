@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- FIREBASE COMPAT SDKs (High Compatibility Edition) -->
+    <!-- FIREBASE COMPAT SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -69,7 +69,7 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
 
-    <!-- SCREEN LOGIN SECURE PORTAL (UNSPLASH BACKGROUND EDITION) -->
+    <!-- SCREEN LOGIN SECURE PORTAL -->
     <div id="login-screen" class="flex-1 flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80');">
         <!-- Overlay gelap blur premium -->
         <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[6px]"></div>
@@ -239,6 +239,13 @@
                             <div>
                                 <p class="text-xs text-slate-400 font-semibold uppercase">Kapasitas Mingguan</p>
                                 <h3 id="widget-jam" class="text-3xl font-black text-slate-800 mt-1">0 JP</h3>
+                                <p id="widget-jam-breakdown" class="text-[10px] text-slate-500 font-bold mt-2 bg-slate-50 border border-slate-200/60 px-2 py-1 rounded-md flex items-center space-x-1">
+                                    <span>X: 0 JP</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span>XI: 0 JP</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span>XII: 0 JP</span>
+                                </p>
                             </div>
                             <div class="p-3 bg-emerald-50 text-emerald-700 rounded-xl"><i class="fa-solid fa-clock text-xl"></i></div>
                         </div>
@@ -860,19 +867,18 @@
         // =========================================================================
         // MITRA CONFIGURATION (GAS & CLOUD FIREBASE INTEGRATION BRIDGE)
         // =========================================================================
-        const GAS_URL = ""; 
+        const GAS_URL = "https://script.google.com/macros/s/AKfycby6PZtRr6kcCGzzzCg2uUFCKTXANx9NZ0rMsKm0f0O_OuwxeVQoWwNvttTJJ6XWthIE/exec"; 
 
         // =========================================================================
         // HARDCODED FIREBASE CONFIGURATION (UNTUK AUTO-CONNECT BANYAK PERANGKAT)
         // =========================================================================
-            const DEFAULT_FIREBASE_CONFIG = {
-              apiKey: "AIzaSyC8wrh1lQL24ROsFtLDcTOv_GQVufrXM54",
-              authDomain: "rosterku-28c31.firebaseapp.com",
-              projectId: "rosterku-28c31",
-              storageBucket: "rosterku-28c31.firebasestorage.app",
-              messagingSenderId: "599317639799",
-              appId: "1:599317639799:web:b94dfd00b16440362e0c72",
-            
+        const DEFAULT_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyC8wrh1lQL24ROsFtLDcTOv_GQVufrXM54", 
+            authDomain: "rosterku-28c31.firebaseapp.com",
+            projectId: "rosterku-28c31",
+            storageBucket: "rosterku-28c31.firebasestorage.app",
+            messagingSenderId: "599317639799",
+            appId: "1:599317639799:web:b94dfd00b16440362e0c72" 
         };
 
         const appId = 'default-smartjadwal';
@@ -916,7 +922,7 @@
         let chartJJMInstance = null;
         let chartAbsensiInstance = null;
 
-        // HELPER: Promise Timeout wrapper to prevent hanging on Firestore network loss (Rule 2)
+        // HELPER: Promise Timeout wrapper to prevent hanging on Firestore network loss
         function withTimeout(promise, ms = 4500) {
             return new Promise((resolve, reject) => {
                 const timer = setTimeout(() => {
@@ -1082,6 +1088,9 @@
                             }
                             await nestedDocRef.set(masterSched);
                             return { status: "success" };
+                        case 'saveBulkJadwalMaster':
+                            await docRef('jadwal', 'master').set(dataPayload);
+                            return { status: "success" };
                         case 'resetJadwalMaster':
                             await docRef('jadwal', 'master').set({});
                             return { status: "success" };
@@ -1116,13 +1125,12 @@
                     }
                 };
 
-                // Run firestore call with a 4.5 second timeout barrier (Rule 3)
+                // Run firestore call with a 4.5 second timeout barrier
                 return await withTimeout(runFirestoreCall(), 4500);
 
             } catch (error) {
                 console.warn("Koneksi Cloud Firestore Lambat / Timeout. Otomatis beralih ke Mode Simulator Lokal.", error);
                 
-                // Switch application state instantly to local simulation to prevent subsequent blocks
                 isOfflineFallbackMode = true;
                 safeSetText('ping-indicator-text', "Mode Simulator Lokal (Koneksi Terputus)");
                 const ping = document.getElementById('ping-indicator');
@@ -1206,7 +1214,6 @@
 
         // Core App Initialization
         async function initApp() {
-            // Rule 1: Run school bell and period calculation immediately to resolve "Status KBM Loading..." instantly on startup
             updateSchoolBellAndPeriod();
 
             await initFirestore();
@@ -1257,7 +1264,6 @@
                 renderDashboardVisuals();
                 renderClashTracker();
 
-                // Setup live clock ticker
                 setInterval(updateSchoolBellAndPeriod, 1000);
 
             } catch (err) {
@@ -1412,15 +1418,30 @@
             safeSetText('widget-hari', "6 Hari Kerja");
             
             let grandTotalCapacity = 0;
+            let gradeTotals = { X: 0, XI: 0, XII: 0 };
             const grades = ['X', 'XI', 'XII'];
+            
             grades.forEach(g => {
                 const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
                 days.forEach(d => {
-                    grandTotalCapacity += parseInt(configGridByGrade[g][d]) || 0;
+                    const val = parseInt(configGridByGrade[g][d]) || 0;
+                    grandTotalCapacity += val;
+                    gradeTotals[g] += val;
                 });
             });
 
             safeSetText('widget-jam', `${grandTotalCapacity} JP`);
+            
+            // Render breakdown nilai JP kecil untuk masing-masing kelas
+            const breakdownHTML = `
+                <span>X: ${gradeTotals.X} JP</span>
+                <span class="text-slate-300">|</span>
+                <span>XI: ${gradeTotals.XI} JP</span>
+                <span class="text-slate-300">|</span>
+                <span>XII: ${gradeTotals.XII} JP</span>
+            `;
+            safeSetHTML('widget-jam-breakdown', breakdownHTML);
+            
             safeSetText('total-week-jp-badge', `KBM Semester Berjalan • ${grandTotalCapacity} JP Mingguan`);
             safeSetText('calendar-full-date', new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
         }
@@ -1833,15 +1854,16 @@
                 }
             }
 
+            const deletePromises = [];
             for (let key in globalBebanData) {
                 if (globalBebanData[key].kode_kelas === kls) {
-                    await fetchAPI('deleteBeban', key);
+                    deletePromises.push(fetchAPI('deleteBeban', key));
                 }
             }
+            await Promise.all(deletePromises);
 
-            for (let item of listPlottingBebanBaru) {
-                await fetchAPI('addBeban', item);
-            }
+            const addPromises = listPlottingBebanBaru.map(item => fetchAPI('addBeban', item));
+            await Promise.all(addPromises);
 
             globalBebanData = await fetchAPI('getBeban') || {};
             Swal.close();
@@ -1853,12 +1875,8 @@
         window.bulkCheckRombel = function(tingkat) {
             const checkboxes = document.querySelectorAll('input[name="chk-beban-rombel"]');
             checkboxes.forEach(cb => {
-                if (tingkat === 'NONE') {
-                    cb.checked = false;
-                } else {
-                    if (cb.getAttribute('data-tingkat') === tingkat) {
-                        cb.checked = true;
-                    }
+                if (cb.getAttribute('data-tingkat') === tingkat) {
+                    cb.checked = true;
                 }
             });
         };
@@ -1935,10 +1953,9 @@
                             <div>
                                 <label class="block font-bold text-slate-600 uppercase mb-1">3. Checklist Rombel</label>
                                 <div class="flex flex-wrap gap-1 mb-1.5">
-                                    <button type="button" onclick="bulkCheckRombel('X')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
-                                    <button type="button" onclick="bulkCheckRombel('XI')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
-                                    <button type="button" onclick="bulkCheckRombel('XII')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
-                                    <button type="button" onclick="bulkCheckRombel('NONE')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[9px] font-bold py-1 px-1.5 rounded transition">Kosongkan</button>
+                                    <button type="button" onclick="window.bulkCheckRombel('X')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
+                                    <button type="button" onclick="window.bulkCheckRombel('XI')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
+                                    <button type="button" onclick="window.bulkCheckRombel('XII')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
                                 </div>
                                 <div class="border rounded-lg p-2.5 h-36 overflow-y-auto bg-slate-50 space-y-1">
                                     ${rombelChecklist}
@@ -2014,9 +2031,8 @@
 
             if (formStep2) {
                 Swal.showLoading();
-                for (let record of formStep2) {
-                    await fetchAPI('addBeban', record);
-                }
+                const addPromises = formStep2.map(record => fetchAPI('addBeban', record));
+                await Promise.all(addPromises);
                 Swal.close();
                 fetchBeban();
                 Swal.fire('Berhasil!', 'Seluruh beban mengajar guru berhasil diplot.', 'success');
@@ -2370,18 +2386,9 @@
             }
 
             globalJadwalData = tempJadwal;
-            await fetchAPI('resetJadwalMaster');
-
-            for (let hari of days) {
-                if (tempJadwal[hari]) {
-                    for (let jam in tempJadwal[hari]) {
-                        for (let kelasKode in tempJadwal[hari][jam]) {
-                            const val = tempJadwal[hari][jam][kelasKode].kode_guru;
-                            await fetchAPI('saveJadwalMaster', { path: `${hari}/${jam}/${kelasKode}`, value: val });
-                        }
-                    }
-                }
-            }
+            
+            // Menyimpan seluruh matriks jadwal dalam 1 kali request (menghindari ratusan request berulang)
+            await fetchAPI('saveBulkJadwalMaster', tempJadwal);
 
             Swal.close();
             renderClashTracker();
@@ -2624,6 +2631,7 @@
             Swal.showLoading();
             const maxJam = gradeGrid[hariAktif] || 0;
             
+            const jurnalPromises = [];
             for (let jam = 1; jam <= maxJam; jam++) {
                 const matEl = document.getElementById(`jurnal-materi-${jam}`);
                 if (matEl) {
@@ -2641,9 +2649,11 @@
                         absensi: `${s}/${i}/${a}`
                     };
 
-                    await fetchAPI('addJurnal', payload);
+                    jurnalPromises.push(fetchAPI('addJurnal', payload));
                 }
             }
+            
+            await Promise.all(jurnalPromises);
             
             globalJurnalData = await fetchAPI('getJurnal') || [];
             Swal.close();
@@ -2994,6 +3004,35 @@
             Swal.fire('Sukses!', 'Konfigurasi Grid Kerja per Tingkat diperbarui.', 'success');
         }
 
+        // Clock Period and School Bell Calculator
+        function updateSchoolBellAndPeriod() {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0].substring(0, 5); // Format: "HH:MM"
+            const dayIndex = now.getDay();
+            const hariName = getHariIndo(dayIndex);
+            
+            if (hariName === 'minggu') {
+                safeSetText('school-bell-text', "KBM Libur / Akhir Pekan");
+                return;
+            }
+
+            let currentJP = null;
+            for (let jp in TIMESLOTS) {
+                const start = TIMESLOTS[jp].start;
+                const end = TIMESLOTS[jp].end;
+                if (timeStr >= start && timeStr < end) {
+                    currentJP = jp;
+                    break;
+                }
+            }
+
+            if (currentJP) {
+                safeSetText('school-bell-text', `KBM Berjalan • JP Ke-${currentJP} (${TIMESLOTS[currentJP].start}-${TIMESLOTS[currentJP].end})`);
+            } else {
+                safeSetText('school-bell-text', "Status KBM: Istirahat / Selesai");
+            }
+        }
+
         // ================= HELPER UTILITY FUNCTIONS =================
         function getGuruNameByKode(kd) {
             for (let key in globalGuruData) {
@@ -3203,6 +3242,11 @@
                     curr[hari][jam][kelas] = { kode_guru: data.value };
                 }
                 localStorage.setItem('db_mock_jadwal', JSON.stringify(curr));
+                return { status: "success" };
+            }
+
+            if (action === 'saveBulkJadwalMaster') {
+                localStorage.setItem('db_mock_jadwal', JSON.stringify(data));
                 return { status: "success" };
             }
 
