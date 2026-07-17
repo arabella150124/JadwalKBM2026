@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartJadwal KBM - Smart Timetable & Journal System</title>
+    <title>SmartJadwal Pelajaran - Smart Timetable & Journal System</title>
     
     <!-- TAILWIND CSS & FONTS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -74,7 +74,7 @@
                 <div class="inline-flex p-3 bg-indigo-100/80 text-indigo-800 rounded-full mb-3">
                     <i class="fa-solid fa-graduation-cap text-3xl"></i>
                 </div>
-                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartJadwal KBM</h2>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartJadwal Pelajaran</h2>
                 <p class="text-slate-500 mt-1">Smart Timetable & Journal System</p>
             </div>
             <form id="form-login" class="space-y-4">
@@ -350,6 +350,7 @@
                             </p>
                             <ol class="list-decimal pl-4 space-y-1">
                                 <li>Buka <a href="https://console.firebase.google.com/" target="_blank" class="text-indigo-600 hover:underline font-bold">Firebase Console</a>, buat proyek baru atau gunakan yang sudah ada.</li>
+                                <li>Pastikan Anda telah mengaktifkan **Anonymous Authentication** di tab *Authentication* -> *Sign-in method*.</li>
                                 <li>Aktifkan <strong>Cloud Firestore Database</strong> di menu Build.</li>
                                 <li>Pergi ke Project Settings (Ikon roda gigi) -> Pilih platform Web App (Ikon &lt;/&gt;), daftarkan aplikasi Anda.</li>
                                 <li>Salin variabel objek <strong>firebaseConfig</strong> dan masukkan kolom-kolomnya di bawah ini.</li>
@@ -403,7 +404,7 @@
                 <div id="view-master-identitas" class="content-view space-y-6 hidden">
                     <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-2xl">
                         <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-6 flex items-center">
-                            <i class="fa-solid fa-circle-info text-indigo-600 mr-2"></i> Pengaturan Identitas Sekolah
+                            <i class="fa-solid fa-school text-indigo-600 mr-2"></i> Pengaturan Identitas Sekolah
                         </h3>
                         <form id="form-identitas" class="space-y-4 text-xs font-semibold text-slate-600">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -858,8 +859,7 @@
         // =========================================================================
         // MITRA CONFIGURATION (GAS & CLOUD FIREBASE INTEGRATION BRIDGE)
         // =========================================================================
-        // JIKA INGIN MENGGUNAKAN MIDDLEWARE GAS: Ganti teks di bawah dengan Web App URL dari GAS
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxdqiDJYVPpcsTN2hVo1LWnv4pz3JR145gsrEla6wB4Eb0MN1JhJRC33mzCos9q4CCe/exec"; 
+        const GAS_URL = "URL_HASIL_DEPLOY_GAS_ANDA"; 
 
         // Dynamic App ID assignment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-smartjadwal';
@@ -1166,6 +1166,33 @@
         }
 
         async function initApp() {
+            // Periksa apakah pengguna memiliki sesi login yang tersimpan
+            const savedRole = sessionStorage.getItem('user_role');
+            if (savedRole) {
+                currentUserRole = savedRole;
+                
+                // Perbarui status lencana peran di header utama
+                const roleBadge = document.getElementById('status-role-badge');
+                if (roleBadge) {
+                    roleBadge.innerText = currentUserRole === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah';
+                    roleBadge.className = currentUserRole === 'admin' 
+                        ? 'text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100'
+                        : 'text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1.5 rounded-full border border-amber-100';
+                }
+
+                // Sembunyikan atau tampilkan menu khusus Admin Kurikulum
+                document.querySelectorAll('.role-admin').forEach(el => {
+                    if (currentUserRole === 'admin') {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                });
+
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-layout').classList.remove('hidden');
+            }
+
             await initFirestore();
 
             try {
@@ -1287,7 +1314,6 @@
             }
 
             let totalHadir = 0, totalIzin = 0, totalAlpa = 0;
-            // timezone-safe replacement of now.toISOString().split('T')[0]
             const dateStr = now.toLocaleDateString('sv-SE');
             const logsToday = globalAbsensiLogs[dateStr] || {};
 
@@ -1441,7 +1467,9 @@
             });
             if (formValues) {
                 if (!formValues.nama || !formValues.kode) return;
+                Swal.showLoading();
                 await fetchAPI('addGuru', formValues);
+                Swal.close();
                 fetchGuru();
             }
         }
@@ -1455,7 +1483,9 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
+                Swal.showLoading();
                 await fetchAPI('deleteGuru', key);
+                Swal.close();
                 fetchGuru();
             }
         }
@@ -1523,7 +1553,9 @@
             });
             if (formValues) {
                 if (!formValues.kode || !formValues.nama) return;
+                Swal.showLoading();
                 await fetchAPI('addMapel', formValues);
+                Swal.close();
                 fetchMapel();
             }
         }
@@ -1536,7 +1568,9 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
+                Swal.showLoading();
                 await fetchAPI('deleteMapel', key);
+                Swal.close();
                 fetchMapel();
             }
         }
@@ -1614,7 +1648,9 @@
             });
             if (formValues) {
                 if (!formValues.kode || !formValues.nama) return;
+                Swal.showLoading();
                 await fetchAPI('addKelas', formValues);
+                Swal.close();
                 fetchKelas();
             }
         }
@@ -1627,7 +1663,9 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
+                Swal.showLoading();
                 await fetchAPI('deleteKelas', key);
+                Swal.close();
                 fetchKelas();
             }
         }
@@ -1983,7 +2021,9 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
+                Swal.showLoading();
                 await fetchAPI('deleteBeban', key);
+                Swal.close();
                 fetchBeban();
             }
         }
@@ -2049,7 +2089,9 @@
             });
 
             if (formValues) {
+                Swal.showLoading();
                 await fetchAPI('addPiket', formValues);
+                Swal.close();
                 fetchPiket();
             }
         }
@@ -2062,7 +2104,9 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
+                Swal.showLoading();
                 await fetchAPI('deletePiket', key);
+                Swal.close();
                 fetchPiket();
             }
         }
@@ -2413,7 +2457,6 @@
             if (!tbody) return;
 
             const now = new Date();
-            // timezone-safe replacement of now.toISOString().split('T')[0]
             const dateStr = now.toLocaleDateString('sv-SE'); 
             if (todayLabel) todayLabel.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -2637,7 +2680,6 @@
 
             if (tipe === 'harian') {
                 let html = '';
-                // timezone-safe replacement of now.toISOString().split('T')[0]
                 const todayStr = new Date().toLocaleDateString('sv-SE');
                 const todayLogs = globalAbsensiLogs[todayStr] || {};
 
@@ -3185,6 +3227,7 @@
         
         // Fungsi Keluar Portal Aman
         function logout() {
+            sessionStorage.removeItem('user_role'); // Hapus sesi saat logout
             const mainLayout = document.getElementById('main-layout');
             const loginScreen = document.getElementById('login-screen');
             const loginPass = document.getElementById('login-password');
@@ -3341,6 +3384,7 @@
             // Validasi Username Peran (Admin atau Kepsek)
             if (username === 'admin' || username === 'kepsek') {
                 currentUserRole = username;
+                sessionStorage.setItem('user_role', username); // Simpan sesi login
                 
                 // Perbarui status lencana peran di header utama
                 const roleBadge = document.getElementById('status-role-badge');
