@@ -861,6 +861,20 @@
         // =========================================================================
         const GAS_URL = "URL_HASIL_DEPLOY_GAS_ANDA"; 
 
+        // =========================================================================
+        // HARDCODED FIREBASE CONFIGURATION (UNTUK AUTO-CONNECT BANYAK PERANGKAT)
+        // =========================================================================
+        // Salin dan ganti isian lengkap di bawah ini dengan kredensial Firebase Anda!
+        // Browser/perangkat lain yang membuka file ini akan langsung otomatis terhubung.
+        const DEFAULT_FIREBASE_CONFIG = {
+            apiKey: "MASUKKAN_API_KEY_LENGKAP_ANDA", // Ganti dengan API Key milik Anda
+            authDomain: "rosterku-28c31.firebaseapp.com",
+            projectId: "rosterku-28c31",
+            storageBucket: "rosterku-28c31.appspot.com",
+            messagingSenderId: "599317639799",
+            appId: "1:599317639799:web:b94dfd00b164..." // Ganti dengan App ID milik Anda
+        };
+
         // Dynamic App ID assignment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-smartjadwal';
         let db = null;
@@ -877,9 +891,13 @@
                 if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                     firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
                 } 
-                // Priority 2: User local saved config
+                // Priority 2: User local saved config (Menu 2)
                 else if (savedConfig) {
                     firebaseConfig = JSON.parse(savedConfig);
+                }
+                // Priority 3: Hardcoded config di dalam file index.html
+                else if (DEFAULT_FIREBASE_CONFIG && DEFAULT_FIREBASE_CONFIG.projectId && DEFAULT_FIREBASE_CONFIG.apiKey !== "MASUKKAN_API_KEY_LENGKAP_ANDA") {
+                    firebaseConfig = DEFAULT_FIREBASE_CONFIG;
                 }
 
                 if (firebaseConfig && firebaseConfig.projectId) {
@@ -1088,7 +1106,7 @@
                         let currentAbs = {};
                         const absDocSnap = await getDoc(absDocRef);
                         if (absDocSnap.exists()) {
-                            currentAbs = absDocSnap.data();
+                            absDocSnap.data();
                         }
                         currentAbs[pathLog] = dataPayload.value;
                         await setDoc(absDocRef, currentAbs);
@@ -1103,7 +1121,6 @@
         // =========================================================================
         // MAIN APPLICATION PROCESSORS
         // =========================================================================
-
         let globalIdentitas = { sekolah: "SmartJadwal Pelajaran SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
         let globalGuruData = {};
         let globalMapelData = {};
@@ -1415,6 +1432,14 @@
                 safeSetValue('fs-storage-bucket', config.storageBucket || '');
                 safeSetValue('fs-sender-id', config.messagingSenderId || '');
                 safeSetValue('fs-app-id', config.appId || '');
+            } else {
+                // Tampilkan config hardcoded di placeholder form jika setup localstorage masih kosong
+                safeSetValue('fs-api-key', DEFAULT_FIREBASE_CONFIG.apiKey !== "MASUKKAN_API_KEY_LENGKAP_ANDA" ? DEFAULT_FIREBASE_CONFIG.apiKey : '');
+                safeSetValue('fs-auth-domain', DEFAULT_FIREBASE_CONFIG.authDomain || '');
+                safeSetValue('fs-project-id', DEFAULT_FIREBASE_CONFIG.projectId || '');
+                safeSetValue('fs-storage-bucket', DEFAULT_FIREBASE_CONFIG.storageBucket || '');
+                safeSetValue('fs-sender-id', DEFAULT_FIREBASE_CONFIG.messagingSenderId || '');
+                safeSetValue('fs-app-id', DEFAULT_FIREBASE_CONFIG.appId !== "1:599317639799:web:b94dfd00b164..." ? DEFAULT_FIREBASE_CONFIG.appId : '');
             }
         }
 
@@ -1768,7 +1793,7 @@
         function getGuruOptions(selectedKode = "") {
             let opt = '<option value="">-- Pilih Guru --</option>';
             for (let key in globalGuruData) {
-                const isSel = (globalGuruData[key].kode === selectedKode) ? "selected" : "";
+                const isSel = (globalGuruData[key].text === selectedKode || globalGuruData[key].kode === selectedKode) ? "selected" : "";
                 opt += `<option value="${globalGuruData[key].kode}" ${isSel}>${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>`;
             }
             return opt;
@@ -1882,7 +1907,7 @@
         async function showFormBebanChecklist() {
             let guruOptions = '<option value="">-- Pilih Guru --</option>';
             for (let key in globalGuruData) {
-                guruOptions += `<option value="${globalGuruData[key].kode}">${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>';`;
+                guruOptions += `<option value="${globalGuruData[key].kode}">${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>`;
             }
 
             let mapelChecklist = '';
@@ -2568,7 +2593,7 @@
                 const maxJam = gradeGrid[hariAktif] || 0;
 
                 for (let jam = 1; jam <= maxJam; jam++) {
-                    if (globalJadwalData[hariAktif] && globalJadwalData[hariAktif][jam] && globalJadwalData[hariAktif][jam][kls]) {
+                    if (globalJadwalData[hariAktif] && globalJadwalData[hariIni] && globalJadwalData[hariAktif][jam] && globalJadwalData[hariAktif][jam][kls]) {
                         const guru = globalJadwalData[hariAktif][jam][kls].kode_guru;
                         const mapel = getMapelKodeByGuruAndKelas(guru, kls);
                         
