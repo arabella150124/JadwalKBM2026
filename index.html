@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartJadwal Pelajaran - Smart Timetable & Journal System</title>
     
-    <!-- TAILWIND CSS & FONTS -->
+    <!-- TAILWIND CSS & PREMIUM FONTS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- GRAPHICS, EXCEL & PDF LIBS -->
+    <!-- GRAPHICS, EXCEL & PDF UTILITIES -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -24,12 +24,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
-        canvas {
-            display: block;
-            max-width: 100% !important;
-            max-height: 100% !important;
+            background-color: #f1f5f9;
         }
         .monospace-bold {
             font-family: 'Fira Code', 'Courier New', monospace;
@@ -52,8 +47,8 @@
             }
         }
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
@@ -67,121 +62,173 @@
         }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <!-- SCREEN LOGIN SECURE PORTAL -->
-    <div id="login-screen" class="flex-1 flex items-center justify-center bg-cover bg-center bg-no-repeat relative" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80');">
-        <!-- Overlay gelap blur premium -->
-        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[6px]"></div>
+    <!-- SCREEN LOGIN SECURE PORTAL WITH PUBLIC INFO HUB (LIGHT THEME) -->
+    <div id="login-screen" class="flex-1 flex flex-col md:flex-row bg-cover bg-center bg-no-repeat relative overflow-y-auto" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80');">
+        <!-- Overlay Terang Blur Premium (Light Glassmorphism) -->
+        <div class="absolute inset-0 bg-white/75 backdrop-blur-[6px]"></div>
         
-        <div class="max-w-md w-full bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 space-y-6 border border-white/20 relative z-10">
-            <div class="text-center">
-                <div class="inline-flex p-3 bg-indigo-100/80 text-indigo-800 rounded-full mb-3">
-                    <i class="fa-solid fa-graduation-cap text-3xl"></i>
-                </div>
-                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartJadwal Pelajaran</h2>
-                <p class="text-slate-500 mt-1">Smart Timetable & Journal System</p>
+        <!-- LEFT COLUMN: Public Information Hub (Cerah & Informatif) -->
+        <div class="flex-1 flex flex-col justify-center px-8 py-12 md:px-16 text-slate-800 relative z-10 max-w-4xl space-y-6">
+            <div class="inline-flex p-3 bg-indigo-100 text-indigo-600 rounded-2xl border border-indigo-200 w-fit shadow-sm">
+                <i class="fa-solid fa-graduation-cap text-4xl"></i>
             </div>
-            <form id="form-login" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700">Username</label>
-                    <input type="text" id="login-username" required placeholder="Contoh: admin / kepsek" class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition text-sm">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-indigo-900 via-indigo-700 to-sky-600 bg-clip-text text-transparent">
+                SmartJadwal Pelajaran
+            </h1>
+            <p class="text-slate-600 font-semibold text-base md:text-lg max-w-2xl leading-relaxed">
+                Smart Timetable & Journal System terintegrasi berbasis Cloud Firestore. Membantu tata kelola akademik sekolah secara transparan, akurat, cerdas, dan bebas bentrok.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 max-w-3xl">
+                <div class="bg-white/80 backdrop-blur-md p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start space-x-3">
+                    <span class="p-2 bg-emerald-100 text-emerald-600 rounded-lg"><i class="fa-solid fa-shield-halved"></i></span>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-800">Anti-Clash Guard Engine</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Validasi otomatis mencegah jadwal guru bertabrakan harian & mingguan secara real-time.</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700">Password</label>
-                    <input type="password" id="login-password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition text-sm">
+                <div class="bg-white/80 backdrop-blur-md p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start space-x-3">
+                    <span class="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-800">Cloud Sync & Offline Mode</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Sinkronisasi data real-time dengan Cloud Firestore atau simulator database lokal.</p>
+                    </div>
                 </div>
-                <button type="submit" class="w-full bg-indigo-800 hover:bg-indigo-900 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md text-sm">
-                    Masuk ke Portal
-                </button>
-            </form>
-            <div class="text-center text-xs text-slate-400 border-t pt-4">
-                Default Password: <span class="font-semibold text-slate-600">sarjanasoft</span>
+                <div class="bg-white/80 backdrop-blur-md p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start space-x-3">
+                    <span class="p-2 bg-amber-100 text-amber-600 rounded-lg"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-800">AI Auto-Scheduler</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Penyusun jadwal cerdas mendistribusikan jam mengajar dalam hitungan detik.</p>
+                    </div>
+                </div>
+                <div class="bg-white/80 backdrop-blur-md p-4 rounded-xl border border-indigo-100 shadow-sm flex items-start space-x-3">
+                    <span class="p-2 bg-purple-100 text-purple-600 rounded-lg"><i class="fa-solid fa-pen-to-square"></i></span>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-800">Digital Class Journal</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Pencatatan harian absensi kelas & jurnal ajar terpadu untuk pendidik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Secure Login Card (Cerah & Kontras) -->
+        <div class="w-full md:w-[450px] flex items-center justify-center p-6 md:p-12 relative z-10 bg-white/40 backdrop-blur-md border-l border-white/40 shrink-0">
+            <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-indigo-50">
+                <div class="text-center">
+                    <h2 class="text-2xl font-black text-indigo-950 tracking-tight">Portal Akademik</h2>
+                    <p class="text-slate-500 text-xs mt-1">Silakan masuk untuk mengelola portal kurikulum</p>
+                </div>
+                <form id="form-login" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wide">Username</label>
+                        <input type="text" id="login-username" required placeholder="admin / kepsek" class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm bg-slate-50/50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wide">Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm bg-slate-50/50">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md text-sm">
+                        Masuk ke Portal
+                    </button>
+                </form>
+                <div class="text-center text-xs text-slate-400 border-t pt-4">
+                    Default Password: <span class="font-semibold text-slate-600">sarjanasoft</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN INTERACTIVE HUB LAYOUT -->
+    <!-- MAIN INTERACTIVE HUB LAYOUT (BRIGHT CERAH STYLE) -->
     <div id="main-layout" class="flex-1 flex overflow-hidden hidden">
-        <!-- SIDEBAR NAVIGASI -->
-        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col no-print shrink-0 border-r border-slate-800">
-            <div class="p-5 border-b border-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-calendar-days text-indigo-500 text-2xl"></i>
-                <div>
-                    <h1 class="font-bold text-white tracking-wide text-sm" id="nav-nama-sekolah">SmartJadwal Pelajaran</h1>
-                    <span class="text-[10px] text-slate-500 font-semibold" id="nav-sub-identitas">Firestore Database</span>
+        
+        <!-- SIDEBAR NAVIGASI (LIGHT THEME CERAH ACCENTS) -->
+        <aside id="sidebar-panel" class="fixed inset-y-0 left-0 -translate-x-full md:relative md:translate-x-0 w-64 bg-white text-slate-700 flex flex-col no-print shrink-0 border-r border-slate-200 transition-transform duration-300 z-30 shadow-sm">
+            <div class="p-5 border-b border-indigo-50 flex items-center justify-between bg-indigo-50/30">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-calendar-days text-indigo-600 text-2xl animate-pulse"></i>
+                    <div>
+                        <h1 class="font-black text-indigo-950 tracking-wide text-xs" id="nav-nama-sekolah">SmartJadwal Pelajaran</h1>
+                        <span class="text-[9px] text-slate-400 font-bold" id="nav-sub-identitas">Firestore Database</span>
+                    </div>
                 </div>
+                <button onclick="toggleSidebarMobile()" class="md:hidden text-slate-500 hover:text-slate-800">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
-            <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-xs">
+            
+            <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-xs bg-white">
                 <!-- MENU 1: DASHBOARD -->
-                <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-dashboard">
-                    <i class="fa-solid fa-chart-pie w-5 text-slate-400"></i><span>1. DASHBOARD HUB</span>
+                <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-dashboard">
+                    <i class="fa-solid fa-chart-pie w-5 text-indigo-500"></i><span class="font-semibold">1. DASHBOARD HUB</span>
                 </button>
                 
                 <!-- MENU 2: FIRESTORE CONFIG -->
-                <button onclick="switchView('firestore-setup')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 text-amber-300 transition" id="btn-firestore-setup">
-                    <i class="fa-solid fa-key w-5 text-amber-400"></i><span>2. KONEKSI FIRESTORE</span>
+                <button onclick="switchView('firestore-setup')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-amber-50 hover:text-amber-700 transition text-amber-600 font-bold" id="btn-firestore-setup">
+                    <i class="fa-solid fa-key w-5 text-amber-500"></i><span>2. KONEKSI FIRESTORE</span>
                 </button>
 
                 <!-- MENU 3: MASTER DATA -->
-                <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">3. MASTER DATA</div>
-                <button onclick="switchView('master-identitas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-master-identitas">
-                    <i class="fa-solid fa-school w-5 text-slate-400"></i><span>Master Identitas</span>
+                <div class="text-[10px] font-bold text-slate-400 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">3. MASTER DATA</div>
+                <button onclick="switchView('master-identitas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-master-identitas">
+                    <i class="fa-solid fa-school w-5 text-indigo-500"></i><span>Master Identitas</span>
                 </button>
-                <button onclick="switchView('master-guru')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-master-guru">
-                    <i class="fa-solid fa-user-tie w-5 text-slate-400"></i><span>Master Guru</span>
+                <button onclick="switchView('master-guru')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-master-guru">
+                    <i class="fa-solid fa-user-tie w-5 text-indigo-500"></i><span>Master Guru</span>
                 </button>
-                <button onclick="switchView('master-mapel')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-master-mapel">
-                    <i class="fa-solid fa-book w-5 text-slate-400"></i><span>Master Mapel</span>
+                <button onclick="switchView('master-mapel')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-master-mapel">
+                    <i class="fa-solid fa-book w-5 text-indigo-500"></i><span>Master Mapel</span>
                 </button>
-                <button onclick="switchView('master-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-master-kelas">
-                    <i class="fa-solid fa-door-open w-5 text-slate-400"></i><span>Master Rombel</span>
+                <button onclick="switchView('master-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-master-kelas">
+                    <i class="fa-solid fa-door-open w-5 text-indigo-500"></i><span>Master Rombel</span>
                 </button>
 
                 <!-- MENU 4: TRANSAKSI -->
-                <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">4. TRANSAKSI</div>
-                <button onclick="switchView('jam-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-jam-kelas">
-                    <i class="fa-solid fa-clock-rotate-left w-5 text-slate-400"></i><span>Alokasi Jam Mengajar</span>
+                <div class="text-[10px] font-bold text-slate-400 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">4. TRANSAKSI</div>
+                <button onclick="switchView('jam-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-jam-kelas">
+                    <i class="fa-solid fa-clock-rotate-left w-5 text-indigo-500"></i><span>Alokasi Jam Mengajar</span>
                 </button>
-                <button onclick="switchView('beban-mengajar')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-beban-mengajar">
-                    <i class="fa-solid fa-id-card-clip w-5 text-slate-400"></i><span>Bagi Tugas (Checklist)</span>
+                <button onclick="switchView('beban-mengajar')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-beban-mengajar">
+                    <i class="fa-solid fa-id-card-clip w-5 text-indigo-500"></i><span>Bagi Tugas (Checklist)</span>
                 </button>
-                <button onclick="switchView('jadwal-piket')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-jadwal-piket">
-                    <i class="fa-solid fa-user-shield w-5 text-slate-400"></i><span>Jadwal Piket Guru</span>
+                <button onclick="switchView('jadwal-piket')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-jadwal-piket">
+                    <i class="fa-solid fa-user-shield w-5 text-indigo-500"></i><span>Jadwal Piket Guru</span>
                 </button>
-                <button onclick="switchView('jadwal-master')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-jadwal-master">
-                    <i class="fa-solid fa-table-cells w-5 text-slate-400"></i><span>Penyusunan Jadwal</span>
+                <button onclick="switchView('jadwal-master')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-jadwal-master">
+                    <i class="fa-solid fa-table-cells w-5 text-indigo-500"></i><span>Penyusunan Jadwal</span>
                 </button>
-                <button onclick="switchView('jurnal-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-jurnal-kelas">
-                    <i class="fa-solid fa-pen-to-square w-5 text-slate-400"></i><span>Jurnal Kelas Digital</span>
+                <button onclick="switchView('jurnal-kelas')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-jurnal-kelas">
+                    <i class="fa-solid fa-pen-to-square w-5 text-indigo-500"></i><span>Jurnal Kelas Digital</span>
                 </button>
 
                 <!-- MENU 5: MONITORING -->
-                <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider">5. MONITORING</div>
-                <button onclick="switchView('clash-tracker')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-clash-tracker">
-                    <i class="fa-solid fa-triangle-exclamation w-5 text-slate-400"></i><span>Clash Tracker Monitor</span>
+                <div class="text-[10px] font-bold text-slate-400 px-4 pt-4 pb-1 uppercase tracking-wider">5. MONITORING</div>
+                <button onclick="switchView('clash-tracker')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-clash-tracker">
+                    <i class="fa-solid fa-triangle-exclamation w-5 text-indigo-500"></i><span>Clash Tracker Monitor</span>
                 </button>
-                <button onclick="switchView('absensi-hari-ini')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-absensi-hari-ini">
-                    <i class="fa-solid fa-clipboard-user w-5 text-slate-400"></i><span>Absensi Kehadiran Guru</span>
+                <button onclick="switchView('absensi-hari-ini')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-absensi-hari-ini">
+                    <i class="fa-solid fa-clipboard-user w-5 text-indigo-500"></i><span>Absensi Kehadiran Guru</span>
                 </button>
 
                 <!-- MENU 6: LAPORAN -->
-                <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider">6. LAPORAN</div>
-                <button onclick="switchView('cetak')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-cetak">
-                    <i class="fa-solid fa-print w-5 text-slate-400"></i><span>Cetak Jadwal Terpadu</span>
+                <div class="text-[10px] font-bold text-slate-400 px-4 pt-4 pb-1 uppercase tracking-wider">6. LAPORAN</div>
+                <button onclick="switchView('cetak')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-cetak">
+                    <i class="fa-solid fa-print w-5 text-indigo-500"></i><span>Cetak Jadwal Terpadu</span>
                 </button>
-                <button onclick="switchView('rekap-jurnal')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300" id="btn-rekap-jurnal">
-                    <i class="fa-solid fa-book-open w-5 text-slate-400"></i><span>Rekap Absen & Jurnal</span>
+                <button onclick="switchView('rekap-jurnal')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600" id="btn-rekap-jurnal">
+                    <i class="fa-solid fa-book-open w-5 text-indigo-500"></i><span>Rekap Absen & Jurnal</span>
                 </button>
 
                 <!-- MENU 7: PENGATURAN GRID -->
-                <div class="text-[10px] font-bold text-slate-600 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">7. PENGATURAN</div>
-                <button onclick="switchView('config-grid')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-slate-300 role-admin" id="btn-config-grid">
-                    <i class="fa-solid fa-sliders w-5 text-slate-400"></i><span>Konfigurasi Grid Kerja</span>
+                <div class="text-[10px] font-bold text-slate-400 px-4 pt-4 pb-1 uppercase tracking-wider role-admin">7. PENGATURAN</div>
+                <button onclick="switchView('config-grid')" class="nav-btn w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition text-slate-600 role-admin" id="btn-config-grid">
+                    <i class="fa-solid fa-sliders w-5 text-indigo-500"></i><span>Konfigurasi Grid Kerja</span>
                 </button>
             </nav>
-            <div class="p-4 border-t border-slate-800 no-print">
-                <button onclick="logout()" class="w-full bg-red-950 hover:bg-red-900 text-red-200 text-xs font-semibold py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2">
+            
+            <div class="p-4 border-t border-slate-100 no-print bg-slate-50/50">
+                <button onclick="logout()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-2.5 px-4 rounded-xl transition duration-200 flex items-center justify-center space-x-2 border border-red-200">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Keluar Sistem</span>
                 </button>
@@ -189,73 +236,73 @@
         </aside>
 
         <!-- CONTAINER KONTEN UTAMA -->
-        <main class="flex-1 flex flex-col overflow-hidden bg-slate-50">
-            <!-- HEADER UTAMA -->
-            <header class="h-16 bg-white border-b flex items-center justify-between px-8 no-print shrink-0 shadow-sm z-10">
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-50 relative">
+            
+            <!-- HEADER UTAMA (MODERN CERAH) -->
+            <header class="h-16 bg-white border-b flex items-center justify-between px-6 no-print shrink-0 shadow-sm z-20">
                 <div class="flex items-center space-x-4">
-                    <h2 id="page-title" class="text-lg font-bold text-slate-800">Dashboard Panel</h2>
-                    <div id="school-bell-banner" class="bg-amber-50 border border-amber-100 text-amber-800 text-[11px] font-bold py-1.5 px-4 rounded-full flex items-center space-x-2">
-                        <i class="fa-solid fa-bell text-amber-500"></i>
+                    <button onclick="toggleSidebarMobile()" class="md:hidden p-2 text-slate-600 hover:text-indigo-950">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <h2 id="page-title" class="text-sm md:text-base font-black text-indigo-950">Dashboard Panel</h2>
+                    <div id="school-bell-banner" class="hidden sm:flex bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold py-1 px-3 rounded-full items-center space-x-1.5">
+                        <i class="fa-solid fa-bell text-amber-500 animate-bounce"></i>
                         <span id="school-bell-text">Status KBM Loading...</span>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-full border">
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-1.5 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 text-[9px] font-bold text-slate-700">
                         <span class="w-2 h-2 bg-amber-500 rounded-full" id="ping-indicator"></span>
-                        <span class="text-[10px] text-slate-700 font-bold" id="ping-indicator-text">Memeriksa Database</span>
+                        <span id="ping-indicator-text">Memeriksa Database</span>
                     </div>
-                    <span class="text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100" id="status-role-badge">Admin Kurikulum</span>
+                    <span class="text-[9px] bg-indigo-50 text-indigo-700 font-extrabold px-3 py-1.5 rounded-full border border-indigo-100" id="status-role-badge">Admin Kurikulum</span>
                 </div>
             </header>
 
             <!-- CANVAS AREA DINAMIS -->
-            <div class="flex-1 overflow-y-auto p-8">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
                 
                 <!-- VIEW 1: DASHBOARD -->
                 <div id="view-dashboard" class="content-view space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50/50 flex items-center justify-between hover:shadow-md transition">
                             <div>
-                                <p class="text-xs text-slate-400 font-semibold uppercase">Total Guru Aktif</p>
-                                <h3 id="widget-guru" class="text-3xl font-black text-slate-800 mt-1">0</h3>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Total Guru Aktif</p>
+                                <h3 id="widget-guru" class="text-2xl font-black text-indigo-950 mt-1">0</h3>
                             </div>
-                            <div class="p-3 bg-blue-50 text-blue-700 rounded-xl"><i class="fa-solid fa-user-tie text-xl"></i></div>
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i class="fa-solid fa-user-tie text-lg"></i></div>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50/50 flex items-center justify-between hover:shadow-md transition">
                             <div>
-                                <p class="text-xs text-slate-400 font-semibold uppercase">Total Rombel</p>
-                                <h3 id="widget-kelas" class="text-3xl font-black text-slate-800 mt-1">0</h3>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Total Rombel</p>
+                                <h3 id="widget-kelas" class="text-2xl font-black text-indigo-950 mt-1">0</h3>
                             </div>
-                            <div class="p-3 bg-indigo-50 text-indigo-700 rounded-xl"><i class="fa-solid fa-door-open text-xl"></i></div>
+                            <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl"><i class="fa-solid fa-door-open text-lg"></i></div>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50/50 flex items-center justify-between hover:shadow-md transition">
                             <div>
-                                <p class="text-xs text-slate-400 font-semibold uppercase">Hari Kerja</p>
-                                <h3 id="widget-hari" class="text-3xl font-black text-slate-800 mt-1">6 Hari</h3>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Hari Kerja</p>
+                                <h3 id="widget-hari" class="text-2xl font-black text-indigo-950 mt-1">6 Hari</h3>
                             </div>
-                            <div class="p-3 bg-amber-50 text-amber-700 rounded-xl"><i class="fa-solid fa-calendar-day text-xl"></i></div>
+                            <div class="p-3 bg-amber-50 text-amber-600 rounded-xl"><i class="fa-solid fa-calendar-day text-lg"></i></div>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs text-slate-400 font-semibold uppercase">Kapasitas Mingguan</p>
-                                <h3 id="widget-jam" class="text-3xl font-black text-slate-800 mt-1">0 JP</h3>
-                                <p id="widget-jam-breakdown" class="text-[10px] text-slate-500 font-bold mt-2 bg-slate-50 border border-slate-200/60 px-2 py-1 rounded-md flex items-center space-x-1">
-                                    <span>X: 0 JP</span>
-                                    <span class="text-slate-300">|</span>
-                                    <span>XI: 0 JP</span>
-                                    <span class="text-slate-300">|</span>
-                                    <span>XII: 0 JP</span>
-                                </p>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50/50 flex items-center justify-between hover:shadow-md transition">
+                            <div class="flex-1">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Kapasitas Mingguan</p>
+                                <div class="flex items-baseline space-x-1.5">
+                                    <h3 id="widget-jam" class="text-2xl font-black text-indigo-950 mt-1">0 JP</h3>
+                                </div>
+                                <p id="widget-jam-breakdown" class="text-[9px] text-indigo-500 font-semibold mt-1">Smt Ganjil</p>
                             </div>
-                            <div class="p-3 bg-emerald-50 text-emerald-700 rounded-xl"><i class="fa-solid fa-clock text-xl"></i></div>
+                            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl shrink-0"><i class="fa-solid fa-clock text-lg"></i></div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 col-span-2 space-y-4">
-                            <h4 class="font-extrabold text-slate-800 text-sm flex items-center justify-between">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 col-span-1 lg:col-span-2 space-y-4">
+                            <h4 class="font-bold text-indigo-950 text-xs uppercase tracking-wide flex items-center justify-between">
                                 <span>📊 Distribusi Jatah Jam Mengajar (JJM) Terpasang Guru</span>
-                                <span class="text-[10px] text-slate-400 font-semibold">Tersortir Tertinggi</span>
+                                <span class="text-[9px] text-slate-400 font-semibold lowercase">Tersortir Tertinggi</span>
                             </h4>
                             <div class="h-64 relative">
                                 <canvas id="chart-jjm-guru"></canvas>
@@ -263,24 +310,24 @@
                         </div>
 
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-extrabold text-slate-800 text-sm flex items-center space-x-2">
+                            <h4 class="font-bold text-indigo-950 text-xs uppercase tracking-wide flex items-center space-x-2">
                                 <i class="fa-solid fa-calendar-days text-indigo-600"></i>
-                                <span>Kalender Akademik Hari Ini</span>
+                                <span>Kalender Akademik</span>
                             </h4>
-                            <div class="bg-gradient-to-br from-indigo-950 to-slate-900 text-white rounded-xl p-5 flex flex-col justify-between h-64 shadow-lg">
+                            <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white rounded-xl p-5 flex flex-col justify-between h-64 shadow-lg">
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h2 id="calendar-day-name" class="text-2xl font-black tracking-tight">Senin</h2>
-                                        <p id="calendar-full-date" class="text-xs text-indigo-200 mt-1 font-semibold">Memuat Tanggal...</p>
+                                        <p id="calendar-full-date" class="text-[10px] text-indigo-100 mt-1 font-semibold">Memuat Tanggal...</p>
                                     </div>
-                                    <span class="bg-white/10 text-white text-[10px] font-black py-1 px-2.5 rounded-full backdrop-blur-sm" id="sync-mode-badge">LOCAL SIMULATOR</span>
+                                    <span class="bg-white/10 text-white text-[9px] font-black py-1 px-2.5 rounded-full backdrop-blur-sm" id="sync-mode-badge">LOCAL SIMULATOR</span>
                                 </div>
                                 <div class="border-t border-white/10 pt-3">
                                     <div class="flex items-center space-x-2 text-xs">
-                                        <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                                        <span class="font-semibold text-indigo-100" id="total-week-jp-badge">KBM Semester Berjalan</span>
+                                        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                                        <span class="font-bold text-indigo-100" id="total-week-jp-badge">KBM Semester Berjalan</span>
                                     </div>
-                                    <p class="text-[10px] text-indigo-300 mt-1">Gunakan Menu "Koneksi Firestore" untuk menghubungkan dengan database cloud.</p>
+                                    <p class="text-[9px] text-indigo-200 mt-1 leading-relaxed">Gunakan Menu "Koneksi Firestore" untuk menghubungkan dengan database cloud.</p>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +335,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
-                            <h4 class="font-extrabold text-slate-800 text-sm flex items-center space-x-2">
+                            <h4 class="font-bold text-indigo-950 text-xs uppercase tracking-wide flex items-center space-x-2">
                                 <i class="fa-solid fa-user-check text-indigo-600"></i>
                                 <span>Rasio Kehadiran Guru</span>
                             </h4>
@@ -297,13 +344,13 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 col-span-2 space-y-4">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 col-span-1 lg:col-span-2 space-y-4">
                             <div class="flex justify-between items-center">
-                                <h4 class="font-extrabold text-slate-800 text-sm flex items-center space-x-2">
+                                <h4 class="font-bold text-indigo-950 text-xs uppercase tracking-wide flex items-center space-x-2">
                                     <i class="fa-solid fa-circle-check text-emerald-600"></i>
                                     <span>Rekapitulasi Kehadiran Kelas Berjalan</span>
                                 </h4>
-                                <button onclick="switchView('rekap-jurnal')" class="text-indigo-700 text-xs font-bold hover:underline">Detail Rekap ➔</button>
+                                <button onclick="switchView('rekap-jurnal')" class="text-indigo-600 text-xs font-bold hover:underline">Detail Rekap ➔</button>
                             </div>
                             <div class="overflow-x-auto h-56 rounded-xl border border-slate-100">
                                 <table class="w-full text-left text-xs">
@@ -325,18 +372,18 @@
                         </div>
                     </div>
 
-                    <div id="alert-center" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                        <div class="flex items-center justify-between">
+                    <div id="alert-center" class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div class="flex items-center space-x-3">
-                                <span class="p-2 bg-red-100 text-red-700 rounded-lg" id="alert-pulse-icon">
+                                <span class="p-2 bg-red-100 text-red-700 rounded-lg shrink-0" id="alert-pulse-icon">
                                     <i class="fa-solid fa-triangle-exclamation"></i>
                                 </span>
                                 <div>
-                                    <h4 class="font-bold text-slate-800 text-sm">Alert Center - Pemantau Bentrok Jadwal</h4>
+                                    <h4 class="font-bold text-indigo-950 text-sm">Alert Center - Pemantau Bentrok Jadwal</h4>
                                     <p class="text-xs text-slate-500 mt-0.5" id="alert-status-text">Menganalisis matriks jadwal sekolah...</p>
                                 </div>
                             </div>
-                            <button onclick="switchView('clash-tracker')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-1">
+                            <button onclick="switchView('clash-tracker')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1 self-end sm:self-auto">
                                 <span>Lihat Tracker</span> <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
@@ -345,66 +392,64 @@
 
                 <!-- VIEW 2: FIRESTORE SETUP -->
                 <div id="view-firestore-setup" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-3xl">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-indigo-100 max-w-3xl">
                         <div class="flex items-center space-x-3 border-b pb-4 mb-6">
                             <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
                                 <i class="fa-solid fa-database text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-slate-800">Sambungkan Cloud Firestore</h3>
-                                <p class="text-xs text-slate-400 mt-0.5">Masukkan konfigurasi aplikasi Firebase Anda untuk mensinkronisasikan data ke database Cloud.</p>
+                                <h3 class="text-base font-bold text-indigo-950">Sambungkan Cloud Firestore</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">Masukkan konfigurasi aplikasi Firebase Anda untuk sinkronisasi data ke cloud.</p>
                             </div>
                         </div>
 
-                        <div class="bg-slate-50 border rounded-xl p-4 mb-6 text-xs text-slate-600 leading-relaxed space-y-2">
-                            <p class="font-bold text-slate-800 flex items-center">
+                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 mb-6 text-xs text-slate-600 leading-relaxed space-y-2">
+                            <p class="font-bold text-indigo-900 flex items-center">
                                 <i class="fa-solid fa-circle-info text-indigo-600 mr-1.5 text-sm"></i> Bagaimana Cara Mendapatkan Konfigurasi Ini?
                             </p>
                             <ol class="list-decimal pl-4 space-y-1">
-                                <li>Buka <a href="https://console.firebase.google.com/" target="_blank" class="text-indigo-600 hover:underline font-bold">Firebase Console</a>, buat proyek baru atau gunakan yang sudah ada.</li>
-                                <li>Pastikan Anda telah mengaktifkan **Anonymous Authentication** di tab *Authentication* -> *Sign-in method*.</li>
-                                <li>Aktifkan <strong>Cloud Firestore Database</strong> di menu Build.</li>
-                                <li>Pergi ke Project Settings (Ikon roda gigi) -> Pilih platform Web App (Ikon &lt;/&gt;), daftarkan aplikasi Anda.</li>
-                                <li>Salin variabel objek <strong>firebaseConfig</strong> dan masukkan kolom-kolomnya di bawah ini.</li>
+                                <li>Buka <a href="https://console.firebase.google.com/" target="_blank" class="text-indigo-600 hover:underline font-bold">Firebase Console</a>, buat proyek baru.</li>
+                                <li>Aktifkan <strong>Anonymous Authentication</strong> dan <strong>Cloud Firestore</strong> (pilih Test Mode & lokasi Singapore).</li>
+                                <li>Salin parameter <strong>firebaseConfig</strong> ke form di bawah ini.</li>
                             </ol>
                         </div>
 
                         <form id="form-firestore-config" class="space-y-4 text-xs font-semibold text-slate-700">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block mb-1">API Key</label>
-                                    <input type="text" id="fs-api-key" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-api-key" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                                 <div>
                                     <label class="block mb-1">Auth Domain</label>
-                                    <input type="text" id="fs-auth-domain" placeholder="proyek-anda.firebaseapp.com" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-auth-domain" placeholder="proyek-anda.firebaseapp.com" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block mb-1">Project ID (Wajib)</label>
-                                    <input type="text" id="fs-project-id" placeholder="proyek-anda" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-project-id" placeholder="proyek-anda" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                                 <div>
                                     <label class="block mb-1">Storage Bucket</label>
-                                    <input type="text" id="fs-storage-bucket" placeholder="proyek-anda.appspot.com" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-storage-bucket" placeholder="proyek-anda.appspot.com" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block mb-1">Messaging Sender ID</label>
-                                    <input type="text" id="fs-sender-id" placeholder="1234567890" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-sender-id" placeholder="1234567890" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                                 <div>
                                     <label class="block mb-1">App ID</label>
-                                    <input type="text" id="fs-app-id" placeholder="1:123456:web:abcd..." class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="fs-app-id" placeholder="1:123456:web:abcd..." class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                             </div>
                             <div class="flex justify-between items-center pt-4">
-                                <button type="button" id="btn-clear-firestore" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 px-6 rounded-lg transition">
+                                <button type="button" id="btn-clear-firestore" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 px-6 rounded-lg transition border border-red-200">
                                     <i class="fa-solid fa-trash mr-1"></i> Putus & Reset Lokal
                                 </button>
-                                <button type="submit" class="bg-indigo-800 hover:bg-indigo-950 text-white font-bold py-2.5 px-6 rounded-lg transition">
+                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md shadow-indigo-600/10">
                                     <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Simpan & Hubungkan Database
                                 </button>
                             </div>
@@ -414,35 +459,35 @@
 
                 <!-- VIEW 3: MASTER IDENTITAS -->
                 <div id="view-master-identitas" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-2xl">
-                        <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-6 flex items-center">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-indigo-100 max-w-2xl">
+                        <h3 class="text-base font-bold text-indigo-950 border-b pb-3 mb-6 flex items-center">
                             <i class="fa-solid fa-school text-indigo-600 mr-2"></i> Pengaturan Identitas Sekolah
                         </h3>
                         <form id="form-identitas" class="space-y-4 text-xs font-semibold text-slate-600">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block mb-1">Nama Sekolah</label>
-                                    <input type="text" id="id-sekolah" required class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="id-sekolah" required class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                                 <div>
                                     <label class="block mb-1">NPSN</label>
-                                    <input type="text" id="id-npsn" required class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="id-npsn" required class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block mb-1">Tahun Ajaran</label>
-                                    <input type="text" id="id-tahun" required placeholder="Contoh: 2026/2027" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <input type="text" id="id-tahun" required placeholder="Contoh: 2026/2027" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                                 </div>
                                 <div>
                                     <label class="block mb-1">Semester</label>
-                                    <select id="id-semester" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600">
+                                    <select id="id-semester" class="w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-indigo-600 bg-white">
                                         <option value="Ganjil">Ganjil</option>
                                         <option value="Genap">Genap</option>
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="bg-indigo-800 hover:bg-indigo-900 text-white font-bold py-2.5 px-6 rounded-lg transition">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md shadow-indigo-600/10">
                                 <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
                             </button>
                         </form>
@@ -451,107 +496,139 @@
 
                 <!-- VIEW 4: MASTER GURU -->
                 <div id="view-master-guru" class="content-view space-y-6 hidden">
-                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Master Data Guru</h3>
+                            <h3 class="text-base font-bold text-indigo-950">Master Data Guru</h3>
                             <p class="text-xs text-slate-400 mt-0.5">Kelola seluruh pendidik beserta Kode Guru Unik dan Beban Mengajar Maksimal.</p>
                         </div>
-                        <button onclick="showFormGuru()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i><span>Tambah Guru</span>
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="downloadTemplate('guru')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-slate-200">
+                                <i class="fa-solid fa-file-arrow-down text-indigo-600"></i><span>Template Guru</span>
+                            </button>
+                            <input type="file" id="excel-import-guru" accept=".xlsx, .xls" class="hidden" onchange="handleExcelImport(event, 'guru')">
+                            <button onclick="triggerExcelImport('excel-import-guru')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-indigo-200">
+                                <i class="fa-solid fa-file-import"></i><span>Impor Excel</span>
+                            </button>
+                            <button onclick="showFormGuru()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
+                                <i class="fa-solid fa-plus"></i><span>Tambah Guru</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Kode Unik</th>
-                                    <th class="py-4 px-6">Nama Guru</th>
-                                    <th class="py-4 px-6">NIP</th>
-                                    <th class="py-4 px-6 text-center">Batas Beban Mengajar (JP)</th>
-                                    <th class="py-4 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-guru-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[600px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Kode Unik</th>
+                                        <th class="py-4 px-6">Nama Guru</th>
+                                        <th class="py-4 px-6">NIP</th>
+                                        <th class="py-4 px-6 text-center">Batas Beban Mengajar (JP)</th>
+                                        <th class="py-4 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-guru-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 5: MASTER MAPEL -->
                 <div id="view-master-mapel" class="content-view space-y-6 hidden">
-                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Master Mata Pelajaran</h3>
+                            <h3 class="text-base font-bold text-indigo-950">Master Mata Pelajaran</h3>
                             <p class="text-xs text-slate-400 mt-0.5">Plot jenis mata pelajaran, kode unik, serta Kelompok Peminatan/Kejuruan.</p>
                         </div>
-                        <button onclick="showFormMapel()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i><span>Tambah Mapel</span>
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="downloadTemplate('mapel')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-slate-200">
+                                <i class="fa-solid fa-file-arrow-down text-indigo-600"></i><span>Template Mapel</span>
+                            </button>
+                            <input type="file" id="excel-import-mapel" accept=".xlsx, .xls" class="hidden" onchange="handleExcelImport(event, 'mapel')">
+                            <button onclick="triggerExcelImport('excel-import-mapel')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-indigo-200">
+                                <i class="fa-solid fa-file-import"></i><span>Impor Excel</span>
+                            </button>
+                            <button onclick="showFormMapel()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
+                                <i class="fa-solid fa-plus"></i><span>Tambah Mapel</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Kode Mapel</th>
-                                    <th class="py-4 px-6">Nama Mata Pelajaran</th>
-                                    <th class="py-4 px-6">Kelompok / Kelompok Peminatan</th>
-                                    <th class="py-4 px-6 text-center font-bold">Kesesuaian Jurusan</th>
-                                    <th class="py-4 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-mapel-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Kode Mapel</th>
+                                        <th class="py-4 px-6">Nama Mata Pelajaran</th>
+                                        <th class="py-4 px-6">Kelompok</th>
+                                        <th class="py-4 px-6 text-center font-bold">Kesesuaian Jurusan</th>
+                                        <th class="py-4 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-mapel-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 6: MASTER ROMBEL -->
                 <div id="view-master-kelas" class="content-view space-y-6 hidden">
-                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Master Rombongan Belajar (Rombel)</h3>
+                            <h3 class="text-base font-bold text-indigo-950">Master Rombongan Belajar (Rombel)</h3>
                             <p class="text-xs text-slate-400 mt-0.5">Kelola kelas-kelas aktif penampung jadwal pelajaran sekolah.</p>
                         </div>
-                        <button onclick="showFormKelas()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i><span>Tambah Rombel</span>
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="downloadTemplate('kelas')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-slate-200">
+                                <i class="fa-solid fa-file-arrow-down text-indigo-600"></i><span>Template Rombel</span>
+                            </button>
+                            <input type="file" id="excel-import-kelas" accept=".xlsx, .xls" class="hidden" onchange="handleExcelImport(event, 'kelas')">
+                            <button onclick="triggerExcelImport('excel-import-kelas')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-indigo-200">
+                                <i class="fa-solid fa-file-import"></i><span>Impor Excel</span>
+                            </button>
+                            <button onclick="showFormKelas()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
+                                <i class="fa-solid fa-plus"></i><span>Tambah Rombel</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Kode Rombel</th>
-                                    <th class="py-4 px-6">Nama Kelas</th>
-                                    <th class="py-4 px-6 font-bold text-center">Tingkat</th>
-                                    <th class="py-4 px-6">Kompetensi Keahlian (Jurusan)</th>
-                                    <th class="py-4 px-6">Wali Kelas</th>
-                                    <th class="py-4 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-kelas-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Kode Rombel</th>
+                                        <th class="py-4 px-6">Nama Kelas</th>
+                                        <th class="py-4 px-6 font-bold text-center">Tingkat</th>
+                                        <th class="py-4 px-6">Jurusan</th>
+                                        <th class="py-4 px-6">Wali Kelas</th>
+                                        <th class="py-4 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-kelas-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 7: JAM KELAS -->
                 <div id="view-jam-kelas" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Pengaturan Jam & Alokasi Mengajar Rombel</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Pilih rombel untuk mengatur kuota JP tiap Mapel serta Pendidik Mengajar.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Alokasi Jam Mengajar per Rombel</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Tentukan guru pembawa mata pelajaran dan alokasi jam mengajar (JP) per kelas.</p>
                         </div>
-                        <div class="w-full md:w-72">
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Rombel / Kelas</label>
-                            <select id="select-kelas-jam" onchange="renderJamKelasConfig()" class="w-full px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-indigo-600 text-xs font-semibold">
-                                <option value="">-- Pilih Kelas --</option>
+                        <div class="w-full sm:w-72">
+                            <select id="select-kelas-jam" onchange="renderJamKelasConfig()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-600 text-xs font-semibold bg-white">
+                                <option value="">-- Pilih Rombel --</option>
                             </select>
                         </div>
                     </div>
                     
-                    <div id="box-jam-kelas-config" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 hidden">
-                        <h4 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">Daftar Mapel Sesuai Jurusan Rombel</h4>
+                    <div id="box-jam-kelas-config" class="bg-white rounded-2xl shadow-sm border border-indigo-100 p-6 hidden">
+                        <h4 class="font-bold text-indigo-950 text-sm mb-4 border-b pb-2">Daftar Mapel Sesuai Jurusan Rombel</h4>
                         <div id="container-mapel-jp-inputs" class="space-y-4"></div>
                         <div class="mt-6 flex justify-end">
-                            <button onclick="simpanConfigJamKelas()" class="bg-indigo-800 hover:bg-indigo-950 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition">
-                                <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Alokasi Jam & Guru Kelas
+                            <button onclick="simpanConfigJamKelas()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition shadow-md shadow-indigo-600/10">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Alokasi Kelas
                             </button>
                         </div>
                     </div>
@@ -559,87 +636,100 @@
 
                 <!-- VIEW 8: BEBAN MENGAJAR (TUGAS MENGAJAR CHECKLIST) -->
                 <div id="view-beban-mengajar" class="content-view space-y-6 hidden">
-                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Tugas Mengajar Guru (Distribusi Cepat)</h3>
+                            <h3 class="text-base font-bold text-indigo-950">Tugas Mengajar Guru (Distribusi Cepat)</h3>
                             <p class="text-xs text-slate-400 mt-0.5">Pilih guru, pilih beberapa mapel, lalu tentukan rombel target secara cepat.</p>
                         </div>
-                        <button onclick="showFormBebanChecklist()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i><span>Bagi Tugas (Checklist)</span>
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="downloadTemplate('beban')" class="bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-slate-200">
+                                <i class="fa-solid fa-file-arrow-down text-indigo-600"></i><span>Template Alokasi</span>
+                            </button>
+                            <input type="file" id="excel-import-beban" accept=".xlsx, .xls" class="hidden" onchange="handleExcelImport(event, 'beban')">
+                            <button onclick="triggerExcelImport('excel-import-beban')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-800 text-xs font-bold py-2.5 px-4 rounded-xl transition flex items-center space-x-1.5 border border-indigo-200">
+                                <i class="fa-solid fa-file-import"></i><span>Impor Excel</span>
+                            </button>
+                            <button onclick="showFormBebanChecklist()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
+                                <i class="fa-solid fa-plus"></i><span>Bagi Tugas (Checklist)</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Guru</th>
-                                    <th class="py-4 px-6">Mata Pelajaran</th>
-                                    <th class="py-4 px-6 text-center">Rombel Target</th>
-                                    <th class="py-4 px-6 text-center">Alokasi Jam</th>
-                                    <th class="py-4 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-beban-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Guru</th>
+                                        <th class="py-4 px-6">Mata Pelajaran</th>
+                                        <th class="py-4 px-6 text-center">Rombel Target</th>
+                                        <th class="py-4 px-6 text-center">Alokasi Jam</th>
+                                        <th class="py-4 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-beban-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 9: JADWAL PIKET GURU -->
                 <div id="view-jadwal-piket" class="content-view space-y-6 hidden">
-                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Penugasan Piket Guru Harian</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Guru yang piket di hari tersebut <strong>dibebaskan total</strong> dari tugas mengajar harian.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Penugasan Piket Guru Harian</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Guru piket dibebaskan dari jam mengajar pada hari tugas bersangkutan.</p>
                         </div>
-                        <button onclick="showFormPiket()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i><span>Plotting Guru Piket</span>
+                        <button onclick="showFormPiket()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
+                            <i class="fa-solid fa-plus"></i><span>Plot Guru Piket</span>
                         </button>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Hari Piket</th>
-                                    <th class="py-4 px-6">Nama Guru</th>
-                                    <th class="py-4 px-6 text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-piket-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[500px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Hari Piket</th>
+                                        <th class="py-4 px-6">Nama Guru</th>
+                                        <th class="py-4 px-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-piket-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 10: MANAJEMEN JADWAL MASTER -->
                 <div id="view-jadwal-master" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Penyusunan Jadwal Matriks</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Susun secara manual dengan memilih kelas di kanan, atau klik tombol ⚡ Auto-Generate Jadwal.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Penyusunan Jadwal Matriks</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Mendeteksi bentrokan guru secara real-time saat Anda memetakan slot.</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-3">
-                            <button onclick="runAutoSchedulerSistem()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-lg shadow-amber-600/20">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i><span>⚡ Auto-Generate Jadwal</span>
+                            <button onclick="runAutoSchedulerSistem()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold py-2.5 px-5 rounded-xl transition flex items-center space-x-1.5 shadow-lg shadow-amber-500/20">
+                                <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i><span>⚡ AI Auto-Scheduler</span>
                             </button>
                             <div class="w-60">
-                                <select id="select-kelas-jadwal" onchange="renderJadwalGrid()" class="w-full px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-indigo-600 text-xs font-semibold">
+                                <select id="select-kelas-jadwal" onchange="renderJadwalGrid()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-600 text-xs font-bold bg-white">
                                     <option value="">-- Pilih Kelas --</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden p-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-100 overflow-hidden p-4 md:p-6">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-center border-collapse border border-slate-200 text-xs">
+                            <table class="w-full text-center border-collapse border border-slate-200 text-xs min-w-[800px]">
                                 <thead>
-                                    <tr class="bg-slate-800 text-white font-bold">
+                                    <tr class="bg-indigo-600 text-white font-bold">
                                         <th class="border border-slate-200 py-3 px-4 w-12">Jam</th>
                                         <th class="border border-slate-200 py-3 px-4 w-28">Durasi Waktu</th>
                                         <th class="border border-slate-200 py-3 px-4">Senin</th>
                                         <th class="border border-slate-200 py-3 px-4">Selasa</th>
                                         <th class="border border-slate-200 py-3 px-4">Rabu</th>
                                         <th class="border border-slate-200 py-3 px-4">Kamis</th>
-                                        <th class="border border-slate-200 py-3 px-4 text-amber-400">Jumat</th>
+                                        <th class="border border-slate-200 py-3 px-4 text-amber-300">Jumat</th>
                                         <th class="border border-slate-200 py-3 px-4">Sabtu</th>
                                     </tr>
                                 </thead>
@@ -655,27 +745,27 @@
 
                 <!-- VIEW 11: JURNAL KELAS OTOMATIS -->
                 <div id="view-jurnal-kelas" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Jurnal Harian Kelas</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Generator jurnal digital pre-filled otomatis berdasarkan jam pelajaran aktif saat ini.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Jurnal Harian Kelas</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Generator jurnal digital otomatis berdasarkan jam pelajaran berjalan saat ini.</p>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <select id="jurnal-select-kelas" onchange="renderJurnalOtomatis()" class="px-4 py-2 rounded-xl border text-xs font-semibold">
+                        <div class="w-full sm:w-60">
+                            <select id="jurnal-select-kelas" onchange="renderJurnalOtomatis()" class="w-full px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-white">
                                 <option value="">-- Pilih Kelas --</option>
                             </select>
                         </div>
                     </div>
-                    <div id="jurnal-render-area" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6 hidden">
-                        <div class="border-b pb-4 flex justify-between items-center">
+                    <div id="jurnal-render-area" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-indigo-100 space-y-6 hidden">
+                        <div class="border-b pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                             <div>
-                                <h4 class="font-extrabold text-slate-800 text-sm uppercase">JURNAL PEMBELAJARAN DIGITAL</h4>
-                                <p class="text-xs text-slate-500 mt-0.5" id="jurnal-identitas-kelas">Kelas: X TEI</p>
+                                <h4 class="font-extrabold text-indigo-950 text-sm uppercase tracking-wide">JURNAL PEMBELAJARAN DIGITAL</h4>
+                                <p class="text-xs text-slate-500" id="jurnal-identitas-kelas">Kelas: X TEI</p>
                             </div>
                             <span class="text-xs bg-indigo-50 text-indigo-800 py-1.5 px-3 rounded-full font-bold border border-indigo-100" id="jurnal-hari-aktif">Senin</span>
                         </div>
                         <div id="jurnal-form-container" class="space-y-4"></div>
-                        <button onclick="simpanJurnalDigital()" class="bg-indigo-800 hover:bg-indigo-900 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition flex items-center space-x-1.5">
+                        <button onclick="simpanJurnalDigital()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition flex items-center space-x-1.5 shadow-md">
                             <i class="fa-solid fa-floppy-disk"></i><span>Simpan Jurnal & Absensi</span>
                         </button>
                     </div>
@@ -683,99 +773,102 @@
 
                 <!-- VIEW 12: CLASH TRACKER ENGINE -->
                 <div id="view-clash-tracker" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                        <h3 class="text-base font-bold text-slate-800">Clash Tracker Engine (Real-Time Monitor)</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Daftar bentrokan jadwal guru yang terdeteksi dalam sistem secara seketika.</p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
+                        <h3 class="text-base font-bold text-indigo-950">Clash Tracker Engine (Real-Time Monitor)</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Daftar bentrokan jadwal mengajar guru yang terdeteksi dalam sistem.</p>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Hari</th>
-                                    <th class="py-4 px-6">Jam Ke</th>
-                                    <th class="py-4 px-6">Kode Guru</th>
-                                    <th class="py-4 px-6">Nama Guru</th>
-                                    <th class="py-4 px-6 text-red-600 font-bold text-center">Rombel Konflik</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-clash-body">
-                                <tr>
-                                    <td colspan="5" class="py-8 text-center text-emerald-600 font-bold">
-                                        <i class="fa-solid fa-circle-check text-xl mr-1.5 align-middle"></i> Status: Aman, Tidak ada bentrok jadwal terdeteksi!
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[600px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Hari</th>
+                                        <th class="py-4 px-6">Jam Ke</th>
+                                        <th class="py-4 px-6">Kode Guru</th>
+                                        <th class="py-4 px-6">Nama Guru</th>
+                                        <th class="py-4 px-6 text-red-600 font-bold text-center">Rombel Konflik</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-clash-body">
+                                    <tr>
+                                        <td colspan="5" class="py-8 text-center text-emerald-600 font-bold">
+                                            <i class="fa-solid fa-circle-check text-xl mr-1.5 align-middle"></i> Status: Aman, Tidak ada bentrok jadwal terdeteksi!
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 13: ABSENSI HARI INI -->
                 <div id="view-absensi-hari-ini" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Monitoring Absensi Kehadiran Guru Mengajar</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Ceklist status kehadiran guru harian yang mengajar pada hari ini secara langsung.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Absensi Kehadiran Guru Mengajar</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Ambil tindakan rekam kehadiran guru yang mengajar hari ini secara langsung.</p>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border" id="current-absensi-date">Senin, 13 Juli 2026</span>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b">
-                                    <th class="py-4 px-6">Rombel</th>
-                                    <th class="py-4 px-6">Jam Ke</th>
-                                    <th class="py-4 px-6">Nama Guru</th>
-                                    <th class="py-4 px-6">Mata Pelajaran</th>
-                                    <th class="py-4 px-6 text-center">Status Kehadiran</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-absensi-hari-ini-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100">
+                                        <th class="py-4 px-6">Rombel</th>
+                                        <th class="py-4 px-6">Jam Ke</th>
+                                        <th class="py-4 px-6">Nama Guru</th>
+                                        <th class="py-4 px-6">Mata Pelajaran</th>
+                                        <th class="py-4 px-6 text-center">Status Kehadiran</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-absensi-hari-ini-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 14: CETAK JADWAL TERPADU -->
                 <div id="view-cetak" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 no-print flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 no-print flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Laporan & Output Cetak Terpadu</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Pilih tipe laporan, terapkan opsi, dan ekspor ke PDF beresolusi tinggi atau berkas Excel.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Laporan & Output Cetak Terpadu</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Cetak jadwal per rombel, per guru, atau ekspor matriks raksasa seluruh kelas ke Excel/PDF.</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <select id="select-tipe-cetak" onchange="toggleCetakOptions()" class="px-4 py-2 rounded-xl border text-xs font-semibold">
+                            <select id="select-tipe-cetak" onchange="toggleCetakOptions()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-white">
                                 <option value="kelas">1. Cetak Jadwal Per Rombel/Kelas</option>
-                                <option value="guru">2. Cetak Jadwal Per Guru</option>
-                                <option value="all">3. Cetak Master Seluruh Rombel (A3/Wide)</option>
+                                <option value="all">2. Cetak Master Seluruh Rombel (A3/Wide)</option>
                             </select>
                             
-                            <select id="select-filter-cetak" onchange="renderVisualCetak()" class="px-4 py-2 rounded-xl border text-xs font-semibold">
+                            <select id="select-filter-cetak" onchange="renderVisualCetak()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-white">
                                 <option value="">-- Pilih Target --</option>
                             </select>
 
-                            <button onclick="eksporExcelSistem()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-4 rounded-xl text-xs transition flex items-center space-x-1.5">
+                            <button onclick="eksporExcelSistem()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition flex items-center space-x-1.5 shadow-md shadow-emerald-600/10">
                                 <i class="fa-solid fa-file-excel"></i><span>Ekspor Excel</span>
                             </button>
-                            <button onclick="eksporPDFSistem()" class="bg-indigo-800 hover:bg-indigo-900 text-white font-semibold py-2 px-4 rounded-xl text-xs transition flex items-center space-x-1.5">
+                            <button onclick="eksporPDFSistem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/10">
                                 <i class="fa-solid fa-file-pdf"></i><span>Cetak PDF</span>
                             </button>
                         </div>
                     </div>
 
-                    <div id="area-cetak-dokumen" class="bg-white p-10 rounded-2xl shadow-sm border border-slate-100 print-area space-y-6 overflow-x-auto">
+                    <div id="area-cetak-dokumen" class="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-indigo-50 print-area space-y-6 overflow-x-auto">
                         <div class="text-center border-b pb-4">
-                            <h2 class="text-2xl font-black text-slate-800 uppercase tracking-wide" id="cetak-sekolah-identitas">Jadwal Pelajaran Sekolah</h2>
+                            <h2 class="text-xl md:text-2xl font-black text-indigo-950 uppercase tracking-wide" id="cetak-sekolah-identitas">Jadwal Pelajaran Sekolah</h2>
                             <p class="text-xs text-slate-500" id="cetak-tahun-semester">Tahun Ajaran 2026/2027 • Semester Ganjil</p>
-                            <h4 id="cetak-sub-header" class="text-lg font-bold text-indigo-800 mt-2">Pilih filter pencetakan di atas</h4>
+                            <h4 id="cetak-sub-header" class="text-sm md:text-base font-bold text-indigo-800 mt-2">Pilih filter pencetakan di atas</h4>
                         </div>
                         
                         <div id="canvas-tabel-cetak-wrapper" class="w-full">
-                            <p class="text-center py-12 text-slate-400">Silakan tentukan jenis cetakan pada panel navigasi di atas.</p>
+                            <p class="text-center py-12 text-slate-400 text-xs">Silakan tentukan jenis cetakan pada panel navigasi di atas.</p>
                         </div>
 
-                        <div class="flex justify-between text-[10px] text-slate-400 pt-8 border-t border-slate-100">
-                            <span>Sistem Diarsip Secara Otomatis Oleh SmartJadwal Pelajaran (Cloud Firestore)</span>
+                        <div class="flex justify-between text-[9px] text-slate-400 pt-8 border-t border-slate-100">
+                            <span>Sistem Diarsip Secara Otomatis Oleh SmartJadwal Pelajaran</span>
                             <span id="current-timestamp"></span>
                         </div>
                     </div>
@@ -783,76 +876,76 @@
 
                 <!-- VIEW 15: REKAP ABSENSI & JURNAL -->
                 <div id="view-rekap-jurnal" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h3 class="text-base font-bold text-slate-800">Rekapitulasi Keterisian Jurnal & Absensi Mengajar</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Memantau realisasi pengisian materi dan status absensi mengajar guru.</p>
+                            <h3 class="text-base font-bold text-indigo-950">Rekapitulasi Absensi & Jurnal Mengajar</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Pantau realisasi pengisian materi harian dan persentase kehadiran guru.</p>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <select id="select-tipe-rekap" onchange="renderRekapKehadiranGuru()" class="px-4 py-2 rounded-xl border text-xs font-semibold">
-                                <option value="harian">Rekap Harian</option>
-                                <option value="mingguan">Rekap Mingguan</option>
-                                <option value="bulanan">Rekap Bulanan</option>
+                        <div class="w-full sm:w-60">
+                            <select id="select-tipe-rekap" onchange="renderRekapKehadiranGuru()" class="w-full px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold bg-white">
+                                <option value="harian">Rekap Hari Ini</option>
                                 <option value="semester">Rekap Akumulasi 1 Semester</option>
                             </select>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b" id="table-rekap-head-row"></tr>
-                            </thead>
-                            <tbody id="table-rekap-jurnal-body"></tbody>
-                        </table>
+                    <div class="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs min-w-[700px]">
+                                <thead>
+                                    <tr class="bg-indigo-50/50 text-indigo-950 font-bold border-b border-indigo-100" id="table-rekap-head-row"></tr>
+                                </thead>
+                                <tbody id="table-rekap-jurnal-body"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VIEW 16: CONFIG GRID -->
                 <div id="view-config-grid" class="content-view space-y-6 hidden">
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-4xl">
-                        <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-6 flex items-center">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-indigo-100 max-w-4xl">
+                        <h3 class="text-base font-bold text-indigo-950 border-b pb-3 mb-6 flex items-center">
                             <i class="fa-solid fa-gears text-indigo-600 mr-2"></i> Konfigurasi Grid Harian per Tingkat Kelas
                         </h3>
-                        <div class="space-y-8">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <h4 class="font-extrabold text-blue-900 text-xs mb-3 uppercase tracking-wide">1. Grid Kelas Tingkat X (Sepuluh)</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
-                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-X-senin" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-X-selasa" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-X-rabu" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-X-kamis" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-X-jumat" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-X-sabtu" min="0" max="12" class="w-full p-2 border rounded"></div>
+                        <div class="space-y-6">
+                            <div class="p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
+                                <h4 class="font-extrabold text-indigo-950 text-xs mb-3 uppercase tracking-wide">1. Grid Kelas Tingkat X (Sepuluh)</h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
+                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-X-senin" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-X-selasa" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-X-rabu" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-X-kamis" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-X-jumat" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-X-sabtu" min="0" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
                                 </div>
                             </div>
 
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <h4 class="font-extrabold text-indigo-900 text-xs mb-3 uppercase tracking-wide">2. Grid Kelas Tingkat XI (Sebelas)</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
-                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-XI-senin" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-XI-selasa" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-XI-rabu" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-XI-kamis" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-XI-jumat" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-XI-sabtu" min="0" max="12" class="w-full p-2 border rounded"></div>
+                            <div class="p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
+                                <h4 class="font-extrabold text-indigo-950 text-xs mb-3 uppercase tracking-wide">2. Grid Kelas Tingkat XI (Sebelas)</h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
+                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-XI-senin" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-XI-selasa" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-XI-rabu" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-XI-kamis" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-XI-jumat" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-XI-sabtu" min="0" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
                                 </div>
                             </div>
 
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <h4 class="font-extrabold text-purple-900 text-xs mb-3 uppercase tracking-wide">3. Grid Kelas Tingkat XII (Duabelas)</h4>
-                                <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
-                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-XII-senin" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-XII-selasa" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-XII-rabu" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-XII-kamis" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-XII-jumat" min="4" max="12" class="w-full p-2 border rounded"></div>
-                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-XII-sabtu" min="0" max="12" class="w-full p-2 border rounded"></div>
+                            <div class="p-4 bg-indigo-50/30 rounded-xl border border-indigo-100">
+                                <h4 class="font-extrabold text-indigo-950 text-xs mb-3 uppercase tracking-wide">3. Grid Kelas Tingkat XII (Duabelas)</h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold text-slate-600">
+                                    <div><label class="block mb-1">Senin (JP)</label><input type="number" id="cfg-XII-senin" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Selasa (JP)</label><input type="number" id="cfg-XII-selasa" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Rabu (JP)</label><input type="number" id="cfg-XII-rabu" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Kamis (JP)</label><input type="number" id="cfg-XII-kamis" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1 text-amber-600">Jumat (JP)</label><input type="number" id="cfg-XII-jumat" min="4" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
+                                    <div><label class="block mb-1">Sabtu (JP)</label><input type="number" id="cfg-XII-sabtu" min="0" max="12" class="w-full p-2 border border-slate-200 rounded bg-white"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-6 flex justify-end">
-                            <button onclick="saveGridConfig()" class="bg-indigo-800 hover:bg-indigo-900 text-white font-bold py-2.5 px-6 rounded-lg transition text-xs">
+                            <button onclick="saveGridConfig()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-lg transition text-xs shadow-md shadow-indigo-600/10">
                                 <i class="fa-solid fa-circle-check mr-1"></i> Terapkan Konfigurasi Grid
                             </button>
                         </div>
@@ -867,16 +960,16 @@
         // =========================================================================
         // MITRA CONFIGURATION (GAS & CLOUD FIREBASE INTEGRATION BRIDGE)
         // =========================================================================
-        const GAS_URL = "https://script.google.com/macros/s/AKfycby6PZtRr6kcCGzzzCg2uUFCKTXANx9NZ0rMsKm0f0O_OuwxeVQoWwNvttTJJ6XWthIE/exec"; 
+        const GAS_URL = "https://script.google.com/macros/s/AKfycby6PZtRr6kcCGzzzQ_gU_p0Uv62UlyM-m6y4zM8q_9rYgSgU/exec"; 
 
         // =========================================================================
         // HARDCODED FIREBASE CONFIGURATION (UNTUK AUTO-CONNECT BANYAK PERANGKAT)
         // =========================================================================
         const DEFAULT_FIREBASE_CONFIG = {
-            apiKey: "AIzaSyC8wrh1lQL24ROsFtLDcTOv_GQVufrXM54", 
+            apiKey: "MASUKKAN_API_KEY_LENGKAP_ANDA", 
             authDomain: "rosterku-28c31.firebaseapp.com",
             projectId: "rosterku-28c31",
-            storageBucket: "rosterku-28c31.firebasestorage.app",
+            storageBucket: "rosterku-28c31.appspot.com",
             messagingSenderId: "599317639799",
             appId: "1:599317639799:web:b94dfd00b16440362e0c72" 
         };
@@ -887,7 +980,7 @@
         let isOfflineFallbackMode = true;
 
         // States Terpusat
-        let globalIdentitas = { sekolah: "SMKS Sanjaya Bajawa", npsn: "50302966", tahun: "2026/2027", semester: "Ganjil" };
+        let globalIdentitas = { sekolah: "SmartJadwal Pelajaran SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
         let globalGuruData = {};
         let globalMapelData = {};
         let globalKelasData = {};
@@ -922,6 +1015,41 @@
         let chartJJMInstance = null;
         let chartAbsensiInstance = null;
 
+        // Mobile Sidebar Helper
+        function toggleSidebarMobile() {
+            const sidebar = document.getElementById('sidebar-panel');
+            if (sidebar) {
+                sidebar.classList.toggle('-translate-x-full');
+            }
+        }
+
+        // TIMER / BELL KBM ENGINE
+        function updateSchoolBellAndPeriod() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const timeFormatted = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+            
+            let activePeriod = null;
+            for (let num in TIMESLOTS) {
+                const start = TIMESLOTS[num].start;
+                const end = TIMESLOTS[num].end;
+                if (timeFormatted >= start && timeFormatted <= end) {
+                    activePeriod = num;
+                    break;
+                }
+            }
+            
+            const bellText = document.getElementById('school-bell-text');
+            if (bellText) {
+                if (activePeriod) {
+                    bellText.innerText = `KBM Sedang Berjalan: JP Ke-${activePeriod} (${TIMESLOTS[activePeriod].start} - ${TIMESLOTS[activePeriod].end})`;
+                } else {
+                    bellText.innerText = `Status KBM: Istirahat / Selesai`;
+                }
+            }
+        }
+
         // HELPER: Promise Timeout wrapper to prevent hanging on Firestore network loss
         function withTimeout(promise, ms = 4500) {
             return new Promise((resolve, reject) => {
@@ -935,7 +1063,6 @@
             });
         }
 
-        // Firebase Initialization Bridge Compat Edition
         async function initFirestore() {
             try {
                 let savedConfig = localStorage.getItem('db_firestore_config');
@@ -954,7 +1081,6 @@
                     db = firebase.firestore();
                     auth = firebase.auth();
 
-                    // Anon Sign In wrapped in Timeout to prevent hanging
                     const signInPromise = auth.signInAnonymously();
                     const creds = await withTimeout(signInPromise, 4500);
                     if (creds.user) {
@@ -978,7 +1104,6 @@
             return false;
         }
 
-        // Firestore Strict Path Mapping (STRICT RULE 1 & 2 Compat with Timeout Guard)
         async function fetchAPI(action, dataPayload = null) {
             if (isOfflineFallbackMode) {
                 return simulateFirestoreLocal(action, dataPayload);
@@ -1088,9 +1213,11 @@
                             }
                             await nestedDocRef.set(masterSched);
                             return { status: "success" };
+
                         case 'saveBulkJadwalMaster':
                             await docRef('jadwal', 'master').set(dataPayload);
                             return { status: "success" };
+
                         case 'resetJadwalMaster':
                             await docRef('jadwal', 'master').set({});
                             return { status: "success" };
@@ -1125,22 +1252,18 @@
                     }
                 };
 
-                // Run firestore call with a 4.5 second timeout barrier
                 return await withTimeout(runFirestoreCall(), 4500);
 
             } catch (error) {
                 console.warn("Koneksi Cloud Firestore Lambat / Timeout. Otomatis beralih ke Mode Simulator Lokal.", error);
-                
                 isOfflineFallbackMode = true;
                 safeSetText('ping-indicator-text', "Mode Simulator Lokal (Koneksi Terputus)");
                 const ping = document.getElementById('ping-indicator');
                 if (ping) ping.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
-                
                 return simulateFirestoreLocal(action, dataPayload);
             }
         }
 
-        // Login Submit Handler (Terhindar dari Page-Reload Sandbox)
         document.getElementById('form-login').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('login-username').value;
@@ -1185,16 +1308,25 @@
             document.getElementById('login-password').value = "";
         }
 
-        // Router View Switcher
         function switchView(viewId) {
+            const sidebar = document.getElementById('sidebar-panel');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+
             document.querySelectorAll('.content-view').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-indigo-100', 'text-indigo-800', 'font-bold'));
 
             const activeView = document.getElementById('view-' + viewId);
             if (activeView) activeView.classList.remove('hidden');
             
             const activeBtn = document.getElementById('btn-' + viewId);
-            if (activeBtn) activeBtn.classList.add('bg-slate-800', 'text-white');
+            if (activeBtn) activeBtn.classList.add('bg-indigo-100', 'text-indigo-800', 'font-bold');
+
+            const pageTitle = document.getElementById('page-title');
+            if (pageTitle) {
+                pageTitle.innerText = viewId.replace('-', ' ').toUpperCase();
+            }
 
             if (viewId === 'dashboard') renderDashboardVisuals();
             if (viewId === 'master-guru') fetchGuru();
@@ -1212,10 +1344,8 @@
             if (viewId === 'firestore-setup') loadFirestoreSetupForm();
         }
 
-        // Core App Initialization
         async function initApp() {
             updateSchoolBellAndPeriod();
-
             await initFirestore();
 
             try {
@@ -1272,6 +1402,168 @@
             }
         }
 
+        document.getElementById('form-identitas').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const payload = {
+                sekolah: document.getElementById('id-sekolah').value.trim(),
+                npsn: document.getElementById('id-npsn').value.trim(),
+                tahun: document.getElementById('id-tahun').value.trim(),
+                semester: document.getElementById('id-semester').value
+            };
+
+            Swal.fire({
+                title: 'Menyimpan Identitas...',
+                text: 'Memproses pembaruan data identitas sekolah...',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            try {
+                await fetchAPI('saveIdentitas', payload);
+                globalIdentitas = payload;
+                updateHeaderIdentitas();
+                Swal.close();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Disimpan!',
+                    text: 'Identitas Sekolah Anda telah diperbarui di database.',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } catch (err) {
+                Swal.close();
+                Swal.fire('Error', 'Gagal menyimpan identitas: ' + err.message, 'error');
+            }
+        });
+
+        function downloadTemplate(type) {
+            let headers, filename;
+            if (type === 'guru') {
+                headers = [["Kode Guru", "Nama Guru", "NIP", "Batas Beban (JP)"]];
+                filename = "Template_Master_Guru.xlsx";
+            } else if (type === 'mapel') {
+                headers = [["Kode Mapel", "Nama Mata Pelajaran", "Kelompok", "Jurusan"]];
+                filename = "Template_Master_Mapel.xlsx";
+            } else if (type === 'kelas') {
+                headers = [["Kode Rombel", "Nama Kelas", "Tingkat", "Jurusan", "Wali Kelas"]];
+                filename = "Template_Master_Rombel.xlsx";
+            } else if (type === 'beban') {
+                headers = [["Kode Guru", "Kode Mapel", "Kode Rombel", "Jumlah Jam (JP)"]];
+                filename = "Template_Alokasi_Mengajar.xlsx";
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(headers);
+            XLSX.utils.book_append_sheet(wb, ws, "Template");
+            XLSX.writeFile(wb, filename);
+        }
+
+        function triggerExcelImport(id) {
+            const input = document.getElementById(id);
+            if (input) input.click();
+        }
+
+        function handleExcelImport(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const json = XLSX.utils.sheet_to_json(sheet);
+
+                    if (json.length === 0) {
+                        Swal.fire('Gagal', 'Berkas Excel kosong atau baris data tidak terdeteksi.', 'error');
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Mengimpor Data...',
+                        text: 'Harap tunggu, merekam baris data dari Excel ke Database...',
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading(); }
+                    });
+
+                    let count = 0;
+                    if (type === 'guru') {
+                        for (let row of json) {
+                            const payload = {
+                                kode: (row["Kode Guru"] || "").toString().trim().toUpperCase(),
+                                nama: (row["Nama Guru"] || "").toString().trim(),
+                                nip: (row["NIP"] || "-").toString().trim(),
+                                kuota: parseInt(row["Batas Beban (JP)"]) || 24
+                            };
+                            if (payload.kode && payload.nama) {
+                                await fetchAPI('addGuru', payload);
+                                count++;
+                            }
+                        }
+                        await fetchGuru();
+                    } else if (type === 'mapel') {
+                        for (let row of json) {
+                            const payload = {
+                                kode: (row["Kode Mapel"] || "").toString().trim().toUpperCase(),
+                                nama: (row["Nama Mata Pelajaran"] || "").toString().trim(),
+                                kelompok: (row["Kelompok"] || "Muatan Nasional (Umum)").toString().trim(),
+                                jurusan: (row["Jurusan"] || "SEMUA").toString().trim().toUpperCase()
+                            };
+                            if (payload.kode && payload.nama) {
+                                await fetchAPI('addMapel', payload);
+                                count++;
+                            }
+                        }
+                        await fetchMapel();
+                    } else if (type === 'kelas') {
+                        for (let row of json) {
+                            const payload = {
+                                kode: (row["Kode Rombel"] || "").toString().trim().toUpperCase(),
+                                nama: (row["Nama Kelas"] || "").toString().trim(),
+                                tingkat: (row["Tingkat"] || "X").toString().trim().toUpperCase(),
+                                jurusan: (row["Jurusan"] || "TEI").toString().trim().toUpperCase(),
+                                wali: (row["Wali Kelas"] || "-").toString().trim()
+                            };
+                            if (payload.kode && payload.nama) {
+                                await fetchAPI('addKelas', payload);
+                                count++;
+                            }
+                        }
+                        await fetchKelas();
+                    } else if (type === 'beban') {
+                        for (let row of json) {
+                            const payload = {
+                                kode_guru: (row["Kode Guru"] || "").toString().trim().toUpperCase(),
+                                kode_mapel: (row["Kode Mapel"] || "").toString().trim().toUpperCase(),
+                                kode_kelas: (row["Kode Rombel"] || "").toString().trim().toUpperCase(),
+                                jumlah_jam: parseInt(row["Jumlah Jam (JP)"]) || 4
+                            };
+                            if (payload.kode_guru && payload.kode_kelas && payload.kode_mapel) {
+                                await fetchAPI('addBeban', payload);
+                                count++;
+                            }
+                        }
+                        await fetchBeban();
+                    }
+
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Impor Berhasil!',
+                        text: `Berhasil mengimpor total ${count} entri data ke database.`,
+                    });
+                    event.target.value = ''; 
+                } catch (err) {
+                    Swal.close();
+                    Swal.fire('Error', 'Gagal membaca berkas Excel: ' + err.message, 'error');
+                    event.target.value = '';
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
         function updateHeaderIdentitas() {
             safeSetText('nav-nama-sekolah', globalIdentitas.sekolah);
             safeSetText('nav-sub-identitas', `NPSN ${globalIdentitas.npsn} • Smt ${globalIdentitas.semester}`);
@@ -1279,7 +1571,6 @@
             safeSetText('cetak-tahun-semester', `Tahun Ajaran ${globalIdentitas.tahun} • Semester ${globalIdentitas.semester}`);
         }
 
-        // Dashboard Metrics & Graphs
         function renderDashboardVisuals() {
             updateDashboardMetrics();
             const now = new Date();
@@ -1325,7 +1616,6 @@
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
-                        resizeDelay: 150, 
                         plugins: {
                             legend: { display: false }
                         },
@@ -1370,7 +1660,6 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        resizeDelay: 150,
                         plugins: {
                             legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
                         }
@@ -1417,30 +1706,19 @@
             safeSetText('widget-kelas', Object.keys(globalKelasData || {}).length);
             safeSetText('widget-hari', "6 Hari Kerja");
             
-            let grandTotalCapacity = 0;
-            let gradeTotals = { X: 0, XI: 0, XII: 0 };
-            const grades = ['X', 'XI', 'XII'];
+            let totalX = 0, totalXI = 0, totalXII = 0;
+            const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
             
-            grades.forEach(g => {
-                const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
-                days.forEach(d => {
-                    const val = parseInt(configGridByGrade[g][d]) || 0;
-                    grandTotalCapacity += val;
-                    gradeTotals[g] += val;
-                });
+            days.forEach(d => {
+                totalX += parseInt(configGridByGrade.X[d]) || 0;
+                totalXI += parseInt(configGridByGrade.XI[d]) || 0;
+                totalXII += parseInt(configGridByGrade.XII[d]) || 0;
             });
 
+            const grandTotalCapacity = totalX + totalXI + totalXII;
+
             safeSetText('widget-jam', `${grandTotalCapacity} JP`);
-            
-            // Render breakdown nilai JP kecil untuk masing-masing kelas
-            const breakdownHTML = `
-                <span>X: ${gradeTotals.X} JP</span>
-                <span class="text-slate-300">|</span>
-                <span>XI: ${gradeTotals.XI} JP</span>
-                <span class="text-slate-300">|</span>
-                <span>XII: ${gradeTotals.XII} JP</span>
-            `;
-            safeSetHTML('widget-jam-breakdown', breakdownHTML);
+            safeSetText('widget-jam-breakdown', `Kls X: ${totalX} JP | Kls XI: ${totalXI} JP | Kls XII: ${totalXII} JP`);
             
             safeSetText('total-week-jp-badge', `KBM Semester Berjalan • ${grandTotalCapacity} JP Mingguan`);
             safeSetText('calendar-full-date', new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
@@ -1459,9 +1737,6 @@
             }
         }
 
-        // =========================================================================
-        // DATA OPERATIONAL MANAGERS (CRUD)
-        // =========================================================================
         async function fetchGuru() {
             safeSetHTML('table-guru-body', '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>');
             globalGuruData = await fetchAPI('getGuru') || {};
@@ -1529,7 +1804,6 @@
             }
         }
 
-        // CRUD Mapel
         async function fetchMapel() {
             safeSetHTML('table-mapel-body', '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>');
             globalMapelData = await fetchAPI('getMapel') || {};
@@ -1563,7 +1837,7 @@
                     <input id="swal-mapel-nama" class="swal2-input" placeholder="Nama Mata Pelajaran">
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Kelompok Mapel</label>
-                        <select id="swal-mapel-kelompok" class="w-full p-2.5 border rounded-lg text-xs font-semibold">
+                        <select id="swal-mapel-kelompok" class="w-full p-2.5 border rounded-lg text-xs font-semibold bg-white">
                             <option value="Muatan Nasional (Umum)">Muatan Nasional (Umum)</option>
                             <option value="Kelompok Peminatan">Kelompok Peminatan</option>
                             <option value="Produktif Kejuruan">Produktif Kejuruan</option>
@@ -1571,7 +1845,7 @@
                     </div>
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Rumpun Jurusan</label>
-                        <select id="swal-mapel-jurusan" class="w-full p-2.5 border rounded-lg text-xs font-semibold">
+                        <select id="swal-mapel-jurusan" class="w-full p-2.5 border rounded-lg text-xs font-semibold bg-white">
                             <option value="SEMUA">Semua Jurusan</option>
                             <option value="TEI">Teknik Elektronika Industri (TEI)</option>
                             <option value="TKJ">Teknik Komputer & Jaringan (TKJ)</option>
@@ -1610,7 +1884,6 @@
             }
         }
 
-        // CRUD Rombel
         async function fetchKelas() {
             safeSetHTML('table-kelas-body', '<tr><td colspan="6" class="text-center py-8 text-slate-400">Memuat data...</td></tr>');
             globalKelasData = await fetchAPI('getKelas') || {};
@@ -1654,7 +1927,7 @@
                     ${datalistHtml}
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tingkat Kelas</label>
-                        <select id="swal-kelas-tingkat" class="w-full p-2.5 border rounded-lg text-xs font-semibold">
+                        <select id="swal-kelas-tingkat" class="w-full p-2.5 border rounded-lg text-xs font-semibold bg-white">
                             <option value="X">X (Sepuluh)</option>
                             <option value="XI">XI (Sebelas)</option>
                             <option value="XII">XII (Duabelas)</option>
@@ -1662,7 +1935,7 @@
                     </div>
                     <div class="text-left max-w-xs mx-auto mt-3">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Jurusan Kelas</label>
-                        <select id="swal-kelas-jurusan" class="w-full p-2.5 border rounded-lg text-xs font-semibold">
+                        <select id="swal-kelas-jurusan" class="w-full p-2.5 border rounded-lg text-xs font-semibold bg-white">
                             <option value="TEI">Teknik Elektronika Industri (TEI)</option>
                             <option value="TKJ">Teknik Komputer & Jaringan (TKJ)</option>
                         </select>
@@ -1701,11 +1974,10 @@
             }
         }
 
-        // Jam Kelas Config
         async function fetchJamKelasConfig() {
             const selectKelas = document.getElementById('select-kelas-jam');
             if (selectKelas) {
-                selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                selectKelas.innerHTML = '<option value="">-- Pilih Rombel --</option>';
                 globalKelasData = await fetchAPI('getKelas') || {};
                 globalBebanData = await fetchAPI('getBeban') || {};
 
@@ -1733,7 +2005,7 @@
 
             let rombelDetail = null;
             for (let key in globalKelasData) {
-                if (globalKelasData[key].kode === kls) {
+                if (globalKelasData[key].text === kls || globalKelasData[key].kode === kls) {
                     rombelDetail = globalKelasData[key];
                     break;
                 }
@@ -1766,7 +2038,7 @@
                                 <select class="px-2 py-1.5 border rounded text-[10px] bg-white font-semibold flex-1 guru-select-mapped" data-mapel="${m.kode}">
                                     ${getGuruOptions(b.kode_guru)}
                                 </select>
-                                <input type="number" min="1" max="12" class="w-14 px-2 py-1 border rounded text-center font-bold text-slate-800 jp-input-mapped" value="${b.jumlah_jam || 0}">
+                                <input type="number" min="1" max="12" class="w-14 px-2 py-1 border rounded text-center font-bold text-slate-800 jp-input-mapped bg-white" value="${b.jumlah_jam || 0}">
                                 <span class="text-[10px] text-slate-500 font-bold">JP</span>
                                 <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-800 text-[10px] font-bold px-1.5">✕</button>
                             </div>
@@ -1777,8 +2049,8 @@
 
                 if (container) {
                     container.innerHTML += `
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200" id="box-mapel-${m.kode}">
-                            <div class="flex justify-between items-center border-b pb-2 mb-2">
+                        <div class="p-4 bg-indigo-50/30 rounded-xl border border-indigo-100" id="box-mapel-${m.kode}">
+                            <div class="flex justify-between items-center border-b border-indigo-100 pb-2 mb-2">
                                 <div>
                                     <span class="font-extrabold text-slate-800 block text-xs">${m.nama}</span>
                                     <span class="text-[10px] font-semibold text-indigo-900 monospace-bold">${m.kode} (${m.kelompok})</span>
@@ -1817,7 +2089,7 @@
                 <select class="px-2 py-1.5 border rounded text-[10px] bg-white font-semibold flex-1 guru-select-mapped" data-mapel="${mapelKode}">
                     ${getGuruOptions("")}
                 </select>
-                <input type="number" min="1" max="12" class="w-14 px-2 py-1 border rounded text-center font-bold text-slate-800 jp-input-mapped" value="4">
+                <input type="number" min="1" max="12" class="w-14 px-2 py-1 border rounded text-center font-bold text-slate-800 jp-input-mapped bg-white" value="4">
                 <span class="text-[10px] text-slate-500 font-bold">JP</span>
                 <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-800 text-[10px] font-bold px-1.5">✕</button>
             `;
@@ -1871,12 +2143,15 @@
             renderJamKelasConfig();
         }
 
-        // Beban Checklist & Allocations
         window.bulkCheckRombel = function(tingkat) {
             const checkboxes = document.querySelectorAll('input[name="chk-beban-rombel"]');
             checkboxes.forEach(cb => {
-                if (cb.getAttribute('data-tingkat') === tingkat) {
-                    cb.checked = true;
+                if (tingkat === 'NONE') {
+                    cb.checked = false;
+                } else {
+                    if (cb.getAttribute('data-tingkat') === tingkat) {
+                        cb.checked = true;
+                    }
                 }
             });
         };
@@ -1941,7 +2216,7 @@
                     <div class="text-left space-y-4 px-2 text-xs">
                         <div>
                             <label class="block font-bold text-slate-600 uppercase mb-1">1. Pilih Guru Mengajar</label>
-                            <select id="swal-bulk-guru" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-600 font-semibold">${guruOptions}</select>
+                            <select id="swal-bulk-guru" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-600 font-semibold bg-white">${guruOptions}</select>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -1953,9 +2228,10 @@
                             <div>
                                 <label class="block font-bold text-slate-600 uppercase mb-1">3. Checklist Rombel</label>
                                 <div class="flex flex-wrap gap-1 mb-1.5">
-                                    <button type="button" onclick="window.bulkCheckRombel('X')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
-                                    <button type="button" onclick="window.bulkCheckRombel('XI')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
-                                    <button type="button" onclick="window.bulkCheckRombel('XII')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
+                                    <button type="button" onclick="bulkCheckRombel('X')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua X</button>
+                                    <button type="button" onclick="bulkCheckRombel('XI')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XI</button>
+                                    <button type="button" onclick="bulkCheckRombel('XII')" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[9px] font-bold py-1 px-1.5 rounded transition">Semua XII</button>
+                                    <button type="button" onclick="bulkCheckRombel('NONE')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[9px] font-bold py-1 px-1.5 rounded transition">Kosong</button>
                                 </div>
                                 <div class="border rounded-lg p-2.5 h-36 overflow-y-auto bg-slate-50 space-y-1">
                                     ${rombelChecklist}
@@ -1987,13 +2263,13 @@
             formStep1.rombels.forEach(r => {
                 formStep1.mapels.forEach(m => {
                     inputsJpRow += `
-                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between p-3 bg-indigo-50/20 rounded-xl border border-indigo-100">
                             <div>
                                 <span class="font-bold text-slate-800 block text-xs">Rombel: ${r}</span>
                                 <span class="text-[10px] font-semibold text-indigo-900 monospace-bold">${m} - ${getMapelNameByKode(m)}</span>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <input type="number" min="1" max="12" id="bulk-jp-${r}-${m}" value="4" class="w-16 p-1.5 border rounded-lg text-center font-bold text-slate-800 focus:ring-2 focus:ring-indigo-600">
+                                <input type="number" min="1" max="12" id="bulk-jp-${r}-${m}" value="4" class="w-16 p-1.5 border rounded-lg text-center font-bold text-slate-800 focus:ring-2 focus:ring-indigo-600 bg-white">
                                 <span class="text-[10px] font-semibold text-slate-500">JP</span>
                             </div>
                         </div>
@@ -2031,8 +2307,8 @@
 
             if (formStep2) {
                 Swal.showLoading();
-                const addPromises = formStep2.map(record => fetchAPI('addBeban', record));
-                await Promise.all(addPromises);
+                const uploadPromises = formStep2.map(record => fetchAPI('addBeban', record));
+                await Promise.all(uploadPromises);
                 Swal.close();
                 fetchBeban();
                 Swal.fire('Berhasil!', 'Seluruh beban mengajar guru berhasil diplot.', 'success');
@@ -2052,7 +2328,6 @@
             }
         }
 
-        // Piket Guru
         async function fetchPiket() {
             safeSetHTML('table-piket-body', '<tr><td colspan="3" class="text-center py-8 text-slate-400">Memuat data...</td></tr>');
             globalPiketData = await fetchAPI('getPiket') || {};
@@ -2096,9 +2371,9 @@
                 html: `
                     <div class="text-left space-y-3 px-2 text-xs">
                         <label class="block font-bold text-slate-600 uppercase">1. Pilih Hari Tugas Piket</label>
-                        <select id="swal-piket-hari" class="w-full p-2 border rounded-lg text-xs font-semibold">${daysOptions}</select>
+                        <select id="swal-piket-hari" class="w-full p-2 border rounded-lg text-xs font-semibold bg-white">${daysOptions}</select>
                         <label class="block font-bold text-slate-600 uppercase mt-2">2. Pilih Nama Guru</label>
-                        <select id="swal-piket-guru" class="w-full p-2 border rounded-lg text-xs font-semibold">${guruOptions}</select>
+                        <select id="swal-piket-guru" class="w-full p-2 border rounded-lg text-xs font-semibold bg-white">${guruOptions}</select>
                     </div>
                 `,
                 focusConfirm: false,
@@ -2131,7 +2406,6 @@
             }
         }
 
-        // Jadwal Master Rendering
         async function loadJadwalView() {
             const selectJadwal = document.getElementById('select-kelas-jadwal');
             if (selectJadwal) {
@@ -2183,7 +2457,7 @@
                 const clock = TIMESLOTS[jam];
                 html += `<tr class="hover:bg-slate-50 transition duration-150">
                     <td class="border border-slate-200 py-3 font-bold bg-slate-100 text-slate-700">${jam}</td>
-                    <td class="border border-slate-200 py-3 font-medium text-[11px] text-slate-600 bg-slate-50">${clock.start} - ${clock.end}</td>`;
+                    <td class="border border-slate-200 py-3 font-medium text-[10px] text-slate-600 bg-slate-50">${clock.start} - ${clock.end}</td>`;
                 
                 days.forEach(hari => {
                     const maxJamHariIni = gradeGrid[hari] || 0;
@@ -2285,7 +2559,6 @@
             renderClashTracker();
         }
 
-        // AI Auto Scheduler
         async function runAutoSchedulerSistem() {
             const result = await Swal.fire({
                 title: 'Jalankan AI Auto-Scheduler?',
@@ -2387,7 +2660,6 @@
 
             globalJadwalData = tempJadwal;
             
-            // Menyimpan seluruh matriks jadwal dalam 1 kali request (menghindari ratusan request berulang)
             await fetchAPI('saveBulkJadwalMaster', tempJadwal);
 
             Swal.close();
@@ -2396,7 +2668,6 @@
             renderJadwalGrid();
         }
 
-        // Clash Tracker
         function renderClashTracker() {
             const tbody = document.getElementById('table-clash-body');
             const alertText = document.getElementById('alert-status-text');
@@ -2460,7 +2731,6 @@
             }
         }
 
-        // Absensi Hari Ini
         function renderAbsensiHariIni() {
             const tbody = document.getElementById('table-absensi-hari-ini-body');
             const todayLabel = document.getElementById('current-absensi-date');
@@ -2531,7 +2801,6 @@
             renderAbsensiHariIni();
         }
 
-        // Jurnal Kelas
         async function loadJurnalView() {
             const selectJurnal = document.getElementById('jurnal-select-kelas');
             if (selectJurnal) {
@@ -2585,19 +2854,19 @@
                         
                         foundSchedule = true;
                         html += `
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-slate-700">
+                            <div class="p-4 bg-indigo-50/20 rounded-xl border border-indigo-100 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-semibold text-slate-700">
                                 <div>
                                     <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded">Jam Ke: ${jam}</span>
                                     <h5 class="font-extrabold mt-1 text-slate-800">${getGuruNameByKode(guru)} (${guru})</h5>
                                     <p class="text-slate-500">${getMapelNameByKode(mapel)}</p>
                                 </div>
                                 <div class="col-span-2 space-y-2">
-                                    <textarea id="jurnal-materi-${jam}" placeholder="Tuliskan materi ajar..." class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 text-xs font-medium"></textarea>
+                                    <textarea id="jurnal-materi-${jam}" placeholder="Tuliskan materi ajar..." class="w-full p-2 border border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 text-xs font-medium bg-white"></textarea>
                                     <div class="flex items-center space-x-3 text-[10px]">
                                         <span>Absensi Siswa:</span>
-                                        <input type="number" id="jurnal-sakit-${jam}" placeholder="Sakit" class="w-12 p-1 border rounded text-center">
-                                        <input type="number" id="jurnal-izin-${jam}" placeholder="Izin" class="w-12 p-1 border rounded text-center">
-                                        <input type="number" id="jurnal-alpa-${jam}" placeholder="Alpa" class="w-12 p-1 border rounded text-center">
+                                        <input type="number" id="jurnal-sakit-${jam}" placeholder="Sakit" class="w-12 p-1 border rounded text-center bg-white">
+                                        <input type="number" id="jurnal-izin-${jam}" placeholder="Izin" class="w-12 p-1 border rounded text-center bg-white">
+                                        <input type="number" id="jurnal-alpa-${jam}" placeholder="Alpa" class="w-12 p-1 border rounded text-center bg-white">
                                     </div>
                                 </div>
                             </div>
@@ -2660,7 +2929,6 @@
             Swal.fire('Sukses!', 'Jurnal harian pembelajaran telah diarsip ke database.', 'success');
         }
 
-        // Rekap Kehadiran Guru
         function renderRekapKehadiranGuru() {
             const selectRekap = document.getElementById('select-tipe-rekap');
             if (!selectRekap) return;
@@ -2687,7 +2955,7 @@
                     <th class="py-4 px-6">Nama Guru</th>
                     <th class="py-4 px-6 text-center text-emerald-600">Total Hadir (JP)</th>
                     <th class="py-4 px-6 text-center text-amber-500">Total Izin (JP)</th>
-                    <th class="py-4 px-6 text-center text-red-600">Total Alfa / Absen (JP)</th>
+                    <th class="py-4 px-6 text-center text-red-600">Total Alfa (JP)</th>
                     <th class="py-4 px-6 text-center">Persentase Kehadiran</th>
                 `;
             }
@@ -2731,33 +2999,23 @@
                     guruStats[globalGuruData[key].kode] = { hadir: 0, izin: 0, alpa: 0 };
                 }
 
-                const now = new Date();
-                let limitDays = 180; 
-                if (tipe === 'mingguan') limitDays = 7;
-                if (tipe === 'bulanan') limitDays = 30;
-
-                const cutOffDate = new Date();
-                cutOffDate.setDate(now.getDate() - limitDays);
-
                 for (let dateStr in globalAbsensiLogs) {
                     const logDate = new Date(dateStr);
-                    if (logDate >= cutOffDate) {
-                        const dayLogs = globalAbsensiLogs[dateStr];
-                        const logDayName = getHariIndo(logDate.getDay());
-                        
-                        for (let path in dayLogs) {
-                            const parts = path.split('_');
-                            const kelas = parts[0];
-                            const jam = parts[1];
-                            const status = dayLogs[path];
+                    const dayLogs = globalAbsensiLogs[dateStr];
+                    const logDayName = getHariIndo(logDate.getDay());
+                    
+                    for (let path in dayLogs) {
+                        const parts = path.split('_');
+                        const kelas = parts[0];
+                        const jam = parts[1];
+                        const status = dayLogs[path];
 
-                            const guru = (globalJadwalData[logDayName] && globalJadwalData[logDayName][jam] && globalJadwalData[logDayName][jam][kelas]) ? globalJadwalData[logDayName][jam][kelas].kode_guru : null;
-                            
-                            if (guru && guruStats[guru]) {
-                                if (status === 'hadir') guruStats[guru].hadir++;
-                                if (status === 'izin') guruStats[guru].izin++;
-                                if (status === 'alpa') guruStats[guru].alpa++;
-                            }
+                        const guru = (globalJadwalData[logDayName] && globalJadwalData[logDayName][jam] && globalJadwalData[logDayName][jam][kelas]) ? globalJadwalData[logDayName][jam][kelas].kode_guru : null;
+                        
+                        if (guru && guruStats[guru]) {
+                            if (status === 'hadir') guruStats[guru].hadir++;
+                            if (status === 'izin') guruStats[guru].izin++;
+                            if (status === 'alpa') guruStats[guru].alpa++;
                         }
                     }
                 }
@@ -2783,7 +3041,6 @@
             }
         }
 
-        // Cetak / PDF Visualizer
         function loadCetakView() {
             toggleCetakOptions();
         }
@@ -2798,11 +3055,6 @@
                     filterSelect.disabled = false;
                     for (let key in globalKelasData) {
                         filterSelect.innerHTML += `<option value="${globalKelasData[key].kode}">${globalKelasData[key].nama} (${globalKelasData[key].kode})</option>`;
-                    }
-                } else if (tipe === 'guru') {
-                    filterSelect.disabled = false;
-                    for (let key in globalGuruData) {
-                        filterSelect.innerHTML += `<option value="${globalGuruData[key].kode}">${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>`;
                     }
                 } else {
                     filterSelect.innerHTML += `<option value="ALL" selected>Seluruh Kelas (A3/Landscape)</option>`;
@@ -2881,12 +3133,12 @@
                 html += `</tbody></table>`;
                 if (wrapper) wrapper.innerHTML = html;
 
-            } else if (tipe === 'all') {
+            } else {
                 if (subHeader) subHeader.innerText = "DOKUMEN MASTER MATRIKS JADWAL PELAJARAN SELURUH KELAS";
                 
                 let html = `<div class="overflow-x-auto"><table id="tabel-preview-cetak" class="w-full text-center border-collapse border border-slate-300 text-[10px]">
                     <thead>
-                        <tr class="bg-slate-800 text-white font-bold">
+                        <tr class="bg-indigo-600 text-white font-bold">
                             <th class="border border-slate-300 py-3 px-2 w-24">Hari</th>
                             <th class="border border-slate-300 py-3 px-2 w-12">Jam</th>`;
                 
@@ -2967,7 +3219,6 @@
             });
         }
 
-        // Config Grid
         async function saveGridConfig() {
             configGridByGrade = {
                 X: {
@@ -3002,35 +3253,6 @@
             
             updateDashboardMetrics();
             Swal.fire('Sukses!', 'Konfigurasi Grid Kerja per Tingkat diperbarui.', 'success');
-        }
-
-        // Clock Period and School Bell Calculator
-        function updateSchoolBellAndPeriod() {
-            const now = new Date();
-            const timeStr = now.toTimeString().split(' ')[0].substring(0, 5); // Format: "HH:MM"
-            const dayIndex = now.getDay();
-            const hariName = getHariIndo(dayIndex);
-            
-            if (hariName === 'minggu') {
-                safeSetText('school-bell-text', "KBM Libur / Akhir Pekan");
-                return;
-            }
-
-            let currentJP = null;
-            for (let jp in TIMESLOTS) {
-                const start = TIMESLOTS[jp].start;
-                const end = TIMESLOTS[jp].end;
-                if (timeStr >= start && timeStr < end) {
-                    currentJP = jp;
-                    break;
-                }
-            }
-
-            if (currentJP) {
-                safeSetText('school-bell-text', `KBM Berjalan • JP Ke-${currentJP} (${TIMESLOTS[currentJP].start}-${TIMESLOTS[currentJP].end})`);
-            } else {
-                safeSetText('school-bell-text', "Status KBM: Istirahat / Selesai");
-            }
         }
 
         // ================= HELPER UTILITY FUNCTIONS =================
@@ -3071,6 +3293,7 @@
 
         function safeSetText(id, text) {
             const el = document.getElementById(id);
+            if (el) el.text = text;
             if (el) el.innerText = text;
             return el;
         }
@@ -3085,9 +3308,6 @@
             return el;
         }
 
-        // =========================================================================
-        // MOCK STORAGE FALLBACK SYSTEM
-        // =========================================================================
         function simulateFirestoreLocal(action, data) {
             if (!localStorage.getItem('db_mock_identitas')) {
                 const initId = { sekolah: "SmartJadwal Pelajaran SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
@@ -3268,9 +3488,6 @@
             return {};
         }
 
-        // =========================================================================
-        // SINKRONISASI MANAJER KREDENSIAL FIRESTORE
-        // =========================================================================
         document.getElementById('form-firestore-config').addEventListener('submit', function(e) {
             e.preventDefault();
             const config = {
@@ -3320,27 +3537,6 @@
             clBtn.addEventListener('click', window.clearFirestoreConfig);
         }
 
-        // Auto Load Session
-        const savedRole = sessionStorage.getItem('user_role');
-        if (savedRole) {
-            currentUserRole = savedRole;
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-layout').classList.remove('hidden');
-
-            if (currentUserRole === 'kepsek') {
-                document.querySelectorAll('.role-admin').forEach(el => el.classList.add('hidden'));
-                safeSetText('status-role-badge', "Kepala Sekolah (Monitor)");
-                const badge = document.getElementById('status-role-badge');
-                if (badge) badge.className = "text-xs bg-purple-50 text-purple-800 font-bold px-3 py-1.5 rounded-full border border-purple-100";
-            } else {
-                document.querySelectorAll('.role-admin').forEach(el => el.classList.remove('hidden'));
-                safeSetText('status-role-badge', "Admin Kurikulum");
-                const badge = document.getElementById('status-role-badge');
-                if (badge) badge.className = "text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100";
-            }
-        }
-
-        // Trigger on load
         window.onload = function() {
             initApp();
         };
