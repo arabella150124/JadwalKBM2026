@@ -16,6 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+    <!-- FIREBASE COMPAT SDKs (High Compatibility Edition) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -851,11 +856,7 @@
         </main>
     </div>
 
-    <script type="module">
-        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+    <script>
         // =========================================================================
         // MITRA CONFIGURATION (GAS & CLOUD FIREBASE INTEGRATION BRIDGE)
         // =========================================================================
@@ -864,263 +865,22 @@
         // =========================================================================
         // HARDCODED FIREBASE CONFIGURATION (UNTUK AUTO-CONNECT BANYAK PERANGKAT)
         // =========================================================================
-        // Salin dan ganti isian lengkap di bawah ini dengan kredensial Firebase Anda!
-        // Browser/perangkat lain yang membuka file ini akan langsung otomatis terhubung.
-        const DEFAULT_FIREBASE_CONFIG = {
-            apiKey: "AIzaSyC8wrh1lQL24ROsFtLDcTOv_GQVufrXM54", // Ganti dengan API Key milik Anda
-            authDomain: "rosterku-28c31.firebaseapp.com",
-            projectId: "rosterku-28c3",
-            storageBucket: "rosterku-28c31.firebasestorage.app",
-            messagingSenderId: "599317639799",
-            appId: "1:599317639799:web:b94dfd00b16440362e0c72" // Ganti dengan App ID milik Anda
+            const DEFAULT_FIREBASE_CONFIG = {
+              apiKey: "AIzaSyC8wrh1lQL24ROsFtLDcTOv_GQVufrXM54",
+              authDomain: "rosterku-28c31.firebaseapp.com",
+              projectId: "rosterku-28c31",
+              storageBucket: "rosterku-28c31.firebasestorage.app",
+              messagingSenderId: "599317639799",
+              appId: "1:599317639799:web:b94dfd00b16440362e0c72",
+            
         };
 
-        // Dynamic App ID assignment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-smartjadwal';
+        const appId = 'default-smartjadwal';
         let db = null;
         let auth = null;
         let isOfflineFallbackMode = true;
 
-        // Firebase Initialization Bridge
-        async function initFirestore() {
-            try {
-                let savedConfig = localStorage.getItem('db_firestore_config');
-                let firebaseConfig = null;
-
-                // Priority 1: Environment variable
-                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                    firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
-                } 
-                // Priority 2: User local saved config (Menu 2)
-                else if (savedConfig) {
-                    firebaseConfig = JSON.parse(savedConfig);
-                }
-                // Priority 3: Hardcoded config di dalam file index.html
-                else if (DEFAULT_FIREBASE_CONFIG && DEFAULT_FIREBASE_CONFIG.projectId && DEFAULT_FIREBASE_CONFIG.apiKey !== "MASUKKAN_API_KEY_LENGKAP_ANDA") {
-                    firebaseConfig = DEFAULT_FIREBASE_CONFIG;
-                }
-
-                if (firebaseConfig && firebaseConfig.projectId) {
-                    let app;
-                    if (getApps().length === 0) {
-                        app = initializeApp(firebaseConfig);
-                    } else {
-                        app = getApps()[0];
-                    }
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-
-                    // Authentication Before Queries (Firestore RULE 3)
-                    let user = null;
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        try {
-                            const creds = await signInWithCustomToken(auth, __initial_auth_token);
-                            user = creds.user;
-                        } catch (e) {
-                            console.warn("Custom token auth failed, logging in anonymously...", e);
-                            const creds = await signInAnonymously(auth);
-                            user = creds.user;
-                        }
-                    } else {
-                        const creds = await signInAnonymously(auth);
-                        user = creds.user;
-                    }
-
-                    if (user) {
-                        isOfflineFallbackMode = false;
-                        safeSetText('ping-indicator-text', "Cloud Firestore Connected");
-                        safeSetText('sync-mode-badge', "FIRESTORE CLOUD ACTIVE");
-                        const ping = document.getElementById('ping-indicator');
-                        if (ping) ping.className = "w-2 h-2 bg-emerald-500 rounded-full animate-ping";
-                        return true;
-                    }
-                }
-            } catch (e) {
-                console.error("Gagal menginisialisasi Cloud Firestore:", e);
-            }
-            
-            // Fallback: local memory storage
-            isOfflineFallbackMode = true;
-            safeSetText('ping-indicator-text', "Mode Simulator Lokal");
-            safeSetText('sync-mode-badge', "LOCAL SIMULATOR");
-            const ping = document.getElementById('ping-indicator');
-            if (ping) ping.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
-            return false;
-        }
-
-        // Firestore Strict Path Mapping & CRUD Engine (Firestore RULE 1 & 2)
-        async function fetchAPI(action, dataPayload = null) {
-            // RUTE UTAMA: JIKA GAS_URL diatur dan valid, gunakan rute GAS API Middleware
-            if (typeof GAS_URL !== 'undefined' && GAS_URL && GAS_URL !== "URL_HASIL_DEPLOY_GAS_ANDA" && GAS_URL.trim() !== "") {
-                try {
-                    const response = await fetch(GAS_URL, {
-                        method: "POST",
-                        redirect: "follow",
-                        headers: { "Content-Type": "text/plain" },
-                        body: JSON.stringify({ action: action, data: dataPayload })
-                    });
-                    const resJson = await response.json();
-                    if (resJson.status === "success") {
-                        return resJson.data;
-                    } else {
-                        throw new Error(resJson.message || "Gagal memproses query via GAS API.");
-                    }
-                } catch (gasError) {
-                    console.warn("GAS API gagal merespon, beralih ke Direct SDK Firestore / Simulator...", gasError);
-                }
-            }
-
-            // RUTE CADANGAN: SDK Browser Langsung ke Firestore
-            if (isOfflineFallbackMode) {
-                return simulateFirestoreLocal(action, dataPayload);
-            }
-
-            try {
-                // strict collection path reference builders
-                const metaDocRef = (id) => doc(db, 'artifacts', appId, 'public', 'data', 'metadata', id);
-                const colRef = (name) => collection(db, 'artifacts', appId, 'public', 'data', name);
-                const docRef = (name, id) => doc(db, 'artifacts', appId, 'public', 'data', name, id);
-
-                switch(action) {
-                    case 'getIdentitas':
-                        const idDoc = await getDoc(metaDocRef('identitas'));
-                        return idDoc.exists() ? idDoc.data() : null;
-                    case 'saveIdentitas':
-                        await setDoc(metaDocRef('identitas'), dataPayload);
-                        return dataPayload;
-
-                    case 'getGridConfig':
-                        const gridDoc = await getDoc(metaDocRef('grid_config'));
-                        return gridDoc.exists() ? gridDoc.data() : null;
-                    case 'saveGridConfig':
-                        await setDoc(metaDocRef('grid_config'), dataPayload);
-                        return dataPayload;
-
-                    case 'getGuru':
-                        const guruSnap = await getDocs(colRef('guru'));
-                        let guruObj = {};
-                        guruSnap.forEach(doc => { guruObj[doc.id] = doc.data(); });
-                        return guruObj;
-                    case 'addGuru':
-                        const newGuruDoc = await addDoc(colRef('guru'), dataPayload);
-                        return newGuruDoc.id;
-                    case 'deleteGuru':
-                        await deleteDoc(docRef('guru', dataPayload));
-                        return { status: "success" };
-
-                    case 'getMapel':
-                        const mapelSnap = await getDocs(colRef('mapel'));
-                        let mapelObj = {};
-                        mapelSnap.forEach(doc => { mapelObj[doc.id] = doc.data(); });
-                        return mapelObj;
-                    case 'addMapel':
-                        const newMapelDoc = await addDoc(colRef('mapel'), dataPayload);
-                        return newMapelDoc.id;
-                    case 'deleteMapel':
-                        await deleteDoc(docRef('mapel', dataPayload));
-                        return { status: "success" };
-
-                    case 'getKelas':
-                        const kelasSnap = await getDocs(colRef('kelas'));
-                        let kelasObj = {};
-                        kelasSnap.forEach(doc => { kelasObj[doc.id] = doc.data(); });
-                        return kelasObj;
-                    case 'addKelas':
-                        const newKelasDoc = await addDoc(colRef('kelas'), dataPayload);
-                        return newKelasDoc.id;
-                    case 'deleteKelas':
-                        await deleteDoc(docRef('kelas', dataPayload));
-                        return { status: "success" };
-
-                    case 'getBeban':
-                        const bebanSnap = await getDocs(colRef('beban'));
-                        let bebanObj = {};
-                        bebanSnap.forEach(doc => { bebanObj[doc.id] = doc.data(); });
-                        return bebanObj;
-                    case 'addBeban':
-                        const newBebanDoc = await addDoc(colRef('beban'), dataPayload);
-                        return newBebanDoc.id;
-                    case 'deleteBeban':
-                        await deleteDoc(docRef('beban', dataPayload));
-                        return { status: "success" };
-
-                    case 'getPiket':
-                        const piketSnap = await getDocs(colRef('piket'));
-                        let piketObj = {};
-                        piketSnap.forEach(doc => { piketObj[doc.id] = doc.data(); });
-                        return piketObj;
-                    case 'addPiket':
-                        const newPiketDoc = await addDoc(colRef('piket'), dataPayload);
-                        return newPiketDoc.id;
-                    case 'deletePiket':
-                        await deleteDoc(docRef('piket', dataPayload));
-                        return { status: "success" };
-
-                    case 'getJadwalMaster':
-                        const jDoc = await getDoc(docRef('jadwal', 'master'));
-                        return jDoc.exists() ? jDoc.data() : {};
-                    case 'saveJadwalMaster':
-                        const parts = dataPayload.path.split('/');
-                        const hari = parts[0], jam = parts[1], kelas = parts[2];
-                        const nestedDocRef = docRef('jadwal', 'master');
-                        
-                        // Strict validation & incremental update on JSON matrix
-                        let masterSched = {};
-                        const currentDoc = await getDoc(nestedDocRef);
-                        if (currentDoc.exists()) {
-                            masterSched = currentDoc.data();
-                        }
-                        if (!masterSched[hari]) masterSched[hari] = {};
-                        if (!masterSched[hari][jam]) masterSched[hari][jam] = {};
-                        
-                        if (dataPayload.value === "") {
-                            delete masterSched[hari][jam][kelas];
-                        } else {
-                            masterSched[hari][jam][kelas] = { kode_guru: dataPayload.value };
-                        }
-                        await setDoc(nestedDocRef, masterSched);
-                        return { status: "success" };
-                    case 'resetJadwalMaster':
-                        await setDoc(docRef('jadwal', 'master'), {});
-                        return { status: "success" };
-
-                    case 'getJurnal':
-                        const jSnap = await getDocs(colRef('jurnal'));
-                        let jArr = [];
-                        jSnap.forEach(doc => { jArr.push(doc.data()); });
-                        return jArr;
-                    case 'addJurnal':
-                        await addDoc(colRef('jurnal'), dataPayload);
-                        return { status: "success" };
-
-                    case 'getAbsensi':
-                        const absSnap = await getDocs(colRef('absensi'));
-                        let absObj = {};
-                        absSnap.forEach(doc => { absObj[doc.id] = doc.data(); });
-                        return absObj;
-                    case 'saveAbsensi':
-                        const keyDate = dataPayload.path.split('/')[0];
-                        const pathLog = dataPayload.path.split('/')[1];
-                        const absDocRef = docRef('absensi', keyDate);
-                        
-                        let currentAbs = {};
-                        const absDocSnap = await getDoc(absDocRef);
-                        if (absDocSnap.exists()) {
-                            absDocSnap.data();
-                        }
-                        currentAbs[pathLog] = dataPayload.value;
-                        await setDoc(absDocRef, currentAbs);
-                        return { status: "success" };
-                }
-            } catch (error) {
-                console.warn("Firestore Operation Failure. Switching to fallback memory local.", error);
-                return simulateFirestoreLocal(action, dataPayload);
-            }
-        }
-
-        // =========================================================================
-        // MAIN APPLICATION PROCESSORS
-        // =========================================================================
+        // States Terpusat
         let globalIdentitas = { sekolah: "SmartJadwal Pelajaran SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
         let globalGuruData = {};
         let globalMapelData = {};
@@ -1156,6 +916,268 @@
         let chartJJMInstance = null;
         let chartAbsensiInstance = null;
 
+        // HELPER: Promise Timeout wrapper to prevent hanging on Firestore network loss (Rule 2)
+        function withTimeout(promise, ms = 4500) {
+            return new Promise((resolve, reject) => {
+                const timer = setTimeout(() => {
+                    reject(new Error("TIMEOUT"));
+                }, ms);
+                promise.then(
+                    (res) => { clearTimeout(timer); resolve(res); },
+                    (err) => { clearTimeout(timer); reject(err); }
+                );
+            });
+        }
+
+        // Firebase Initialization Bridge Compat Edition
+        async function initFirestore() {
+            try {
+                let savedConfig = localStorage.getItem('db_firestore_config');
+                let firebaseConfig = null;
+
+                if (savedConfig) {
+                    firebaseConfig = JSON.parse(savedConfig);
+                } else if (DEFAULT_FIREBASE_CONFIG && DEFAULT_FIREBASE_CONFIG.projectId && DEFAULT_FIREBASE_CONFIG.apiKey !== "MASUKKAN_API_KEY_LENGKAP_ANDA") {
+                    firebaseConfig = DEFAULT_FIREBASE_CONFIG;
+                }
+
+                if (firebaseConfig && firebaseConfig.projectId) {
+                    if (firebase.apps.length === 0) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    db = firebase.firestore();
+                    auth = firebase.auth();
+
+                    // Anon Sign In wrapped in Timeout to prevent hanging
+                    const signInPromise = auth.signInAnonymously();
+                    const creds = await withTimeout(signInPromise, 4500);
+                    if (creds.user) {
+                        isOfflineFallbackMode = false;
+                        safeSetText('ping-indicator-text', "Cloud Firestore Connected");
+                        safeSetText('sync-mode-badge', "FIRESTORE CLOUD ACTIVE");
+                        const ping = document.getElementById('ping-indicator');
+                        if (ping) ping.className = "w-2 h-2 bg-emerald-500 rounded-full animate-ping";
+                        return true;
+                    }
+                }
+            } catch (e) {
+                console.warn("Inisialisasi Firestore gagal atau timeout. Berpindah ke Mode Simulator Lokal.", e);
+            }
+            
+            isOfflineFallbackMode = true;
+            safeSetText('ping-indicator-text', "Mode Simulator Lokal");
+            safeSetText('sync-mode-badge', "LOCAL SIMULATOR");
+            const ping = document.getElementById('ping-indicator');
+            if (ping) ping.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
+            return false;
+        }
+
+        // Firestore Strict Path Mapping (STRICT RULE 1 & 2 Compat with Timeout Guard)
+        async function fetchAPI(action, dataPayload = null) {
+            if (isOfflineFallbackMode) {
+                return simulateFirestoreLocal(action, dataPayload);
+            }
+
+            try {
+                const runFirestoreCall = async () => {
+                    const metaDocRef = (id) => db.collection('artifacts').doc(appId).collection('public').doc('data').collection('metadata').doc(id);
+                    const colRef = (name) => db.collection('artifacts').doc(appId).collection('public').doc('data').collection(name);
+                    const docRef = (name, id) => db.collection('artifacts').doc(appId).collection('public').doc('data').collection(name).doc(id);
+
+                    switch(action) {
+                        case 'getIdentitas':
+                            const idDoc = await metaDocRef('identitas').get();
+                            return idDoc.exists ? idDoc.data() : null;
+                        case 'saveIdentitas':
+                            await metaDocRef('identitas').set(dataPayload);
+                            return dataPayload;
+
+                        case 'getGridConfig':
+                            const gridDoc = await metaDocRef('grid_config').get();
+                            return gridDoc.exists ? gridDoc.data() : null;
+                        case 'saveGridConfig':
+                            await metaDocRef('grid_config').set(dataPayload);
+                            return dataPayload;
+
+                        case 'getGuru':
+                            const guruSnap = await colRef('guru').get();
+                            let guruObj = {};
+                            guruSnap.forEach(doc => { guruObj[doc.id] = doc.data(); });
+                            return guruObj;
+                        case 'addGuru':
+                            const newGuruDoc = await colRef('guru').add(dataPayload);
+                            return newGuruDoc.id;
+                        case 'deleteGuru':
+                            await docRef('guru', dataPayload).delete();
+                            return { status: "success" };
+
+                        case 'getMapel':
+                            const mapelSnap = await colRef('mapel').get();
+                            let mapelObj = {};
+                            mapelSnap.forEach(doc => { mapelObj[doc.id] = doc.data(); });
+                            return mapelObj;
+                        case 'addMapel':
+                            const newMapelDoc = await colRef('mapel').add(dataPayload);
+                            return newMapelDoc.id;
+                        case 'deleteMapel':
+                            await docRef('mapel', dataPayload).delete();
+                            return { status: "success" };
+
+                        case 'getKelas':
+                            const kelasSnap = await colRef('kelas').get();
+                            let kelasObj = {};
+                            kelasSnap.forEach(doc => { kelasObj[doc.id] = doc.data(); });
+                            return kelasObj;
+                        case 'addKelas':
+                            const newKelasDoc = await colRef('kelas').add(dataPayload);
+                            return newKelasDoc.id;
+                        case 'deleteKelas':
+                            await docRef('kelas', dataPayload).delete();
+                            return { status: "success" };
+
+                        case 'getBeban':
+                            const bebanSnap = await colRef('beban').get();
+                            let bebanObj = {};
+                            bebanSnap.forEach(doc => { bebanObj[doc.id] = doc.data(); });
+                            return bebanObj;
+                        case 'addBeban':
+                            const newBebanDoc = await colRef('beban').add(dataPayload);
+                            return newBebanDoc.id;
+                        case 'deleteBeban':
+                            await docRef('beban', dataPayload).delete();
+                            return { status: "success" };
+
+                        case 'getPiket':
+                            const piketSnap = await colRef('piket').get();
+                            let piketObj = {};
+                            piketSnap.forEach(doc => { piketObj[doc.id] = doc.data(); });
+                            return piketObj;
+                        case 'addPiket':
+                            const newPiketDoc = await colRef('piket').add(dataPayload);
+                            return newPiketDoc.id;
+                        case 'deletePiket':
+                            await docRef('piket', dataPayload).delete();
+                            return { status: "success" };
+
+                        case 'getJadwalMaster':
+                            const jDoc = await docRef('jadwal', 'master').get();
+                            return jDoc.exists ? jDoc.data() : {};
+                        case 'saveJadwalMaster':
+                            const parts = dataPayload.path.split('/');
+                            const hari = parts[0], jam = parts[1], kelas = parts[2];
+                            const nestedDocRef = docRef('jadwal', 'master');
+                            
+                            let masterSched = {};
+                            const currentDoc = await nestedDocRef.get();
+                            if (currentDoc.exists) {
+                                masterSched = currentDoc.data();
+                            }
+                            if (!masterSched[hari]) masterSched[hari] = {};
+                            if (!masterSched[hari][jam]) masterSched[hari][jam] = {};
+                            
+                            if (dataPayload.value === "") {
+                                delete masterSched[hari][jam][kelas];
+                            } else {
+                                masterSched[hari][jam][kelas] = { kode_guru: dataPayload.value };
+                            }
+                            await nestedDocRef.set(masterSched);
+                            return { status: "success" };
+                        case 'resetJadwalMaster':
+                            await docRef('jadwal', 'master').set({});
+                            return { status: "success" };
+
+                        case 'getJurnal':
+                            const jSnap = await colRef('jurnal').get();
+                            let jArr = [];
+                            jSnap.forEach(doc => { jArr.push(doc.data()); });
+                            return jArr;
+                        case 'addJurnal':
+                            await colRef('jurnal').add(dataPayload);
+                            return { status: "success" };
+
+                        case 'getAbsensi':
+                            const absSnap = await colRef('absensi').get();
+                            let absObj = {};
+                            absSnap.forEach(doc => { absObj[doc.id] = doc.data(); });
+                            return absObj;
+                        case 'saveAbsensi':
+                            const keyDate = dataPayload.path.split('/')[0];
+                            const pathLog = dataPayload.path.split('/')[1];
+                            const absDocRef = docRef('absensi', keyDate);
+                            
+                            let currentAbs = {};
+                            const absDocSnap = await absDocRef.get();
+                            if (absDocSnap.exists) {
+                                currentAbs = absDocSnap.data();
+                            }
+                            currentAbs[pathLog] = dataPayload.value;
+                            await absDocRef.set(currentAbs);
+                            return { status: "success" };
+                    }
+                };
+
+                // Run firestore call with a 4.5 second timeout barrier (Rule 3)
+                return await withTimeout(runFirestoreCall(), 4500);
+
+            } catch (error) {
+                console.warn("Koneksi Cloud Firestore Lambat / Timeout. Otomatis beralih ke Mode Simulator Lokal.", error);
+                
+                // Switch application state instantly to local simulation to prevent subsequent blocks
+                isOfflineFallbackMode = true;
+                safeSetText('ping-indicator-text', "Mode Simulator Lokal (Koneksi Terputus)");
+                const ping = document.getElementById('ping-indicator');
+                if (ping) ping.className = "w-2 h-2 bg-amber-500 rounded-full animate-pulse";
+                
+                return simulateFirestoreLocal(action, dataPayload);
+            }
+        }
+
+        // Login Submit Handler (Terhindar dari Page-Reload Sandbox)
+        document.getElementById('form-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('login-username').value;
+            const pass = document.getElementById('login-password').value;
+
+            if (pass === 'sarjanasoft') {
+                currentUserRole = user === 'kepsek' ? 'kepsek' : 'admin';
+                sessionStorage.setItem('user_role', currentUserRole); 
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-layout').classList.remove('hidden');
+
+                if (currentUserRole === 'kepsek') {
+                    document.querySelectorAll('.role-admin').forEach(el => el.classList.add('hidden'));
+                    safeSetText('status-role-badge', "Kepala Sekolah (Monitor)");
+                    const badge = document.getElementById('status-role-badge');
+                    if (badge) badge.className = "text-xs bg-purple-50 text-purple-800 font-bold px-3 py-1.5 rounded-full border border-purple-100";
+                } else {
+                    document.querySelectorAll('.role-admin').forEach(el => el.classList.remove('hidden'));
+                    safeSetText('status-role-badge', "Admin Kurikulum");
+                    const badge = document.getElementById('status-role-badge');
+                    if (badge) badge.className = "text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100";
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    text: 'Selamat datang di SmartJadwal Pelajaran!',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                initApp();
+            } else {
+                Swal.fire('Akses Ditolak', 'Password salah!', 'error');
+            }
+        });
+
+        function logout() {
+            sessionStorage.removeItem('user_role');
+            document.getElementById('main-layout').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('login-password').value = "";
+        }
+
+        // Router View Switcher
         function switchView(viewId) {
             document.querySelectorAll('.content-view').forEach(v => v.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
@@ -1182,33 +1204,10 @@
             if (viewId === 'firestore-setup') loadFirestoreSetupForm();
         }
 
+        // Core App Initialization
         async function initApp() {
-            // Periksa apakah pengguna memiliki sesi login yang tersimpan
-            const savedRole = sessionStorage.getItem('user_role');
-            if (savedRole) {
-                currentUserRole = savedRole;
-                
-                // Perbarui status lencana peran di header utama
-                const roleBadge = document.getElementById('status-role-badge');
-                if (roleBadge) {
-                    roleBadge.innerText = currentUserRole === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah';
-                    roleBadge.className = currentUserRole === 'admin' 
-                        ? 'text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100'
-                        : 'text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1.5 rounded-full border border-amber-100';
-                }
-
-                // Sembunyikan atau tampilkan menu khusus Admin Kurikulum
-                document.querySelectorAll('.role-admin').forEach(el => {
-                    if (currentUserRole === 'admin') {
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
-                });
-
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-layout').classList.remove('hidden');
-            }
+            // Rule 1: Run school bell and period calculation immediately to resolve "Status KBM Loading..." instantly on startup
+            updateSchoolBellAndPeriod();
 
             await initFirestore();
 
@@ -1258,6 +1257,7 @@
                 renderDashboardVisuals();
                 renderClashTracker();
 
+                // Setup live clock ticker
                 setInterval(updateSchoolBellAndPeriod, 1000);
 
             } catch (err) {
@@ -1273,6 +1273,7 @@
             safeSetText('cetak-tahun-semester', `Tahun Ajaran ${globalIdentitas.tahun} • Semester ${globalIdentitas.semester}`);
         }
 
+        // Dashboard Metrics & Graphs
         function renderDashboardVisuals() {
             updateDashboardMetrics();
             const now = new Date();
@@ -1318,7 +1319,7 @@
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
-                        resizeDelay: 150,
+                        resizeDelay: 150, 
                         plugins: {
                             legend: { display: false }
                         },
@@ -1331,16 +1332,18 @@
             }
 
             let totalHadir = 0, totalIzin = 0, totalAlpa = 0;
-            const dateStr = now.toLocaleDateString('sv-SE');
+            const dateStr = now.toLocaleDateString('sv-SE'); 
             const logsToday = globalAbsensiLogs[dateStr] || {};
 
             for (let path in logsToday) {
                 const status = logsToday[path];
-                if (status === 'hadir' ? totalHadir++ : status === 'izin' ? totalIzin++ : totalAlpa++);
+                if (status === 'hadir') totalHadir++;
+                if (status === 'izin') totalIzin++;
+                if (status === 'alpa') totalAlpa++;
             }
 
             if (totalHadir === 0 && totalIzin === 0 && totalAlpa === 0) {
-                totalHadir = 100;
+                totalHadir = 100; 
             }
 
             const canvasAbs = document.getElementById('chart-absensi-guru');
@@ -1432,18 +1435,12 @@
                 safeSetValue('fs-storage-bucket', config.storageBucket || '');
                 safeSetValue('fs-sender-id', config.messagingSenderId || '');
                 safeSetValue('fs-app-id', config.appId || '');
-            } else {
-                // Tampilkan config hardcoded di placeholder form jika setup localstorage masih kosong
-                safeSetValue('fs-api-key', DEFAULT_FIREBASE_CONFIG.apiKey !== "MASUKKAN_API_KEY_LENGKAP_ANDA" ? DEFAULT_FIREBASE_CONFIG.apiKey : '');
-                safeSetValue('fs-auth-domain', DEFAULT_FIREBASE_CONFIG.authDomain || '');
-                safeSetValue('fs-project-id', DEFAULT_FIREBASE_CONFIG.projectId || '');
-                safeSetValue('fs-storage-bucket', DEFAULT_FIREBASE_CONFIG.storageBucket || '');
-                safeSetValue('fs-sender-id', DEFAULT_FIREBASE_CONFIG.messagingSenderId || '');
-                safeSetValue('fs-app-id', DEFAULT_FIREBASE_CONFIG.appId !== "1:599317639799:web:b94dfd00b164..." ? DEFAULT_FIREBASE_CONFIG.appId : '');
             }
         }
 
-        // CRUD Guru
+        // =========================================================================
+        // DATA OPERATIONAL MANAGERS (CRUD)
+        // =========================================================================
         async function fetchGuru() {
             safeSetHTML('table-guru-body', '<tr><td colspan="5" class="text-center py-8 text-slate-400">Memuat data...</td></tr>');
             globalGuruData = await fetchAPI('getGuru') || {};
@@ -1492,9 +1489,7 @@
             });
             if (formValues) {
                 if (!formValues.nama || !formValues.kode) return;
-                Swal.showLoading();
                 await fetchAPI('addGuru', formValues);
-                Swal.close();
                 fetchGuru();
             }
         }
@@ -1508,9 +1503,7 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
-                Swal.showLoading();
                 await fetchAPI('deleteGuru', key);
-                Swal.close();
                 fetchGuru();
             }
         }
@@ -1578,9 +1571,7 @@
             });
             if (formValues) {
                 if (!formValues.kode || !formValues.nama) return;
-                Swal.showLoading();
                 await fetchAPI('addMapel', formValues);
-                Swal.close();
                 fetchMapel();
             }
         }
@@ -1593,9 +1584,7 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
-                Swal.showLoading();
                 await fetchAPI('deleteMapel', key);
-                Swal.close();
                 fetchMapel();
             }
         }
@@ -1673,9 +1662,7 @@
             });
             if (formValues) {
                 if (!formValues.kode || !formValues.nama) return;
-                Swal.showLoading();
                 await fetchAPI('addKelas', formValues);
-                Swal.close();
                 fetchKelas();
             }
         }
@@ -1688,9 +1675,7 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
-                Swal.showLoading();
                 await fetchAPI('deleteKelas', key);
-                Swal.close();
                 fetchKelas();
             }
         }
@@ -1793,7 +1778,7 @@
         function getGuruOptions(selectedKode = "") {
             let opt = '<option value="">-- Pilih Guru --</option>';
             for (let key in globalGuruData) {
-                const isSel = (globalGuruData[key].text === selectedKode || globalGuruData[key].kode === selectedKode) ? "selected" : "";
+                const isSel = (globalGuruData[key].kode === selectedKode) ? "selected" : "";
                 opt += `<option value="${globalGuruData[key].kode}" ${isSel}>${globalGuruData[key].nama} (${globalGuruData[key].kode})</option>`;
             }
             return opt;
@@ -2046,9 +2031,7 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
-                Swal.showLoading();
                 await fetchAPI('deleteBeban', key);
-                Swal.close();
                 fetchBeban();
             }
         }
@@ -2114,9 +2097,7 @@
             });
 
             if (formValues) {
-                Swal.showLoading();
                 await fetchAPI('addPiket', formValues);
-                Swal.close();
                 fetchPiket();
             }
         }
@@ -2129,9 +2110,7 @@
                 confirmButtonColor: '#ef4444'
             });
             if (result.isConfirmed) {
-                Swal.showLoading();
                 await fetchAPI('deletePiket', key);
-                Swal.close();
                 fetchPiket();
             }
         }
@@ -2593,7 +2572,7 @@
                 const maxJam = gradeGrid[hariAktif] || 0;
 
                 for (let jam = 1; jam <= maxJam; jam++) {
-                    if (globalJadwalData[hariAktif] && globalJadwalData[hariIni] && globalJadwalData[hariAktif][jam] && globalJadwalData[hariAktif][jam][kls]) {
+                    if (globalJadwalData[hariAktif] && globalJadwalData[hariAktif][jam] && globalJadwalData[hariAktif][jam][kls]) {
                         const guru = globalJadwalData[hariAktif][jam][kls].kode_guru;
                         const mapel = getMapelKodeByGuruAndKelas(guru, kls);
                         
@@ -3070,7 +3049,6 @@
         // =========================================================================
         // MOCK STORAGE FALLBACK SYSTEM
         // =========================================================================
-
         function simulateFirestoreLocal(action, data) {
             if (!localStorage.getItem('db_mock_identitas')) {
                 const initId = { sekolah: "SmartJadwal Pelajaran SMK", npsn: "12345678", tahun: "2026/2027", semester: "Ganjil" };
@@ -3247,98 +3225,8 @@
         }
 
         // =========================================================================
-        // SYSTEM CORNER FUNCTIONS (LOGOUT & TIMER PERIODS)
+        // SINKRONISASI MANAJER KREDENSIAL FIRESTORE
         // =========================================================================
-        
-        // Fungsi Keluar Portal Aman
-        function logout() {
-            sessionStorage.removeItem('user_role'); // Hapus sesi saat logout
-            const mainLayout = document.getElementById('main-layout');
-            const loginScreen = document.getElementById('login-screen');
-            const loginPass = document.getElementById('login-password');
-            if (mainLayout) mainLayout.classList.add('hidden');
-            if (loginScreen) loginScreen.classList.remove('hidden');
-            if (loginPass) loginPass.value = "";
-        }
-
-        // Fungsi Pemantau Bel Pelajaran Aktif Real-time
-        function updateSchoolBellAndPeriod() {
-            const now = new Date();
-            const hour = now.getHours().toString().padStart(2, '0');
-            const minute = now.getMinutes().toString().padStart(2, '0');
-            const currentTimeStr = `${hour}:${minute}`;
-
-            let currentPeriod = null;
-            const currentDayInd = now.getDay();
-            const hariNama = getHariIndo(currentDayInd);
-
-            const TIMESLOTS = {
-                1: { start: "07:00", end: "07:45" },
-                2: { start: "07:45", end: "08:30" },
-                3: { start: "08:30", end: "09:15" },
-                4: { start: "09:15", end: "10:00" },
-                5: { start: "10:00", end: "10:45" },
-                6: { start: "11:00", end: "11:45" },
-                7: { start: "12:30", end: "13:15" },
-                8: { start: "13:15", end: "14:00" },
-                9: { start: "14:00", end: "14:45" },
-                10: { start: "14:45", end: "15:30" },
-                11: { start: "15:30", end: "16:15" },
-                12: { start: "16:15", end: "17:00" }
-            };
-
-            for (let p in TIMESLOTS) {
-                if (currentTimeStr >= TIMESLOTS[p].start && currentTimeStr <= TIMESLOTS[p].end) {
-                    currentPeriod = p;
-                    break;
-                }
-            }
-
-            const textEl = document.getElementById('school-bell-text');
-            if (textEl) {
-                if (hariNama === 'minggu') {
-                    textEl.innerText = "Hari Libur - KBM Non-Aktif";
-                } else if (currentPeriod) {
-                    textEl.innerText = `KBM Berjalan: Jam ke-${currentPeriod} (${TIMESLOTS[currentPeriod].start} - ${TIMESLOTS[currentPeriod].end})`;
-                } else {
-                    textEl.innerText = "Status KBM: Istirahat / Selesai";
-                }
-            }
-        }
-
-        // =========================================================================
-        // WINDOW PORT EXPORT CHANNELS FOR GLOBAL HTML EVENTS
-        // =========================================================================
-
-        window.switchView = switchView;
-        window.logout = logout;
-        window.showFormGuru = showFormGuru;
-        window.hapusGuru = hapusGuru;
-        window.showFormMapel = showFormMapel;
-        window.hapusMapel = hapusMapel;
-        window.showFormKelas = showFormKelas;
-        window.hapusKelas = hapusKelas;
-        window.renderJamKelasConfig = renderJamKelasConfig;
-        window.addTeacherRowToMapel = addTeacherRowToMapel;
-        window.simpanConfigJamKelas = simpanConfigJamKelas;
-        window.showFormBebanChecklist = showFormBebanChecklist;
-        window.hapusBeban = hapusBeban;
-        window.showFormPiket = showFormPiket;
-        window.hapusPiket = hapusPiket;
-        window.renderJadwalGrid = renderJadwalGrid;
-        window.simpanJadwalKeCloud = simpanJadwalKeCloud;
-        window.runAutoSchedulerSistem = runAutoSchedulerSistem;
-        window.renderJurnalOtomatis = renderJurnalOtomatis;
-        window.simpanJurnalDigital = simpanJurnalDigital;
-        window.renderRekapKehadiranGuru = renderRekapKehadiranGuru;
-        window.toggleCetakOptions = toggleCetakOptions;
-        window.renderVisualCetak = renderVisualCetak;
-        window.eksporExcelSistem = eksporExcelSistem;
-        window.eksporPDFSistem = eksporPDFSistem;
-        window.saveGridConfig = saveGridConfig;
-        window.saveAbsensiLogs = saveAbsensiLogs;
-
-        // Custom config database setup listeners
         document.getElementById('form-firestore-config').addEventListener('submit', function(e) {
             e.preventDefault();
             const config = {
@@ -3388,71 +3276,25 @@
             clBtn.addEventListener('click', window.clearFirestoreConfig);
         }
 
-        // EVENT LISTENER LOGIN SECURE PORTAL
-        document.getElementById('form-login').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('login-username').value.trim().toLowerCase();
-            const password = document.getElementById('login-password').value;
+        // Auto Load Session
+        const savedRole = sessionStorage.getItem('user_role');
+        if (savedRole) {
+            currentUserRole = savedRole;
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-layout').classList.remove('hidden');
 
-            // Validasi Password Utama
-            if (password !== 'sarjanasoft') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Login Gagal',
-                    text: 'Password yang Anda masukkan salah!',
-                    confirmButtonColor: '#ef4444'
-                });
-                return;
-            }
-
-            // Validasi Username Peran (Admin atau Kepsek)
-            if (username === 'admin' || username === 'kepsek') {
-                currentUserRole = username;
-                sessionStorage.setItem('user_role', username); // Simpan sesi login
-                
-                // Perbarui status lencana peran di header utama
-                const roleBadge = document.getElementById('status-role-badge');
-                if (roleBadge) {
-                    roleBadge.innerText = username === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah';
-                    roleBadge.className = username === 'admin' 
-                        ? 'text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100'
-                        : 'text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1.5 rounded-full border border-amber-100';
-                }
-
-                // Sembunyikan atau tampilkan menu khusus Admin Kurikulum
-                document.querySelectorAll('.role-admin').forEach(el => {
-                    if (username === 'admin') {
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
-                });
-
-                // Transisi Layar: Sembunyikan Login, Tampilkan Dashboard
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-layout').classList.remove('hidden');
-
-                // Tampilkan pesan selamat datang yang premium
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Login Berhasil!',
-                    text: `Selamat datang kembali, ${username === 'admin' ? 'Admin Kurikulum' : 'Kepala Sekolah'}.`,
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-
-                // Render ulang visualisasi dashboard agar sinkron dengan role aktif
-                renderDashboardVisuals();
+            if (currentUserRole === 'kepsek') {
+                document.querySelectorAll('.role-admin').forEach(el => el.classList.add('hidden'));
+                safeSetText('status-role-badge', "Kepala Sekolah (Monitor)");
+                const badge = document.getElementById('status-role-badge');
+                if (badge) badge.className = "text-xs bg-purple-50 text-purple-800 font-bold px-3 py-1.5 rounded-full border border-purple-100";
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Login Gagal',
-                    text: 'Username tidak dikenal! Gunakan "admin" atau "kepsek".',
-                    confirmButtonColor: '#4f46e5'
-                });
+                document.querySelectorAll('.role-admin').forEach(el => el.classList.remove('hidden'));
+                safeSetText('status-role-badge', "Admin Kurikulum");
+                const badge = document.getElementById('status-role-badge');
+                if (badge) badge.className = "text-xs bg-indigo-50 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-100";
             }
-        });
+        }
 
         // Trigger on load
         window.onload = function() {
